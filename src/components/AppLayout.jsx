@@ -9,7 +9,7 @@ export default function AppLayout() {
   useScrollRestoration();
 
   return (
-    <div className="min-h-screen bg-porcelain text-ink">
+    <div className="site-shell min-h-screen text-ink">
       <a className="skip-link" href="#main-content">
         Preskoči na vsebino
       </a>

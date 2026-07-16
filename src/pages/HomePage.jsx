@@ -30,7 +30,7 @@ export default function HomePage() {
           url: window.location.origin,
         }}
       />
-      <section className="bg-porcelain">
+      <section className="hero-wash border-b border-forest/10">
         <div className="mx-auto grid min-h-[78vh] max-w-7xl items-center gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
           <div className="max-w-2xl">
             <p className="text-xs font-bold uppercase text-clay">
@@ -59,7 +59,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="relative aspect-[4/3] overflow-hidden bg-cream">
+          <div className="hero-media-frame relative aspect-[4/3] overflow-hidden bg-cream">
             <img
               src={lifestyleImage}
               alt="Jantarna steklenička ob konopljini rastlini in naravnih materialih"
