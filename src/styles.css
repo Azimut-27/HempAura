@@ -2,13 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color: #1c211d;
+  background: #fffaf1;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
+  min-width: 320px;
   background: #fffaf1;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a,
+summary,
+input,
+textarea,
+select {
+  border-radius: 0;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid #b86f52;
+  outline-offset: 3px;
 }
 
 ::selection {
@@ -16,14 +50,29 @@ body {
   color: #fffaf1;
 }
 
-.product-bottle {
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.44), transparent 22%),
-    linear-gradient(180deg, #1c4a39 0%, #17382c 52%, #0e251d 100%);
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  transform: translateY(-160%);
+  background: #fffaf1;
+  color: #17382c;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
 }
 
-.product-balm {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.58), transparent 38%),
-    linear-gradient(180deg, #b99552 0%, #8c6a32 100%);
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
