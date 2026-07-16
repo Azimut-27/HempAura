@@ -1,13 +1,13 @@
 import {
   NewOrderNotificationEmail,
   OrderConfirmationEmail,
-} from "../emails/templates.js";
-import { serverConfig } from "../config/serverConfig.js";
-import { getServerProduct } from "../data/serverProducts.js";
-import { safeError, sendJson } from "../lib/http.js";
-import { getPaymentProvider } from "../payments/index.js";
-import { database } from "../repositories/database.js";
-import { sendEmail } from "../services/email.js";
+} from "../../server/emails/templates.js";
+import { serverConfig } from "../../server/config/serverConfig.js";
+import { getServerProduct } from "../../server/data/serverProducts.js";
+import { safeError, sendJson } from "../../server/lib/http.js";
+import { getPaymentProvider } from "../../server/payments/index.js";
+import { database } from "../../server/repositories/database.js";
+import { sendEmail } from "../../server/services/email.js";
 
 export const config = {
   api: {

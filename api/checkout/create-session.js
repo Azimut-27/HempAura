@@ -1,17 +1,17 @@
-import { serverConfig } from "../config/serverConfig.js";
-import { getServerProduct } from "../data/serverProducts.js";
-import { generateOrderNumber } from "../lib/orderNumber.js";
+import { serverConfig } from "../../server/config/serverConfig.js";
+import { getServerProduct } from "../../server/data/serverProducts.js";
+import { generateOrderNumber } from "../../server/lib/orderNumber.js";
 import {
   getClientIp,
   requireMethod,
   safeError,
   sendJson,
   validateSameOrigin,
-} from "../lib/http.js";
-import { rateLimit } from "../lib/rateLimit.js";
-import { checkoutSchema } from "../lib/validation.js";
-import { getPaymentProvider } from "../payments/index.js";
-import { calculateShipping } from "../services/shipping.js";
+} from "../../server/lib/http.js";
+import { rateLimit } from "../../server/lib/rateLimit.js";
+import { checkoutSchema } from "../../server/lib/validation.js";
+import { getPaymentProvider } from "../../server/payments/index.js";
+import { calculateShipping } from "../../server/services/shipping.js";
 
 export default async function handler(request, response) {
   if (!requireMethod(request, response, "POST")) return;

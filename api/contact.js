@@ -1,19 +1,19 @@
 import {
   ContactAcknowledgementEmail,
   ContactNotificationEmail,
-} from "./emails/templates.js";
-import { serverConfig } from "./config/serverConfig.js";
+} from "../server/emails/templates.js";
+import { serverConfig } from "../server/config/serverConfig.js";
 import {
   getClientIp,
   requireMethod,
   safeError,
   sendJson,
   validateSameOrigin,
-} from "./lib/http.js";
-import { rateLimit } from "./lib/rateLimit.js";
-import { contactSchema } from "./lib/validation.js";
-import { database } from "./repositories/database.js";
-import { sendEmail } from "./services/email.js";
+} from "../server/lib/http.js";
+import { rateLimit } from "../server/lib/rateLimit.js";
+import { contactSchema } from "../server/lib/validation.js";
+import { database } from "../server/repositories/database.js";
+import { sendEmail } from "../server/services/email.js";
 
 export default async function handler(request, response) {
   if (!requireMethod(request, response, "POST")) return;

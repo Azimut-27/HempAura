@@ -1,6 +1,6 @@
-import { safeError, sendJson } from "../lib/http.js";
-import { getPaymentProvider } from "../payments/index.js";
-import { database } from "../repositories/database.js";
+import { safeError, sendJson } from "../../server/lib/http.js";
+import { getPaymentProvider } from "../../server/payments/index.js";
+import { database } from "../../server/repositories/database.js";
 
 export default async function handler(request, response) {
   if (request.method !== "GET") {

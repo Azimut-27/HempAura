@@ -4,11 +4,11 @@ import {
   safeError,
   sendJson,
   validateSameOrigin,
-} from "../lib/http.js";
-import { serverConfig } from "../config/serverConfig.js";
-import { rateLimit } from "../lib/rateLimit.js";
-import { newsletterUnsubscribeSchema } from "../lib/validation.js";
-import { database } from "../repositories/database.js";
+} from "../../server/lib/http.js";
+import { serverConfig } from "../../server/config/serverConfig.js";
+import { rateLimit } from "../../server/lib/rateLimit.js";
+import { newsletterUnsubscribeSchema } from "../../server/lib/validation.js";
+import { database } from "../../server/repositories/database.js";
 
 export default async function handler(request, response) {
   if (!requireMethod(request, response, "POST")) return;
