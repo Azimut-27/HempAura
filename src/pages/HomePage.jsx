@@ -7,7 +7,8 @@ import ProductCard from "../components/ProductCard.jsx";
 import Seo from "../components/Seo.jsx";
 import { faqs } from "../data/faqs.js";
 import { products } from "../data/products.js";
-import lifestyleImage from "../assets/hemp-lifestyle.png";
+
+const lifestyleImage = "/hemp-lifestyle.png";
 
 const trustItems = [
   [PackageCheck, "Jasni podatki o izdelku"],
