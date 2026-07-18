@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# TODO(owner): replace with the production domain before launch.
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://hemp-aura.vercel.app/sitemap.xml

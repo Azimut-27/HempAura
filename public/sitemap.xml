@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- TODO(owner): replace example.com with the production domain before launch. -->
-  <url><loc>https://example.com/</loc></url>
-  <url><loc>https://example.com/products</loc></url>
-  <url><loc>https://example.com/products/cbd-olje-5</loc></url>
-  <url><loc>https://example.com/products/cbd-olje-10</loc></url>
-  <url><loc>https://example.com/products/cbd-balzam</loc></url>
-  <url><loc>https://example.com/quality</loc></url>
-  <url><loc>https://example.com/lab-reports</loc></url>
-  <url><loc>https://example.com/faq</loc></url>
-  <url><loc>https://example.com/contact</loc></url>
-  <url><loc>https://example.com/shipping-and-returns</loc></url>
-  <url><loc>https://example.com/privacy</loc></url>
-  <url><loc>https://example.com/terms</loc></url>
-  <url><loc>https://example.com/responsible-use</loc></url>
-  <url><loc>https://example.com/newsletter/unsubscribe</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/products</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/products/cbd-olje-5</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/products/cbd-olje-10</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/products/cbd-balzam</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/quality</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/lab-reports</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/faq</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/contact</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/shipping-and-returns</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/privacy</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/terms</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/responsible-use</loc></url>
+  <url><loc>https://hemp-aura.vercel.app/newsletter/unsubscribe</loc></url>
 </urlset>

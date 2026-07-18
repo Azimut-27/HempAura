@@ -178,7 +178,7 @@ the source of truth.
 7. Add every required environment variable for Preview and Production separately.
 8. Deploy first with `VITE_PAYMENTS_ENABLED=false`.
 9. Run the Supabase migration and configure the Stripe webhook using the final domain.
-10. Replace `example.com` in `public/robots.txt` and `public/sitemap.xml`.
+10. Confirm `public/robots.txt` and `public/sitemap.xml` use the final production domain.
 11. Test all routes, forms, emails, webhook events, and mobile layouts before launch.
 
 ## Security
@@ -230,6 +230,6 @@ The policy pages are structured templates, not legal advice.
 - No analytics or marketing cookies are installed.
 - Email retries are recorded but require a scheduled retry worker.
 - The rate limiter is per serverless instance.
-- `robots.txt` and `sitemap.xml` still require the production domain.
+- `robots.txt` and `sitemap.xml` use the current Vercel production domain.
 
 See `docs/manual-test-checklist.md` for final manual verification.
