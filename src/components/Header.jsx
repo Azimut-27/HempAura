@@ -73,9 +73,14 @@ export default function Header() {
           aria-label="Glavna navigacija"
         >
           <Link to="/" className="flex min-h-12 items-center gap-3" aria-label="HempAura domov">
-            <span className="grid size-10 place-items-center bg-forest text-xs font-bold text-porcelain">
-              HA
-            </span>
+            <img
+              src="/logo-mark.svg"
+              alt=""
+              width="40"
+              height="40"
+              className="size-10 shrink-0"
+              aria-hidden="true"
+            />
             <span className="font-display text-3xl font-semibold text-forest">
               HempAura
             </span>
@@ -135,7 +140,17 @@ export default function Header() {
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-forest/10 pb-5">
-              <span className="font-display text-3xl font-semibold text-forest">HempAura</span>
+              <span className="flex items-center gap-3">
+                <img
+                  src="/logo-mark.svg"
+                  alt=""
+                  width="40"
+                  height="40"
+                  className="size-10 shrink-0"
+                  aria-hidden="true"
+                />
+                <span className="font-display text-3xl font-semibold text-forest">HempAura</span>
+              </span>
               <button
                 type="button"
                 className="grid size-12 place-items-center text-forest hover:bg-sage"

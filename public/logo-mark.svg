@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">HempAura logo mark</title>
+  <desc id="desc">Deep green HempAura monogram with a gold botanical accent.</desc>
   <rect width="128" height="128" rx="24" fill="#17382c"/>
   <path d="M31 35h13v24h28V35h13v58H72V70H44v23H31V35Z" fill="#fffaf1"/>
   <path d="M95.8 33.5c-15.4 1.6-25.2 12.1-25.2 25.9 13.9 1.2 25.3-8.5 25.2-25.9Z" fill="#b99552"/>
