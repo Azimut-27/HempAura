@@ -32,45 +32,51 @@ export default function HomePage() {
         }}
       />
       <section className="hero-wash border-b border-forest/10">
-        <div className="mx-auto grid min-h-[78vh] max-w-7xl items-center gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8 lg:py-20">
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase text-clay">
-              Premium konopljini izdelki
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-16 lg:px-8 lg:py-20">
+          <div className="max-w-xl lg:py-4">
+            <p className="text-xs font-bold uppercase text-[#9b5940] sm:text-sm">
+              PREMIUM KONOPLJINI IZDELKI
             </p>
-            <h1 className="mt-5 font-display text-5xl font-semibold leading-[1.02] text-forest sm:text-6xl lg:text-7xl">
-              Premišljena kakovost za tvoj vsakdanji ritual.
+            <h1 className="hero-title mt-6 max-w-[12ch] font-display text-5xl font-semibold leading-[0.98] text-forest sm:text-6xl lg:max-w-none lg:text-7xl">
+              <span className="lg:block">Kakovost se začne</span>{" "}
+              <span>pri izbiri.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-forest/72">
-              HempAura združuje skrbno predstavitev, transparentne informacije in
-              premium izkušnjo od izbire izdelka do dostave.
+            <p className="mt-8 max-w-[38rem] text-base leading-8 text-forest/75 sm:text-lg">
+              Vsak izdelek v naši ponudbi je izbran zaradi svoje kakovosti,
+              transparentnega porekla in premišljene sestave. Ustvarjamo kolekcijo,
+              ki združuje naravo, estetiko in zaupanje v vsakodnevni ritual.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
                 to="/products"
-                className="inline-flex min-h-12 items-center justify-center gap-2 bg-forest px-6 text-sm font-bold text-porcelain"
+                className="group inline-flex min-h-14 items-center justify-center gap-3 bg-forest px-7 text-sm font-bold text-porcelain shadow-[0_14px_34px_rgba(23,56,44,0.16)] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:bg-ink hover:shadow-[0_18px_40px_rgba(23,56,44,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-clay"
               >
-                Razišči kolekcijo
-                <ArrowRight size={17} aria-hidden="true" />
+                Odkrij kolekcijo
+                <ArrowRight
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  size={17}
+                  aria-hidden="true"
+                />
               </Link>
               <Link
                 to="/quality"
-                className="inline-flex min-h-12 items-center justify-center border border-forest/25 px-6 text-sm font-bold text-forest hover:bg-sage"
+                className="inline-flex min-h-14 items-center justify-center border border-forest/30 bg-porcelain/35 px-7 text-sm font-bold text-forest transition-[background-color,border-color,color] duration-300 hover:border-forest/60 hover:bg-sage/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-clay"
               >
-                Naš standard kakovosti
+                Standard HempAura
               </Link>
             </div>
           </div>
-          <div className="hero-media-frame relative aspect-[4/3] overflow-hidden bg-cream">
+          <div className="hero-media-frame relative aspect-[4/3] min-w-0 overflow-hidden bg-cream sm:aspect-[16/11] lg:aspect-[4/3]">
             <img
               src={lifestyleImage}
               alt="Jantarna steklenička ob konopljini rastlini in naravnih materialih"
               width="1536"
               height="1024"
               fetchPriority="high"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-center"
             />
-            <div className="absolute bottom-0 left-0 max-w-sm bg-forest p-5 text-porcelain">
-              <p className="text-sm font-semibold">
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest via-forest/90 to-transparent px-5 pb-5 pt-20 text-porcelain sm:px-7 sm:pb-7 sm:pt-24">
+              <p className="max-w-xl border-l-2 border-gold pl-4 text-sm font-semibold leading-6 text-porcelain/95">
                 Končne informacije o izdelkih bodo objavljene po preverjanju
                 deklaracij, cen, zaloge in dokumentacije.
               </p>
