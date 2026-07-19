@@ -1,4 +1,4 @@
-import { Globe2, Menu, ShoppingBag, X } from "lucide-react";
+import { Check, ChevronDown, Globe2, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { siteConfig } from "../config/siteConfig.js";
@@ -15,12 +15,38 @@ const navItems = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const drawerRef = useRef(null);
+  const languageMenuRef = useRef(null);
   const location = useLocation();
   const { count, openDrawer } = useCart();
   const { language, languages, setLanguage, t } = useLanguage();
 
-  useEffect(() => setOpen(false), [location.pathname, location.hash]);
+  useEffect(() => {
+    setOpen(false);
+    setLanguageOpen(false);
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    if (!languageOpen) return undefined;
+
+    const closeLanguageMenu = (event) => {
+      if (event.key === "Escape") setLanguageOpen(false);
+      if (
+        event.type === "pointerdown" &&
+        !languageMenuRef.current?.contains(event.target)
+      ) {
+        setLanguageOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", closeLanguageMenu);
+    document.addEventListener("pointerdown", closeLanguageMenu);
+    return () => {
+      document.removeEventListener("keydown", closeLanguageMenu);
+      document.removeEventListener("pointerdown", closeLanguageMenu);
+    };
+  }, [languageOpen]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -83,7 +109,7 @@ export default function Header() {
               className="size-10 shrink-0"
               aria-hidden="true"
             />
-            <span className="font-display text-3xl font-semibold text-forest">
+            <span className="hidden font-display text-3xl font-semibold text-forest sm:inline">
               HempAura
             </span>
           </Link>
@@ -97,22 +123,77 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="relative inline-flex min-h-11 items-center border border-forest/15 bg-porcelain/80 pl-3 pr-2 text-forest focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-clay">
-              <Globe2 size={16} aria-hidden="true" className="shrink-0 text-clay" />
-              <span className="sr-only">{t("Izberi jezik")}</span>
-              <select
-                value={language}
-                onChange={(event) => setLanguage(event.target.value)}
-                className="min-h-10 bg-transparent px-2 text-xs font-bold uppercase outline-none"
+            <div ref={languageMenuRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setLanguageOpen((current) => !current)}
+                className="group inline-flex min-h-11 items-center gap-2 border border-forest/15 bg-porcelain/75 px-2.5 text-forest shadow-[0_8px_24px_rgba(28,33,29,0.05)] transition duration-200 hover:border-gold/60 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay sm:px-3"
                 aria-label={t("Izberi jezik")}
+                aria-haspopup="menu"
+                aria-expanded={languageOpen}
+                aria-controls="language-menu"
               >
-                {languages.map((option) => (
-                  <option key={option.code} value={option.code}>
-                    {option.shortLabel}
-                  </option>
-                ))}
-              </select>
-            </label>
+                <span className="grid size-7 place-items-center rounded-full bg-forest text-porcelain shadow-[inset_0_0_0_1px_rgba(185,149,82,0.35)] transition-colors group-hover:bg-ink">
+                  <Globe2 size={14} strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]">
+                  {languages.find((option) => option.code === language)?.shortLabel}
+                </span>
+                <ChevronDown
+                  size={14}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className={`text-moss transition-transform duration-200 ${languageOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {languageOpen && (
+                <div
+                  id="language-menu"
+                  role="menu"
+                  aria-label={t("Izberi jezik")}
+                  className="absolute right-0 top-[calc(100%+0.65rem)] z-50 w-48 border border-forest/10 border-t-gold/70 bg-porcelain p-1.5 shadow-[0_24px_55px_rgba(28,33,29,0.2)]"
+                >
+                  <div className="border-b border-forest/10 px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-moss">
+                    {t("Izberi jezik")}
+                  </div>
+                  <div className="pt-1.5">
+                    {languages.map((option) => {
+                      const selected = option.code === language;
+                      return (
+                        <button
+                          key={option.code}
+                          type="button"
+                          role="menuitemradio"
+                          aria-checked={selected}
+                          onClick={() => {
+                            setLanguage(option.code);
+                            setLanguageOpen(false);
+                          }}
+                          className={`flex min-h-11 w-full items-center gap-3 px-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-clay ${
+                            selected
+                              ? "bg-forest text-porcelain"
+                              : "text-forest hover:bg-sage/70"
+                          }`}
+                        >
+                          <span
+                            className={`grid size-7 place-items-center border text-[10px] font-extrabold uppercase tracking-[0.08em] ${
+                              selected
+                                ? "border-gold/60 text-gold"
+                                : "border-forest/15 text-moss"
+                            }`}
+                          >
+                            {option.shortLabel}
+                          </span>
+                          <span className="flex-1 text-sm font-semibold">{option.label}</span>
+                          {selected && <Check size={16} className="text-gold" aria-hidden="true" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
             <button
               type="button"
               onClick={openDrawer}
