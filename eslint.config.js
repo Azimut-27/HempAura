@@ -26,7 +26,10 @@ export default [
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": "off",
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_|^[A-Z]", varsIgnorePattern: "^[A-Z]" },
+      ],
     },
   },
 ];
