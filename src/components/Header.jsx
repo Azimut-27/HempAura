@@ -1,8 +1,9 @@
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { Globe2, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { siteConfig } from "../config/siteConfig.js";
 import { useCart } from "../context/CartContext.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 
 const navItems = [
   { label: "Izdelki", to: "/products" },
@@ -17,6 +18,7 @@ export default function Header() {
   const drawerRef = useRef(null);
   const location = useLocation();
   const { count, openDrawer } = useCart();
+  const { language, languages, setLanguage, t } = useLanguage();
 
   useEffect(() => setOpen(false), [location.pathname, location.hash]);
 
@@ -95,6 +97,22 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2">
+            <label className="relative inline-flex min-h-11 items-center border border-forest/15 bg-porcelain/80 pl-3 pr-2 text-forest focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-clay">
+              <Globe2 size={16} aria-hidden="true" className="shrink-0 text-clay" />
+              <span className="sr-only">{t("Izberi jezik")}</span>
+              <select
+                value={language}
+                onChange={(event) => setLanguage(event.target.value)}
+                className="min-h-10 bg-transparent px-2 text-xs font-bold uppercase outline-none"
+                aria-label={t("Izberi jezik")}
+              >
+                {languages.map((option) => (
+                  <option key={option.code} value={option.code}>
+                    {option.shortLabel}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button
               type="button"
               onClick={openDrawer}
