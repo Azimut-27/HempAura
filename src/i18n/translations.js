@@ -221,6 +221,7 @@ const en = {
   "Lastnik še ni dodal preverljivega dokumenta. Noben rezultat ali laboratorij ni bil izmišljen.": "The owner has not added a verifiable document yet. No result or laboratory has been invented.",
 
   "Kako ti lahko pomagamo?": "How can we help?",
+  "Osebno sporočilo": "Personal message",
   "Za vprašanja o izdelkih, dostavi ali naročilu uporabi obrazec. Pri naročilu dodaj številko, če jo imaš.": "Use the form for questions about products, shipping, or an order. Add the order number if you have one.",
   "E-pošta za podporo": "Support email",
   "Predviden odziv": "Expected response",
@@ -231,6 +232,8 @@ const en = {
   "Zadeva": "Subject",
   "Številka naročila (neobvezno)": "Order number (optional)",
   "Sporočilo": "Message",
+  "Vprašanje o izdelku": "Product question",
+  "Napiši, kako ti lahko pomagamo.": "Tell us how we can help.",
   "Strinjam se z obdelavo podatkov za odgovor na sporočilo in sem": "I agree to the processing of my data for a reply and have",
   "Pošlji sporočilo": "Send message",
   "Pošiljanje ...": "Sending ...",
@@ -539,6 +542,7 @@ const de = {
   "Lastnik še ni dodal preverljivega dokumenta. Noben rezultat ali laboratorij ni bil izmišljen.": "Der Inhaber hat noch kein pruefbares Dokument hinzugefuegt. Kein Ergebnis und kein Labor wurde erfunden.",
 
   "Kako ti lahko pomagamo?": "Wie koennen wir helfen?",
+  "Osebno sporočilo": "Persoenliche Nachricht",
   "Za vprašanja o izdelkih, dostavi ali naročilu uporabi obrazec. Pri naročilu dodaj številko, če jo imaš.": "Nutze das Formular fuer Fragen zu Produkten, Versand oder Bestellung. Fuege die Bestellnummer hinzu, falls du sie hast.",
   "E-pošta za podporo": "Support-E-Mail",
   "Predviden odziv": "Voraussichtliche Antwortzeit",
@@ -549,6 +553,8 @@ const de = {
   "Zadeva": "Betreff",
   "Številka naročila (neobvezno)": "Bestellnummer (optional)",
   "Sporočilo": "Nachricht",
+  "Vprašanje o izdelku": "Produktfrage",
+  "Napiši, kako ti lahko pomagamo.": "Sag uns, wie wir helfen koennen.",
   "Strinjam se z obdelavo podatkov za odgovor na sporočilo in sem": "Ich stimme der Verarbeitung meiner Daten zur Beantwortung zu und habe die",
   "Pošlji sporočilo": "Nachricht senden",
   "Pošiljanje ...": "Wird gesendet ...",
