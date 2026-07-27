@@ -67,7 +67,7 @@ describe("public API validation", () => {
     expect(response.statusCode).toBe(400);
   });
 
-  it("contact endpoint sends email without Supabase configuration", async () => {
+  it("contact endpoint sends the owner email without Supabase or a public domain", async () => {
     const sendEmail = vi.fn().mockResolvedValue({ id: "email_test" });
     vi.doMock("../server/services/email.js", () => ({ sendEmail }));
     const { default: handler } = await import("../api/contact.js");
@@ -85,6 +85,39 @@ describe("public API validation", () => {
           website: "",
         },
         socket: { remoteAddress: "127.0.0.9" },
+      },
+      response
+    );
+    expect(response.statusCode).toBe(200);
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        replyTo: "martin@example.com",
+        to: "stakingforge@gmail.com",
+      })
+    );
+  });
+
+  it("contact endpoint sends customer acknowledgement only when enabled", async () => {
+    vi.stubEnv("RESEND_FROM_EMAIL", "HempAura <noreply@example.com>");
+    vi.stubEnv("CONTACT_CUSTOMER_ACK_ENABLED", "true");
+    const sendEmail = vi.fn().mockResolvedValue({ id: "email_test" });
+    vi.doMock("../server/services/email.js", () => ({ sendEmail }));
+    const { default: handler } = await import("../api/contact.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "http://localhost:5173" },
+        body: {
+          name: "Martin Jancar",
+          email: "martin@example.com",
+          subject: "Vprasanje",
+          message: "Zanima me vec informacij o izdelku.",
+          consent: true,
+          website: "",
+        },
+        socket: { remoteAddress: "127.0.0.10" },
       },
       response
     );

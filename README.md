@@ -147,24 +147,30 @@ Tables:
 
 ## Resend setup
 
-1. Create a Resend account and verify a domain or sending subdomain.
-2. Create a sender such as `HempAura <noreply@updates.your-domain.si>`. A Gmail
-   address cannot be used as the Resend `from` address.
-3. Add `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CONTACT_TO_EMAIL`,
-   `SUPPORT_EMAIL`, and `RESEND_WEBHOOK_SECRET` to Vercel. The configured contact
-   and support inbox is `stakingforge@gmail.com`.
-4. The contact form does not require Supabase. It sends the internal message and
-   customer acknowledgement directly through Resend.
-5. Optionally add a Resend webhook for
+1. Create a Resend account and API key.
+2. Without a public domain, use Resend's testing sender:
+   `CONTACT_FROM_EMAIL=HempAura <onboarding@resend.dev>`. This can only send to
+   the email address on the Resend account, so set `CONTACT_TO_EMAIL` to that same
+   address.
+3. Add `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`,
+   `CONTACT_REPLY_TO_EMAIL`, and `VITE_SUPPORT_EMAIL` to Vercel. The configured
+   support inbox is `stakingforge@gmail.com`.
+4. The contact form does not require Supabase. By default it sends only the
+   internal owner notification through Resend. Customer acknowledgement is disabled
+   until a real sending domain is verified.
+5. After buying and verifying a domain or sending subdomain, set
+   `RESEND_FROM_EMAIL=HempAura <noreply@updates.your-domain.si>` and
+   `CONTACT_CUSTOMER_ACK_ENABLED=true`.
+6. Optionally add a Resend webhook for
    `https://YOUR_DOMAIN/api/webhooks/resend` and subscribe to `email.sent`,
    `email.delivered`, `email.delivery_delayed`, `email.failed`, `email.bounced`,
    `email.complained`, and `email.suppressed` after Supabase persistence is
    enabled.
-6. Set an honest `RESPONSE_TIME`.
-7. Test internal contact email, customer acknowledgement, reply-to behavior,
+7. Set an honest `RESPONSE_TIME`.
+8. Test internal contact email, customer acknowledgement, reply-to behavior,
    newsletter confirmation, paid-order confirmation, and owner new-order
    notification.
-8. Monitor Resend for contact bounces. When Supabase persistence is enabled,
+9. Monitor Resend for contact bounces. When Supabase persistence is enabled,
    monitor `contact_submissions`, `email_events`, and `payment_events` for
    `email_retry_required` or `email_attention_required`. Add a scheduled retry
    worker before meaningful volume.

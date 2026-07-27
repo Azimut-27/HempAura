@@ -17,6 +17,10 @@ import { rateLimit } from "../server/lib/rateLimit.js";
 import { contactSchema } from "../server/lib/validation.js";
 import { sendEmail } from "../server/services/email.js";
 
+function isResendTestingSender(sender) {
+  return /@resend\.dev>?$/i.test(sender.trim());
+}
+
 export default async function handler(request, response) {
   if (!requireMethod(request, response, "POST")) return;
   if (!validateSameOrigin(request)) {
@@ -48,7 +52,10 @@ export default async function handler(request, response) {
   };
 
   try {
-    const [internal, acknowledgement] = await Promise.allSettled([
+    const sendCustomerAcknowledgement =
+      serverConfig.contactCustomerAckEnabled &&
+      !isResendTestingSender(serverConfig.resendFromEmail);
+    const emailTasks = [
       sendEmail({
         to: serverConfig.contactToEmail,
         subject: `HempAura kontakt: ${parsed.data.subject}`,
@@ -61,19 +68,26 @@ export default async function handler(request, response) {
         ],
         idempotencyKey: `contact-internal/${contactId}`,
       }),
-      sendEmail({
-        to: parsed.data.email,
-        subject: "Prejeli smo tvoje sporočilo | HempAura",
-        html: ContactAcknowledgementEmail(emailData),
-        text: ContactAcknowledgementText(emailData),
-        replyTo: serverConfig.supportEmail,
-        tags: [
-          { name: "category", value: "contact_ack" },
-          { name: "contact_id", value: contactId },
-        ],
-        idempotencyKey: `contact-ack/${contactId}`,
-      }),
-    ]);
+    ];
+
+    if (sendCustomerAcknowledgement) {
+      emailTasks.push(
+        sendEmail({
+          to: parsed.data.email,
+          subject: "Prejeli smo tvoje sporočilo | HempAura",
+          html: ContactAcknowledgementEmail(emailData),
+          text: ContactAcknowledgementText(emailData),
+          replyTo: serverConfig.supportEmail,
+          tags: [
+            { name: "category", value: "contact_ack" },
+            { name: "contact_id", value: contactId },
+          ],
+          idempotencyKey: `contact-ack/${contactId}`,
+        })
+      );
+    }
+
+    const [internal, acknowledgement] = await Promise.allSettled(emailTasks);
 
     if (internal.status === "rejected") {
       throw internal.reason;
@@ -81,9 +95,9 @@ export default async function handler(request, response) {
 
     sendJson(response, 200, {
       message:
-        acknowledgement.status === "fulfilled"
+        acknowledgement?.status === "fulfilled"
           ? "Sporočilo je prejeto. Potrdilo smo poslali na tvoj e-poštni naslov."
-          : "Sporočilo je prejeto. E-poštno potrdilo trenutno zamuja.",
+          : "Sporočilo je prejeto. Odgovor bomo poslali na vpisani e-poštni naslov.",
     });
   } catch (error) {
     safeError(error, "contact");

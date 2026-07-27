@@ -5,6 +5,12 @@ function integerEnv(name, fallback = null) {
   return Number.isInteger(parsed) ? parsed : fallback;
 }
 
+function booleanEnv(name, fallback = false) {
+  const value = process.env[name];
+  if (value === undefined || value === "") return fallback;
+  return value === "true";
+}
+
 function stringEnv(...names) {
   for (const name of names) {
     const value = process.env[name]?.trim();
@@ -35,11 +41,14 @@ export const serverConfig = {
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
   resendApiKey: process.env.RESEND_API_KEY || "",
-  resendFromEmail: stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL"),
+  resendFromEmail:
+    stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL") ||
+    "HempAura <onboarding@resend.dev>",
   resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET || "",
   contactToEmail: stringEnv("CONTACT_TO_EMAIL") || "stakingforge@gmail.com",
   supportEmail:
     stringEnv("SUPPORT_EMAIL", "CONTACT_REPLY_TO_EMAIL", "VITE_SUPPORT_EMAIL", "CONTACT_TO_EMAIL") || "stakingforge@gmail.com",
+  contactCustomerAckEnabled: booleanEnv("CONTACT_CUSTOMER_ACK_ENABLED", false),
   legalBusinessName: process.env.LEGAL_ENTITY_NAME || "",
   businessAddress: process.env.BUSINESS_ADDRESS || "",
   registrationNumber: process.env.REGISTRATION_NUMBER || "",
