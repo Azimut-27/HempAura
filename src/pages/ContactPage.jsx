@@ -11,7 +11,8 @@ export default function ContactPage() {
     event.preventDefault();
     setStatus("loading");
     setMessage("");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       const result = await submitContact({
         name: form.get("name"),
@@ -24,7 +25,7 @@ export default function ContactPage() {
       });
       setStatus("success");
       setMessage(result.message);
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setStatus("error");
       setMessage(error.message);
