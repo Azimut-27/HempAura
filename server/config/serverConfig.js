@@ -5,9 +5,24 @@ function integerEnv(name, fallback = null) {
   return Number.isInteger(parsed) ? parsed : fallback;
 }
 
+const legalCommerceConfigurationComplete = [
+  "LEGAL_ENTITY_NAME",
+  "BUSINESS_ADDRESS",
+  "REGISTRATION_NUMBER",
+  "TAX_NUMBER",
+  "RETURN_ADDRESS",
+  "DELIVERY_PARTNER",
+  "SUPPORT_EMAIL",
+  "SHIPPING_SI_STANDARD_CENTS",
+  "SHIPPING_SI_MIN_DAYS",
+  "SHIPPING_SI_MAX_DAYS",
+].every((name) => process.env[name]?.trim());
+
 export const serverConfig = {
   siteUrl: process.env.VITE_SITE_URL || "http://localhost:5173",
-  paymentsEnabled: process.env.VITE_PAYMENTS_ENABLED === "true",
+  paymentsEnabled:
+    process.env.VITE_PAYMENTS_ENABLED === "true" &&
+    legalCommerceConfigurationComplete,
   paymentProvider: process.env.PAYMENT_PROVIDER || "stripe",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
@@ -15,6 +30,13 @@ export const serverConfig = {
   resendFromEmail: process.env.RESEND_FROM_EMAIL || "",
   contactToEmail: process.env.CONTACT_TO_EMAIL || "",
   supportEmail: process.env.SUPPORT_EMAIL || "",
+  legalBusinessName: process.env.LEGAL_ENTITY_NAME || "",
+  businessAddress: process.env.BUSINESS_ADDRESS || "",
+  registrationNumber: process.env.REGISTRATION_NUMBER || "",
+  taxNumber: process.env.TAX_NUMBER || "",
+  vatId: process.env.VAT_ID || "",
+  returnAddress: process.env.RETURN_ADDRESS || "",
+  deliveryPartner: process.env.DELIVERY_PARTNER || "",
   supabaseUrl: process.env.SUPABASE_URL || "",
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
   orderNumberPrefix: process.env.ORDER_NUMBER_PREFIX || "HA",
@@ -41,7 +63,7 @@ export const serverConfig = {
     windowSeconds: integerEnv("NEWSLETTER_RATE_LIMIT_WINDOW_SECONDS", 900),
   },
   newsletterTokenTtlHours: integerEnv("NEWSLETTER_TOKEN_TTL_HOURS", 48),
-  responseTime: process.env.RESPONSE_TIME || "[RESPONSE_TIME]",
+  responseTime: process.env.RESPONSE_TIME || "v dveh delovnih dneh",
 };
 
 export function requireConfig(entries) {

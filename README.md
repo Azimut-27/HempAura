@@ -68,6 +68,20 @@ Frontend-exposed:
 
 - `VITE_SITE_URL`
 - `VITE_PAYMENTS_ENABLED=false`
+- `VITE_LEGAL_ENTITY_NAME`
+- `VITE_BUSINESS_ADDRESS`
+- `VITE_REGISTRATION_NUMBER`
+- `VITE_TAX_NUMBER`
+- `VITE_VAT_ID` when the merchant is identified for VAT
+- `VITE_SUPPORT_EMAIL`
+- `VITE_SUPPORT_PHONE`
+- `VITE_RESPONSE_TIME`
+- `VITE_RETURN_ADDRESS`
+- `VITE_DELIVERY_PARTNER`
+- `VITE_IRPS_PROVIDER`
+- `VITE_SHIPPING_SI_STANDARD_CENTS`
+- `VITE_SHIPPING_SI_FREE_THRESHOLD_CENTS`
+- `VITE_SHIPPING_SI_DELIVERY_ESTIMATE`
 
 Server-only:
 
@@ -220,12 +234,17 @@ labelling, marketing consent, and cross-border sales. Obtain accountant approval
 for VAT display, tax mode, invoicing, and product tax treatment. Obtain payment
 provider approval for the precise hemp/CBD catalogue.
 
-The policy pages are structured templates, not legal advice.
+The policy pages are complete operational drafts, not legal advice. They include
+current consumer/privacy structure and a visible launch blocker while the real
+merchant details are missing. Obtain written Slovenian/EU legal approval before
+removing that blocker or enabling payment.
 
 ## Known limitations before launch
 
-- Product commercial facts and packshots are intentionally TODO placeholders.
-- Payments and all products are disabled.
+- Payments remain disabled until the public and server-side legal-commerce
+  configuration is complete.
+- The real merchant identity, return address, support mailbox, delivery terms, and
+  IRPS statement still require owner-supplied verified values.
 - EU shipping is disabled.
 - No analytics or marketing cookies are installed.
 - Email retries are recorded but require a scheduled retry worker.

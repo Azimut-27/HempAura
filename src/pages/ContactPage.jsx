@@ -53,11 +53,34 @@ export default function ContactPage() {
             <dl className="mt-8 space-y-5 text-sm">
               <div>
                 <dt className="font-bold text-forest">E-pošta za podporo</dt>
-                <dd className="mt-1 text-forest/65">{siteConfig.supportEmail}</dd>
+                <dd className="mt-1 text-forest/65">
+                  {siteConfig.supportEmail ? (
+                    <a className="underline" href={`mailto:${siteConfig.supportEmail}`}>
+                      {siteConfig.supportEmail}
+                    </a>
+                  ) : (
+                    <strong className="text-clay">
+                      Lastnik mora vnesti preverjen naslov podpore.
+                    </strong>
+                  )}
+                </dd>
               </div>
               <div>
                 <dt className="font-bold text-forest">Predviden odziv</dt>
                 <dd className="mt-1 text-forest/65">{siteConfig.responseTime}</dd>
+              </div>
+              <div>
+                <dt className="font-bold text-forest">Ponudnik</dt>
+                <dd className="mt-1 text-forest/65">
+                  {siteConfig.legalBusinessName || (
+                    <strong className="text-clay">
+                      Registrirani ponudnik še ni vnesen.
+                    </strong>
+                  )}
+                </dd>
+                {siteConfig.businessAddress && (
+                  <dd className="mt-1 text-forest/65">{siteConfig.businessAddress}</dd>
+                )}
               </div>
             </dl>
             <p className="mt-8 border-l-2 border-gold pl-4 text-sm leading-7 text-forest/65">
