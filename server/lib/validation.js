@@ -12,7 +12,12 @@ export const contactSchema = z
   .object({
     name: z.string().trim().min(2).max(120),
     email: normalizedEmail,
-    subject: z.string().trim().min(2).max(160),
+    subject: z
+      .string()
+      .trim()
+      .min(2)
+      .max(160)
+      .refine((value) => !/[\r\n]/.test(value), "Invalid subject"),
     orderNumber: z.string().trim().max(80).optional().default(""),
     message: z.string().trim().min(10).max(4000),
     consent: z.literal(true),

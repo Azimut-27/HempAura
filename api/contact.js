@@ -1,6 +1,8 @@
 import {
   ContactAcknowledgementEmail,
+  ContactAcknowledgementText,
   ContactNotificationEmail,
+  ContactNotificationText,
 } from "../server/emails/templates.js";
 import { serverConfig } from "../server/config/serverConfig.js";
 import {
@@ -60,23 +62,43 @@ export default async function handler(request, response) {
         to: serverConfig.contactToEmail,
         subject: `HempAura kontakt: ${parsed.data.subject}`,
         html: ContactNotificationEmail(emailData),
-        headers: { "Reply-To": parsed.data.email },
+        text: ContactNotificationText(emailData),
+        replyTo: parsed.data.email,
+        tags: [
+          { name: "category", value: "contact_internal" },
+          { name: "submission_id", value: submission.id },
+        ],
+        idempotencyKey: `contact-internal/${submission.id}`,
       }),
       sendEmail({
         to: parsed.data.email,
         subject: "Prejeli smo tvoje sporočilo | HempAura",
         html: ContactAcknowledgementEmail(emailData),
+        text: ContactAcknowledgementText(emailData),
+        replyTo: serverConfig.supportEmail,
+        tags: [
+          { name: "category", value: "contact_ack" },
+          { name: "submission_id", value: submission.id },
+        ],
+        idempotencyKey: `contact-ack/${submission.id}`,
       }),
     ]);
 
-    const delivered =
+    const queued =
       internal.status === "fulfilled" && acknowledgement.status === "fulfilled";
     await database.updateContactSubmission(submission.id, {
-      status: delivered ? "emails_sent" : "email_retry_required",
+      status: queued ? "emails_queued" : "email_retry_required",
+      internal_email_id: internal.status === "fulfilled" ? internal.value?.id : null,
+      acknowledgement_email_id:
+        acknowledgement.status === "fulfilled" ? acknowledgement.value?.id : null,
+      internal_email_status: internal.status === "fulfilled" ? "sent" : "failed",
+      acknowledgement_email_status:
+        acknowledgement.status === "fulfilled" ? "sent" : "failed",
+      last_email_event_at: new Date().toISOString(),
     });
 
     sendJson(response, 200, {
-      message: delivered
+      message: queued
         ? "Sporočilo je prejeto. Potrdilo smo poslali na tvoj e-poštni naslov."
         : "Sporočilo je varno shranjeno. E-poštno potrdilo trenutno zamuja.",
     });

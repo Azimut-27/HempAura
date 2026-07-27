@@ -22,6 +22,25 @@ export const database = {
     );
   },
 
+  async getContactSubmissionEmailStatus(id) {
+    const result = await getSupabaseAdmin()
+      .from("contact_submissions")
+      .select("id,internal_email_status,acknowledgement_email_status")
+      .eq("id", id)
+      .maybeSingle();
+    return assertResult(result, "Get contact email status");
+  },
+
+  async claimEmailEvent(values) {
+    const result = await getSupabaseAdmin()
+      .from("email_events")
+      .insert(values)
+      .select("id")
+      .single();
+    if (result.error?.code === "23505") return null;
+    return assertResult(result, "Claim email event");
+  },
+
   async getNewsletterSubscriber(email) {
     const result = await getSupabaseAdmin()
       .from("newsletter_subscribers")

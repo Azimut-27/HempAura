@@ -34,6 +34,12 @@
 - Confirm honeypot and rate limits.
 - Confirm database storage, internal notification, and customer acknowledgement.
 - Test Resend failure and confirm the submission remains stored for retry.
+- Confirm the internal contact notification reaches `stakingforge@gmail.com`.
+- Confirm Reply in Gmail targets the customer's submitted address.
+- Confirm the customer acknowledgement replies to `stakingforge@gmail.com`.
+- Confirm signed Resend delivery events populate `email_events`.
+- Replay one Resend webhook and confirm no duplicate event row is created.
+- Test a bounce and confirm the contact submission becomes `email_attention_required`.
 - Test newsletter explicit consent, duplicate pending, duplicate confirmed, expiry,
   confirmation, and unsubscribe.
 

@@ -49,6 +49,32 @@ export function ContactAcknowledgementEmail(data) {
   );
 }
 
+export function ContactNotificationText(data) {
+  return [
+    "HempAura — novo kontaktno sporočilo",
+    "",
+    `Čas: ${data.submittedAt}`,
+    `Ime: ${data.name}`,
+    `E-pošta: ${data.email}`,
+    `Naročilo: ${data.orderNumber || "ni navedeno"}`,
+    `Zadeva: ${data.subject}`,
+    "",
+    data.message,
+  ].join("\n");
+}
+
+export function ContactAcknowledgementText(data) {
+  return [
+    `Hvala, ${data.name}. Tvoje sporočilo smo prejeli.`,
+    "",
+    `Zadeva: ${data.subject}`,
+    `Predviden čas odgovora: ${data.responseTime}.`,
+    `Za dodatno pomoč piši na ${data.supportEmail}.`,
+    "",
+    "Ekipa ne daje zdravstvenih nasvetov. Za zdravstvena vprašanja se obrni na ustreznega strokovnjaka.",
+  ].join("\n");
+}
+
 export function NewsletterConfirmationEmail({ confirmationUrl }) {
   return layout(
     "Potrdi prijavo na HempAura novice",

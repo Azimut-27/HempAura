@@ -23,7 +23,7 @@ export const siteConfig = {
   taxNumber: import.meta.env.VITE_TAX_NUMBER || "",
   vatId: import.meta.env.VITE_VAT_ID || "",
   domain: import.meta.env.VITE_SITE_URL || "http://localhost:5173",
-  supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || "",
+  supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || "stakingforge@gmail.com",
   supportPhone: import.meta.env.VITE_SUPPORT_PHONE || "",
   responseTime: import.meta.env.VITE_RESPONSE_TIME || "v dveh delovnih dneh",
   returnAddress: import.meta.env.VITE_RETURN_ADDRESS || "",
