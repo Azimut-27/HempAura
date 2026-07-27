@@ -67,6 +67,31 @@ describe("public API validation", () => {
     expect(response.statusCode).toBe(400);
   });
 
+  it("contact endpoint sends email without Supabase configuration", async () => {
+    const sendEmail = vi.fn().mockResolvedValue({ id: "email_test" });
+    vi.doMock("../server/services/email.js", () => ({ sendEmail }));
+    const { default: handler } = await import("../api/contact.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "http://localhost:5173" },
+        body: {
+          name: "Martin Jancar",
+          email: "martin@example.com",
+          subject: "Vprasanje",
+          message: "Zanima me vec informacij o izdelku.",
+          consent: true,
+          website: "",
+        },
+        socket: { remoteAddress: "127.0.0.9" },
+      },
+      response
+    );
+    expect(response.statusCode).toBe(200);
+    expect(sendEmail).toHaveBeenCalledTimes(2);
+  });
+
   it("newsletter endpoint returns an already-subscribed state", async () => {
     vi.doMock("../api/repositories/database.js", () => ({
       database: {

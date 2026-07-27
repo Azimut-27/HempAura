@@ -12,15 +12,14 @@ owned and verified by the merchant.
 
 1. The customer submits `/contact`.
 2. The server validates the same origin, rate limit, honeypot and consent.
-3. The submission is stored in Supabase.
-4. Resend queues:
+3. Resend queues:
    - an internal notification to `stakingforge@gmail.com`, with the customer as
      `replyTo`;
    - an acknowledgement to the customer, with `stakingforge@gmail.com` as
      `replyTo`.
-5. Each send uses a submission-specific idempotency key and Resend tags.
-6. Signed Resend webhooks update delivery, delay, bounce, complaint, suppression
-   or failure status in Supabase.
+4. Each send uses a contact-specific idempotency key and Resend tags.
+5. Contact does not require Supabase. Signed delivery webhooks can be enabled
+   later if message persistence is added.
 
 ## 1. Verify a sending domain
 
@@ -36,20 +35,9 @@ Do not set `RESEND_FROM_EMAIL` to a Gmail address. A production example is:
 
 `HempAura <noreply@updates.example.si>`
 
-## 2. Run Supabase migrations
+## 2. Configure Vercel
 
-Run these in order:
-
-1. `supabase/migrations/202607160001_initial_schema.sql`
-2. `supabase/migrations/202607270001_resend_contact_infrastructure.sql`
-
-The second migration adds Resend message IDs and delivery states to
-`contact_submissions`, plus the idempotent `email_events` audit table. RLS remains
-enabled and no browser-facing policy is created.
-
-## 3. Configure Vercel
-
-Add the following Production and Preview environment variables:
+Add the following Production and Preview environment variables for contact:
 
 ```text
 VITE_SUPPORT_EMAIL=stakingforge@gmail.com
@@ -61,12 +49,13 @@ RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxx
 RESPONSE_TIME=v dveh delovnih dneh
 ```
 
-Also configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. Never prefix the
-Resend key, webhook secret, or Supabase service-role key with `VITE_`.
+Never prefix the Resend key or webhook secret with `VITE_`. `SUPABASE_URL` and
+`SUPABASE_SERVICE_ROLE_KEY` are not required for the contact form.
 
-## 4. Configure the Resend webhook
+## 3. Optional Resend webhook
 
-After the production domain is live, add this endpoint in Resend:
+The contact form can work without a webhook. Add this endpoint only after
+Supabase persistence is enabled:
 
 `https://YOUR_DOMAIN/api/webhooks/resend`
 
@@ -84,25 +73,19 @@ Copy the webhook signing secret into `RESEND_WEBHOOK_SECRET`. The endpoint reads
 the raw request body and verifies the Svix signature before processing. Duplicate
 webhook deliveries are ignored using the unique `svix-id`.
 
-## 5. Production test
+## 4. Production test
 
 1. Submit the contact form with a Gmail test address.
-2. Confirm a row is created in `contact_submissions`.
-3. Confirm `stakingforge@gmail.com` receives the internal notification.
-4. Use Gmail's **Reply** action and verify the recipient is the customer.
-5. Confirm the customer receives the acknowledgement.
-6. Reply to the acknowledgement and verify it reaches `stakingforge@gmail.com`.
-7. Confirm `internal_email_id` and `acknowledgement_email_id` are populated.
-8. Confirm signed webhook rows appear in `email_events`.
-9. Confirm the channel states progress from `sent` to `delivered`.
-10. Use a Resend test/bounce address and confirm the submission changes to
-    `email_attention_required`.
+2. Confirm `stakingforge@gmail.com` receives the internal notification.
+3. Use Gmail's **Reply** action and verify the recipient is the customer.
+4. Confirm the customer receives the acknowledgement.
+5. Reply to the acknowledgement and verify it reaches `stakingforge@gmail.com`.
 
-## 6. Operational notes
+## 5. Operational notes
 
 - Resend accepting a send request means the message was queued, not delivered.
-  Delivery is confirmed only by `email.delivered`.
-- Monitor bounces, complaints and suppressions in both Resend and Supabase.
+  Delivery is confirmed only by `email.delivered` when a webhook is configured.
+- Monitor bounces, complaints and suppressions in Resend.
 - Contact content and email addresses are personal data. Limit dashboard access,
   define retention and support GDPR requests.
 - Do not enable newsletter or order mail until their reply-to, unsubscribe,

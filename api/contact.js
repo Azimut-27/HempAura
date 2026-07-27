@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   ContactAcknowledgementEmail,
   ContactAcknowledgementText,
@@ -14,7 +15,6 @@ import {
 } from "../server/lib/http.js";
 import { rateLimit } from "../server/lib/rateLimit.js";
 import { contactSchema } from "../server/lib/validation.js";
-import { database } from "../server/repositories/database.js";
 import { sendEmail } from "../server/services/email.js";
 
 export default async function handler(request, response) {
@@ -38,25 +38,16 @@ export default async function handler(request, response) {
     return;
   }
 
-  let submission;
+  const contactId = randomUUID();
+  const emailData = {
+    ...parsed.data,
+    contactId,
+    submittedAt: new Date().toLocaleString("sl-SI", { timeZone: "Europe/Ljubljana" }),
+    responseTime: serverConfig.responseTime,
+    supportEmail: serverConfig.supportEmail,
+  };
+
   try {
-    submission = await database.createContactSubmission({
-      name: parsed.data.name,
-      email: parsed.data.email,
-      subject: parsed.data.subject,
-      message: parsed.data.message,
-      order_number: parsed.data.orderNumber || null,
-      consent: true,
-      status: "received",
-    });
-
-    const emailData = {
-      ...parsed.data,
-      submittedAt: new Date().toLocaleString("sl-SI", { timeZone: "Europe/Ljubljana" }),
-      responseTime: serverConfig.responseTime,
-      supportEmail: serverConfig.supportEmail,
-    };
-
     const [internal, acknowledgement] = await Promise.allSettled([
       sendEmail({
         to: serverConfig.contactToEmail,
@@ -66,9 +57,9 @@ export default async function handler(request, response) {
         replyTo: parsed.data.email,
         tags: [
           { name: "category", value: "contact_internal" },
-          { name: "submission_id", value: submission.id },
+          { name: "contact_id", value: contactId },
         ],
-        idempotencyKey: `contact-internal/${submission.id}`,
+        idempotencyKey: `contact-internal/${contactId}`,
       }),
       sendEmail({
         to: parsed.data.email,
@@ -78,36 +69,26 @@ export default async function handler(request, response) {
         replyTo: serverConfig.supportEmail,
         tags: [
           { name: "category", value: "contact_ack" },
-          { name: "submission_id", value: submission.id },
+          { name: "contact_id", value: contactId },
         ],
-        idempotencyKey: `contact-ack/${submission.id}`,
+        idempotencyKey: `contact-ack/${contactId}`,
       }),
     ]);
 
-    const queued =
-      internal.status === "fulfilled" && acknowledgement.status === "fulfilled";
-    await database.updateContactSubmission(submission.id, {
-      status: queued ? "emails_queued" : "email_retry_required",
-      internal_email_id: internal.status === "fulfilled" ? internal.value?.id : null,
-      acknowledgement_email_id:
-        acknowledgement.status === "fulfilled" ? acknowledgement.value?.id : null,
-      internal_email_status: internal.status === "fulfilled" ? "sent" : "failed",
-      acknowledgement_email_status:
-        acknowledgement.status === "fulfilled" ? "sent" : "failed",
-      last_email_event_at: new Date().toISOString(),
-    });
+    if (internal.status === "rejected") {
+      throw internal.reason;
+    }
 
     sendJson(response, 200, {
-      message: queued
-        ? "Sporočilo je prejeto. Potrdilo smo poslali na tvoj e-poštni naslov."
-        : "Sporočilo je varno shranjeno. E-poštno potrdilo trenutno zamuja.",
+      message:
+        acknowledgement.status === "fulfilled"
+          ? "Sporočilo je prejeto. Potrdilo smo poslali na tvoj e-poštni naslov."
+          : "Sporočilo je prejeto. E-poštno potrdilo trenutno zamuja.",
     });
   } catch (error) {
     safeError(error, "contact");
     sendJson(response, 500, {
-      message: submission
-        ? "Sporočilo je shranjeno, vendar obvestila trenutno ni bilo mogoče poslati."
-        : "Sporočila trenutno ni mogoče poslati. Poskusi znova pozneje.",
+      message: "Sporočila trenutno ni mogoče poslati. Poskusi znova pozneje.",
     });
   }
 }

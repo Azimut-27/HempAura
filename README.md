@@ -150,20 +150,22 @@ Tables:
 1. Create a Resend account and verify a domain or sending subdomain.
 2. Create a sender such as `HempAura <noreply@updates.your-domain.si>`. A Gmail
    address cannot be used as the Resend `from` address.
-3. Run all Supabase migrations, including
-   `202607270001_resend_contact_infrastructure.sql`.
-4. Add `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CONTACT_TO_EMAIL`,
+3. Add `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `CONTACT_TO_EMAIL`,
    `SUPPORT_EMAIL`, and `RESEND_WEBHOOK_SECRET` to Vercel. The configured contact
    and support inbox is `stakingforge@gmail.com`.
-5. Add a Resend webhook for
+4. The contact form does not require Supabase. It sends the internal message and
+   customer acknowledgement directly through Resend.
+5. Optionally add a Resend webhook for
    `https://YOUR_DOMAIN/api/webhooks/resend` and subscribe to `email.sent`,
    `email.delivered`, `email.delivery_delayed`, `email.failed`, `email.bounced`,
-   `email.complained`, and `email.suppressed`.
+   `email.complained`, and `email.suppressed` after Supabase persistence is
+   enabled.
 6. Set an honest `RESPONSE_TIME`.
 7. Test internal contact email, customer acknowledgement, reply-to behavior,
    newsletter confirmation, paid-order confirmation, and owner new-order
    notification.
-8. Monitor `contact_submissions`, `email_events`, and `payment_events` for
+8. Monitor Resend for contact bounces. When Supabase persistence is enabled,
+   monitor `contact_submissions`, `email_events`, and `payment_events` for
    `email_retry_required` or `email_attention_required`. Add a scheduled retry
    worker before meaningful volume.
 
