@@ -26,6 +26,32 @@ beforeEach(() => {
 });
 
 describe("public API validation", () => {
+  it("accepts same-origin Vercel requests when site URL is not configured", async () => {
+    const { validateSameOrigin } = await import("../server/lib/http.js");
+    expect(
+      validateSameOrigin({
+        headers: {
+          origin: "https://hemp-aura.vercel.app",
+          host: "hemp-aura.vercel.app",
+          "x-forwarded-proto": "https",
+        },
+      })
+    ).toBe(true);
+  });
+
+  it("rejects cross-origin requests", async () => {
+    const { validateSameOrigin } = await import("../server/lib/http.js");
+    expect(
+      validateSameOrigin({
+        headers: {
+          origin: "https://attacker.example",
+          host: "hemp-aura.vercel.app",
+          "x-forwarded-proto": "https",
+        },
+      })
+    ).toBe(false);
+  });
+
   it("contact endpoint rejects invalid submissions", async () => {
     const { default: handler } = await import("../api/contact.js");
     const response = mockResponse();

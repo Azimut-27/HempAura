@@ -17,7 +17,14 @@ export function validateSameOrigin(request) {
   const origin = request.headers.origin;
   if (!origin) return true;
   try {
-    return new URL(origin).origin === new URL(serverConfig.siteUrl).origin;
+    const requestOrigin = new URL(origin).origin;
+    const allowedOrigins = new Set([new URL(serverConfig.siteUrl).origin]);
+    const host = request.headers["x-forwarded-host"] || request.headers.host;
+    if (host) {
+      const protocol = request.headers["x-forwarded-proto"] || "https";
+      allowedOrigins.add(`${protocol}://${host}`);
+    }
+    return allowedOrigins.has(requestOrigin);
   } catch {
     return false;
   }
