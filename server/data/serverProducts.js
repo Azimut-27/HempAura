@@ -1,8 +1,8 @@
 export const serverProducts = [
   {
     id: "hemptouch-cbd-gold-500",
-    name: "Hemptouch CBD kapljice Gold 5 %",
-    sku: "HT-GOLD-500-10ML",
+    name: "HempAura CBD kapljice 5% Polni spekter",
+    sku: "HA-CBD-FS-500-10ML",
     active: true,
     priceCents: 3100,
     currency: "EUR",
