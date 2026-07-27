@@ -77,8 +77,8 @@ export default function HomePage() {
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest via-forest/90 to-transparent px-5 pb-5 pt-20 text-porcelain sm:px-7 sm:pb-7 sm:pt-24">
               <p className="max-w-xl border-l-2 border-gold pl-4 text-sm font-semibold leading-6 text-porcelain/95">
-                Končne informacije o izdelkih bodo objavljene po preverjanju
-                deklaracij, cen, zaloge in dokumentacije.
+                Preverjene sestavine, količine učinkovin, jasna opozorila in
+                transparentna cena pri vsakem izdelku.
               </p>
             </div>
           </div>
@@ -102,11 +102,11 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <p className="text-xs font-bold uppercase text-clay">Kolekcija</p>
               <h2 className="mt-3 font-display text-4xl font-semibold text-forest sm:text-5xl">
-                Izdelki v pripravi
+                Izbrana kolekcija
               </h2>
               <p className="mt-4 leading-7 text-forest/68">
-                Kartice so pripravljene za resnične fotografije in potrjene
-                komercialne podatke. Prodaja ni omogočena, dokler ti podatki manjkajo.
+                Tri premišljeno izbrane konopljine formulacije z resničnimi
+                fotografijami, jasno sestavo in odgovorno predstavitvijo.
               </p>
             </div>
             <Link className="text-sm font-bold text-forest underline" to="/products">

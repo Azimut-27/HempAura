@@ -46,7 +46,13 @@ export default function ProductCard({ product }) {
           {product.shortDescription}
         </p>
         <p className="mt-4 text-xs font-bold uppercase text-forest/55">
-          {available ? "Na zalogi" : "Prodaja še ni odprta"}
+          {available
+            ? product.stock === 1
+              ? "Na zalogi · zadnji kos"
+              : `Na zalogi · ${product.stock} kosov`
+            : product.status === "active"
+              ? "Ni na zalogi"
+              : "Prodaja še ni odprta"}
         </p>
         <div className="mt-5 grid grid-cols-2 gap-2">
           <button

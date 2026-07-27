@@ -23,11 +23,14 @@ export class StripePaymentProvider extends PaymentProvider {
         price_data: {
           currency: "eur",
           unit_amount: item.unitPriceCents,
+          tax_behavior: item.taxBehavior,
           product_data: {
             name: item.name,
+            tax_code: item.taxCode,
             metadata: {
               product_id: item.productId,
               sku: item.sku,
+              vat_rate_percent: String(item.taxRatePercent),
             },
           },
         },

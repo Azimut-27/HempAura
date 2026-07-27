@@ -6,25 +6,28 @@ describe("cart", () => {
     expect(
       sanitizeCartItems([
         { productId: "missing", quantity: 2 },
-        { productId: "cbd-oil-5", quantity: 2 },
       ])
     ).toEqual([]);
   });
 
-  it("does not add products that are not active", () => {
+  it("adds active products and caps quantity at available stock", () => {
     const state = cartReducer(initialCartState, {
       type: "add",
-      productId: "cbd-oil-5",
-      quantity: 1,
+      productId: "hemptouch-cbd-gold-500",
+      quantity: 4,
     });
-    expect(state.items).toEqual([]);
+    expect(state.items).toEqual([
+      { productId: "hemptouch-cbd-gold-500", quantity: 1 },
+    ]);
   });
 
   it("calculates totals from approved catalogue values only", () => {
-    expect(getCartTotals([{ productId: "missing", quantity: 99 }])).toEqual({
-      subtotalCents: 0,
+    expect(
+      getCartTotals([{ productId: "hemptouch-cbd-gold-500", quantity: 1 }])
+    ).toEqual({
+      subtotalCents: 3100,
       shippingCents: null,
-      totalCents: 0,
+      totalCents: 3100,
     });
   });
 });

@@ -17,8 +17,8 @@ export default function ProductsPage() {
             HempAura izdelki
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-forest/70">
-            Vsi izdelki so trenutno označeni kot v pripravi, dokler lastnik ne
-            potrdi cen, zaloge, deklaracij, opozoril in prodajnih pogojev.
+            Izbrani izdelki Hemptouch in Canalogy z jasno navedenimi sestavinami,
+            količinami učinkovin, opozorili, cenami in razpoložljivostjo.
           </p>
           {activeProducts.length ? (
             <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">

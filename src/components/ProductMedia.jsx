@@ -10,7 +10,7 @@ export default function ProductMedia({ product, className = "" }) {
         width={image.width}
         height={image.height}
         loading="lazy"
-        className={`h-full w-full object-cover ${className}`}
+        className={`h-full w-full bg-white object-contain p-4 sm:p-6 ${className}`}
       />
     );
   }

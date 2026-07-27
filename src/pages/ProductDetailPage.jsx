@@ -40,7 +40,10 @@ export default function ProductDetailPage() {
       name: product.name,
       description: product.shortDescription,
       sku: product.sku,
-      brand: { "@type": "Brand", name: "HempAura" },
+      brand: { "@type": "Brand", name: product.brand || "HempAura" },
+      image: product.images?.[0]?.src
+        ? new URL(product.images[0].src, window.location.origin).toString()
+        : undefined,
     };
     if (Number.isInteger(product.priceCents)) {
       data.offers = {
@@ -65,6 +68,34 @@ export default function ProductDetailPage() {
     Number.isInteger(product.priceCents);
   const details = formatProductDetails(product);
   const related = products.filter((item) => item.id !== product.id).slice(0, 2);
+  const facts = [
+    ["SKU", product.sku],
+    ["Status", product.status === "active" ? "Aktiven" : "Neaktiven"],
+    ["Zaloga", product.stock === 1 ? "1 kos" : `${product.stock} kosov`],
+    [
+      "Velikost",
+      product.sizeMl
+        ? `${product.sizeMl} ml`
+        : product.sizeGrams
+          ? `${product.sizeGrams} g`
+          : null,
+    ],
+    ["CBD", product.cbdAmountLabel],
+    [
+      "CBG",
+      product.cbgAmountMg
+        ? `${product.cbgAmountMg} mg (${product.cbgPercentage} %)`
+        : null,
+    ],
+    ["THC", product.metadata?.thcContent],
+    ["Transportna teža", `${product.shippingWeightGrams} g`],
+    [
+      "Davek",
+      `${product.taxRatePercent} % DDV · ${
+        product.taxBehavior === "inclusive" ? "vključen v ceno" : "dodan ob plačilu"
+      }`,
+    ],
+  ].filter(([, value]) => value);
 
   return (
     <>
@@ -101,7 +132,11 @@ export default function ProductDetailPage() {
                 {siteConfig.taxLabel}. Dostava se izračuna pred plačilom.
               </p>
               <p className="mt-2 text-sm font-bold text-clay">
-                {available ? "Na zalogi" : "Stanje: prodaja še ni odprta"}
+                {product.stock > 0
+                  ? product.stock === 1
+                    ? "Na zalogi · zadnji kos"
+                    : `Na zalogi · ${product.stock} kosov`
+                  : "Ni na zalogi"}
               </p>
               <p className="mt-6 leading-8 text-forest/72">{product.description}</p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -138,6 +173,29 @@ export default function ProductDetailPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-y border-forest/10 bg-porcelain py-10">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <h2 className="font-display text-3xl font-semibold text-forest">
+            Podatki o izdelku
+          </h2>
+          <dl className="mt-6 grid gap-px overflow-hidden border border-forest/10 bg-forest/10 sm:grid-cols-2 lg:grid-cols-3">
+            {facts.map(([label, value]) => (
+              <div key={label} className="bg-white p-5">
+                <dt className="text-xs font-bold uppercase tracking-wide text-forest/55">
+                  {label}
+                </dt>
+                <dd className="mt-2 text-sm font-semibold text-forest">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          {product.metadata?.shippingWeightNote && (
+            <p className="mt-4 text-xs leading-6 text-forest/55">
+              {product.metadata.shippingWeightNote}
+            </p>
+          )}
         </div>
       </section>
 

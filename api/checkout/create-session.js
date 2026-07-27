@@ -55,6 +55,9 @@ export default async function handler(request, response) {
         sku: product.sku,
         quantity: line.quantity,
         unitPriceCents: product.priceCents,
+        taxCode: product.taxCode,
+        taxRatePercent: product.taxRatePercent,
+        taxBehavior: product.taxBehavior,
       };
     });
 
