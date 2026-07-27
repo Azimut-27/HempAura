@@ -31,7 +31,8 @@ In Resend:
 4. Wait until the domain status is **Verified**.
 5. Add DMARC after SPF and DKIM are working.
 
-Do not set `RESEND_FROM_EMAIL` to a Gmail address. A production example is:
+Do not set `RESEND_FROM_EMAIL` or `CONTACT_FROM_EMAIL` to a Gmail address. A
+production example is:
 
 `HempAura <noreply@updates.example.si>`
 
@@ -42,9 +43,11 @@ Add the following Production and Preview environment variables for contact:
 ```text
 VITE_SUPPORT_EMAIL=stakingforge@gmail.com
 SUPPORT_EMAIL=stakingforge@gmail.com
+CONTACT_REPLY_TO_EMAIL=stakingforge@gmail.com
 CONTACT_TO_EMAIL=stakingforge@gmail.com
 RESEND_API_KEY=re_xxxxxxxxx
 RESEND_FROM_EMAIL=HempAura <noreply@updates.example.si>
+CONTACT_FROM_EMAIL=HempAura <noreply@updates.example.si>
 RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxx
 RESPONSE_TIME=v dveh delovnih dneh
 ```

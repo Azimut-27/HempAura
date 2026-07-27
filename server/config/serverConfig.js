@@ -5,18 +5,26 @@ function integerEnv(name, fallback = null) {
   return Number.isInteger(parsed) ? parsed : fallback;
 }
 
+function stringEnv(...names) {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+    if (value) return value;
+  }
+  return "";
+}
+
 const legalCommerceConfigurationComplete = [
-  "LEGAL_ENTITY_NAME",
-  "BUSINESS_ADDRESS",
-  "REGISTRATION_NUMBER",
-  "TAX_NUMBER",
-  "RETURN_ADDRESS",
-  "DELIVERY_PARTNER",
-  "SUPPORT_EMAIL",
-  "SHIPPING_SI_STANDARD_CENTS",
-  "SHIPPING_SI_MIN_DAYS",
-  "SHIPPING_SI_MAX_DAYS",
-].every((name) => process.env[name]?.trim());
+  ["LEGAL_ENTITY_NAME"],
+  ["BUSINESS_ADDRESS"],
+  ["REGISTRATION_NUMBER"],
+  ["TAX_NUMBER"],
+  ["RETURN_ADDRESS"],
+  ["DELIVERY_PARTNER"],
+  ["SUPPORT_EMAIL", "CONTACT_REPLY_TO_EMAIL", "CONTACT_TO_EMAIL"],
+  ["SHIPPING_SI_STANDARD_CENTS"],
+  ["SHIPPING_SI_MIN_DAYS"],
+  ["SHIPPING_SI_MAX_DAYS"],
+].every((names) => names.some((name) => process.env[name]?.trim()));
 
 export const serverConfig = {
   siteUrl: process.env.VITE_SITE_URL || "http://localhost:5173",
@@ -27,10 +35,11 @@ export const serverConfig = {
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
   resendApiKey: process.env.RESEND_API_KEY || "",
-  resendFromEmail: process.env.RESEND_FROM_EMAIL || "",
+  resendFromEmail: stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL"),
   resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET || "",
-  contactToEmail: process.env.CONTACT_TO_EMAIL || "stakingforge@gmail.com",
-  supportEmail: process.env.SUPPORT_EMAIL || "stakingforge@gmail.com",
+  contactToEmail: stringEnv("CONTACT_TO_EMAIL") || "stakingforge@gmail.com",
+  supportEmail:
+    stringEnv("SUPPORT_EMAIL", "CONTACT_REPLY_TO_EMAIL", "VITE_SUPPORT_EMAIL", "CONTACT_TO_EMAIL") || "stakingforge@gmail.com",
   legalBusinessName: process.env.LEGAL_ENTITY_NAME || "",
   businessAddress: process.env.BUSINESS_ADDRESS || "",
   registrationNumber: process.env.REGISTRATION_NUMBER || "",
