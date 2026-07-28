@@ -16,7 +16,6 @@ export class StripePaymentProvider extends PaymentProvider {
       customer_creation: "always",
       customer_email: orderDraft.customerEmail || undefined,
       billing_address_collection: "required",
-      consent_collection: { terms_of_service: "required" },
       shipping_address_collection: { allowed_countries: ["SI"] },
       line_items: orderDraft.items.map((item) => ({
         quantity: item.quantity,
@@ -26,7 +25,9 @@ export class StripePaymentProvider extends PaymentProvider {
           tax_behavior: item.taxBehavior,
           product_data: {
             name: item.name,
-            tax_code: item.taxCode,
+            ...(serverConfig.taxCalculationMode === "stripe" && item.taxCode
+              ? { tax_code: item.taxCode }
+              : {}),
             metadata: {
               product_id: item.productId,
               sku: item.sku,
