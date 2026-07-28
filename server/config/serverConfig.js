@@ -20,8 +20,13 @@ function stringEnv(...names) {
 }
 
 function supabaseUrlEnv() {
-  const value = stringEnv("SUPABASE_URL");
+  let value = stringEnv("SUPABASE_URL")
+    .replace(/^SUPABASE_URL\s*=\s*/i, "")
+    .replace(/^['"]|['"]$/g, "")
+    .trim();
   if (!value) return "";
+  const match = value.match(/https:\/\/[^/\s"']+\.supabase\.co/i);
+  if (match) return match[0];
   try {
     const url = new URL(value);
     return `${url.origin}`;
