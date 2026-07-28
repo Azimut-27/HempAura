@@ -18,6 +18,19 @@ function layout(title, body) {
 const p = (value) =>
   `<p style="font-size:15px;line-height:1.7">${escapeHtml(value)}</p>`;
 
+function orderItemsList(items = []) {
+  if (!items.length) return "";
+  const rows = items
+    .map(
+      (item) =>
+        `<li style="margin:0 0 8px">${escapeHtml(item.name)} × ${escapeHtml(
+          String(item.quantity)
+        )}</li>`
+    )
+    .join("");
+  return `<ul style="font-size:15px;line-height:1.6;padding-left:20px">${rows}</ul>`;
+}
+
 export function ContactNotificationEmail(data) {
   const reply = `mailto:${encodeURIComponent(data.email)}?subject=${encodeURIComponent(
     `Re: ${data.subject}`
@@ -86,21 +99,44 @@ export function NewsletterConfirmationEmail({ confirmationUrl }) {
   );
 }
 
-export function OrderConfirmationEmail({ name, orderNumber, total }) {
+export function OrderConfirmationEmail({
+  name,
+  orderNumber,
+  items,
+  shipping,
+  total,
+  supportEmail,
+}) {
   return layout(
     "Plačilo je potrjeno",
     [
-      p(`Pozdravljen/-a ${name || ""}, plačilo za naročilo ${orderNumber} je potrjeno.`),
+      p(`Pozdravljen/-a${name ? ` ${name}` : ""}, hvala za naročilo.`),
+      p(`Številka naročila: ${orderNumber}`),
+      orderItemsList(items),
+      p(`Dostava: ${shipping}.`),
       p(`Skupaj: ${total}.`),
-      p("O nadaljnjem stanju izpolnitve naročila boš obveščen/-a ločeno."),
+      p("Ko bo naročilo odpremljeno, boš prejel/-a novo obvestilo."),
+      p(`Za pomoč piši na ${supportEmail}.`),
     ].join("")
   );
 }
 
-export function NewOrderNotificationEmail({ orderNumber, customerEmail, total }) {
+export function NewOrderNotificationEmail({
+  orderNumber,
+  customerEmail,
+  items,
+  shipping,
+  total,
+}) {
   return layout(
     "Novo plačano naročilo",
-    [p(`Naročilo: ${orderNumber}`), p(`Stranka: ${customerEmail}`), p(`Skupaj: ${total}`)].join("")
+    [
+      p(`Naročilo: ${orderNumber}`),
+      p(`Stranka: ${customerEmail}`),
+      orderItemsList(items),
+      p(`Dostava: ${shipping}.`),
+      p(`Skupaj: ${total}.`),
+    ].join("")
   );
 }
 

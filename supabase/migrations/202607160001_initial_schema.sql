@@ -197,7 +197,27 @@ alter table public.newsletter_subscribers enable row level security;
 
 insert into public.products (id, slug, name, active)
 values
-  ('cbd-oil-5', 'cbd-olje-5', 'CBD olje 5%', false),
-  ('cbd-oil-10', 'cbd-olje-10', 'CBD olje 10%', false),
-  ('cbd-balm', 'cbd-balzam', 'CBD balzam', false)
-on conflict (id) do nothing;
+  (
+    'hempaura-cbd-kapljice-5',
+    'hempaura-cbd-kapljice-5',
+    'HempAura CBD kapljice 5%',
+    true
+  ),
+  (
+    'hempaura-cbg-cvetovi-citrin-15',
+    'hempaura-cbg-cvetovi-citrin-15-5g',
+    'HempAura CBG cvetovi Citrin 15 %',
+    true
+  ),
+  (
+    'hempaura-cbd-krema-sprostitev',
+    'hempaura-cbd-krema-za-sprostitev-50ml',
+    'HempAura CBD krema za sprostitev',
+    true
+  )
+on conflict (id) do update
+set
+  slug = excluded.slug,
+  name = excluded.name,
+  active = excluded.active,
+  updated_at = now();

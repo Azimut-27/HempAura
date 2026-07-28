@@ -7,7 +7,10 @@ import { getServerProduct } from "../../server/data/serverProducts.js";
 import { safeError, sendJson } from "../../server/lib/http.js";
 import { getPaymentProvider } from "../../server/payments/index.js";
 import { database } from "../../server/repositories/database.js";
-import { sendEmail } from "../../server/services/email.js";
+import {
+  isEmailConfigured,
+  sendEmail,
+} from "../../server/services/email.js";
 
 export const config = {
   api: {
@@ -20,6 +23,47 @@ const handledTypes = new Set([
   "checkout.session.async_payment_succeeded",
   "checkout.session.async_payment_failed",
 ]);
+
+async function deliverOrderEmail({
+  order,
+  kind,
+  recipient,
+  subject,
+  html,
+}) {
+  if (!recipient) {
+    throw new Error(`Missing recipient for ${kind}.`);
+  }
+
+  const delivery = await database.claimOrderEmailDelivery(
+    order.id,
+    kind,
+    recipient
+  );
+  if (!delivery) return { skipped: true };
+
+  try {
+    const email = await sendEmail({
+      to: recipient,
+      subject,
+      html,
+      idempotencyKey: `hempaura-${kind}-${order.id}`,
+    });
+    await database.updateOrderEmailDelivery(delivery.id, {
+      provider_email_id: email.id,
+      status: "sent",
+      sent_at: new Date().toISOString(),
+      last_error: null,
+    });
+    return { skipped: false, id: email.id };
+  } catch (error) {
+    await database.updateOrderEmailDelivery(delivery.id, {
+      status: "failed",
+      last_error: String(error?.message || "Email delivery failed.").slice(0, 500),
+    });
+    throw error;
+  }
+}
 
 export default async function handler(request, response) {
   if (request.method !== "POST") {
@@ -136,32 +180,53 @@ export default async function handler(request, response) {
 
     let eventStatus = "processed";
     if (paymentStatus === "paid") {
-      const total = new Intl.NumberFormat("sl-SI", {
-        style: "currency",
-        currency: payment.currency,
-      }).format(calculatedTotal / 100);
-      const emailResults = await Promise.allSettled([
-        sendEmail({
-          to: payment.customerEmail,
-          subject: `Potrditev naročila ${order.public_order_number} | HempAura`,
-          html: OrderConfirmationEmail({
-            name: payment.customerName,
-            orderNumber: order.public_order_number,
-            total,
+      if (!isEmailConfigured()) {
+        eventStatus = "email_configuration_required";
+      } else {
+        const total = new Intl.NumberFormat("sl-SI", {
+          style: "currency",
+          currency: payment.currency,
+        }).format(calculatedTotal / 100);
+        const shipping = new Intl.NumberFormat("sl-SI", {
+          style: "currency",
+          currency: payment.currency,
+        }).format(payment.shippingCents / 100);
+        const emailItems = orderItems.map((item) => ({
+          name: item.name_snapshot,
+          quantity: item.quantity,
+        }));
+        const emailResults = await Promise.allSettled([
+          deliverOrderEmail({
+            order,
+            kind: "customer_confirmation",
+            recipient: payment.customerEmail,
+            subject: `Potrditev naročila ${order.public_order_number} | HempAura`,
+            html: OrderConfirmationEmail({
+              name: payment.customerName,
+              orderNumber: order.public_order_number,
+              items: emailItems,
+              shipping,
+              total,
+              supportEmail: serverConfig.supportEmail,
+            }),
           }),
-        }),
-        sendEmail({
-          to: serverConfig.contactToEmail,
-          subject: `Novo plačano naročilo ${order.public_order_number}`,
-          html: NewOrderNotificationEmail({
-            orderNumber: order.public_order_number,
-            customerEmail: payment.customerEmail,
-            total,
+          deliverOrderEmail({
+            order,
+            kind: "owner_notification",
+            recipient: serverConfig.contactToEmail,
+            subject: `Novo plačano naročilo ${order.public_order_number}`,
+            html: NewOrderNotificationEmail({
+              orderNumber: order.public_order_number,
+              customerEmail: payment.customerEmail,
+              items: emailItems,
+              shipping,
+              total,
+            }),
           }),
-        }),
-      ]);
-      if (emailResults.some((result) => result.status === "rejected")) {
-        eventStatus = "email_retry_required";
+        ]);
+        if (emailResults.some((result) => result.status === "rejected")) {
+          eventStatus = "email_retry_required";
+        }
       }
     }
 
@@ -169,6 +234,12 @@ export default async function handler(request, response) {
       processed_at: new Date().toISOString(),
       status: eventStatus,
     });
+    if (eventStatus === "email_retry_required") {
+      sendJson(response, 500, {
+        message: "Naročilo je shranjeno, e-pošto pa bo sistem poskusil poslati znova.",
+      });
+      return;
+    }
     sendJson(response, 200, { received: true });
   } catch (error) {
     safeError(error, "stripe-webhook");
@@ -184,6 +255,8 @@ export default async function handler(request, response) {
     } catch (updateError) {
       safeError(updateError, "stripe-webhook-event-update");
     }
-    sendJson(response, 500, { message: "Dogodka trenutno ni bilo mogoče obdelati." });
+    sendJson(response, 500, {
+      message: "Dogodka trenutno ni bilo mogoče obdelati.",
+    });
   }
 }

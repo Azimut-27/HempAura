@@ -126,7 +126,7 @@ describe("public API validation", () => {
   });
 
   it("newsletter endpoint returns an already-subscribed state", async () => {
-    vi.doMock("../api/repositories/database.js", () => ({
+    vi.doMock("../server/repositories/database.js", () => ({
       database: {
         getNewsletterSubscriber: vi.fn().mockResolvedValue({
           email: "oseba@example.com",
@@ -163,7 +163,13 @@ describe("public API validation", () => {
         method: "POST",
         headers: { origin: "http://localhost:5173" },
         body: {
-          items: [{ productId: "cbd-oil-5", quantity: 1, priceCents: 1 }],
+          items: [
+            {
+              productId: "hempaura-cbd-kapljice-5",
+              quantity: 1,
+              priceCents: 1,
+            },
+          ],
         },
         socket: { remoteAddress: "127.0.0.3" },
       },
@@ -173,7 +179,7 @@ describe("public API validation", () => {
   });
 
   it("webhook rejects a bad signature", async () => {
-    vi.doMock("../api/payments/index.js", () => ({
+    vi.doMock("../server/payments/index.js", () => ({
       getPaymentProvider: () => ({
         verifyWebhook: vi.fn().mockRejectedValue(new Error("bad signature")),
       }),
@@ -184,8 +190,78 @@ describe("public API validation", () => {
     expect(response.statusCode).toBe(400);
   });
 
+  it("stores a paid order and sends idempotent customer and owner emails", async () => {
+    const event = {
+      id: "evt_paid",
+      type: "checkout.session.completed",
+      livemode: false,
+      data: { object: { id: "cs_test_paid" } },
+    };
+    const payment = {
+      sessionId: "cs_test_paid",
+      paymentId: "pi_test_paid",
+      paymentStatus: "paid",
+      customerEmail: "martin@example.com",
+      customerName: "Martin",
+      shippingAddress: { country: "SI" },
+      billingAddress: { country: "SI" },
+      currency: "EUR",
+      totalCents: 3490,
+      subtotalCents: 3100,
+      shippingCents: 390,
+      taxCents: 0,
+      orderReference: "HA-20260728-ABC123",
+      cart: [{ productId: "hempaura-cbd-kapljice-5", quantity: 1 }],
+    };
+    vi.doMock("../server/payments/index.js", () => ({
+      getPaymentProvider: () => ({
+        verifyWebhook: vi.fn().mockResolvedValue(event),
+        retrievePayment: vi.fn().mockResolvedValue(event.data.object),
+        normalizePaymentEvent: vi.fn().mockReturnValue(payment),
+      }),
+    }));
+    const database = {
+      claimPaymentEvent: vi.fn().mockResolvedValue({ id: "payment_event" }),
+      getOrderByProviderSession: vi.fn().mockResolvedValue(null),
+      createOrderWithItems: vi.fn().mockResolvedValue({
+        id: "3dbf0c82-376f-43e7-a469-cf5653a596a8",
+        public_order_number: payment.orderReference,
+      }),
+      claimOrderEmailDelivery: vi
+        .fn()
+        .mockImplementation((_orderId, kind) => ({ id: `delivery-${kind}` })),
+      updateOrderEmailDelivery: vi.fn().mockResolvedValue({}),
+      updatePaymentEvent: vi.fn().mockResolvedValue({}),
+    };
+    vi.doMock("../server/repositories/database.js", () => ({ database }));
+    const sendEmail = vi.fn().mockResolvedValue({ id: "email_test" });
+    vi.doMock("../server/services/email.js", () => ({
+      isEmailConfigured: () => true,
+      sendEmail,
+    }));
+
+    const { default: handler } = await import("../api/webhooks/stripe.js");
+    const response = mockResponse();
+    await handler({ method: "POST", headers: {} }, response);
+
+    expect(response.statusCode).toBe(200);
+    expect(database.createOrderWithItems).toHaveBeenCalledTimes(1);
+    expect(sendEmail).toHaveBeenCalledTimes(2);
+    expect(sendEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "martin@example.com",
+        idempotencyKey:
+          "hempaura-customer_confirmation-3dbf0c82-376f-43e7-a469-cf5653a596a8",
+      })
+    );
+    expect(database.updatePaymentEvent).toHaveBeenCalledWith("evt_paid", {
+      processed_at: expect.any(String),
+      status: "processed",
+    });
+  });
+
   it("duplicate payment events do not create a second order", async () => {
-    vi.doMock("../api/payments/index.js", () => ({
+    vi.doMock("../server/payments/index.js", () => ({
       getPaymentProvider: () => ({
         verifyWebhook: vi.fn().mockResolvedValue({
           id: "evt_duplicate",
@@ -195,7 +271,7 @@ describe("public API validation", () => {
         }),
       }),
     }));
-    vi.doMock("../api/repositories/database.js", () => ({
+    vi.doMock("../server/repositories/database.js", () => ({
       database: {
         claimPaymentEvent: vi.fn().mockResolvedValue(null),
       },

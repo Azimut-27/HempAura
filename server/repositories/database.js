@@ -99,7 +99,12 @@ export const database = {
         .eq("provider_event_id", event.provider_event_id)
         .single();
       const existing = assertResult(existingResult, "Get existing payment event");
-      if (existing.status !== "failed") return null;
+      const retryableStatuses = new Set([
+        "failed",
+        "email_retry_required",
+        "email_configuration_required",
+      ]);
+      if (!retryableStatuses.has(existing.status)) return null;
       const retryResult = await getSupabaseAdmin()
         .from("payment_events")
         .update({ status: "processing", processed_at: null })
@@ -151,5 +156,26 @@ export const database = {
       .select("*")
       .maybeSingle();
     return assertResult(result, "Update order payment status");
+  },
+
+  async claimOrderEmailDelivery(orderId, kind, recipient) {
+    const result = await getSupabaseAdmin()
+      .rpc("claim_order_email_delivery", {
+        p_order_id: orderId,
+        p_kind: kind,
+        p_recipient: recipient,
+      })
+      .maybeSingle();
+    return assertResult(result, "Claim order email delivery");
+  },
+
+  async updateOrderEmailDelivery(id, values) {
+    const result = await getSupabaseAdmin()
+      .from("order_email_deliveries")
+      .update(values)
+      .eq("id", id)
+      .select("id,status,provider_email_id")
+      .single();
+    return assertResult(result, "Update order email delivery");
   },
 };

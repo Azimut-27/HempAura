@@ -57,7 +57,10 @@ export const serverConfig = {
   returnAddress: process.env.RETURN_ADDRESS || "",
   deliveryPartner: process.env.DELIVERY_PARTNER || "",
   supabaseUrl: process.env.SUPABASE_URL || "",
-  supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+  supabaseServiceRoleKey: stringEnv(
+    "SUPABASE_SECRET_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY"
+  ),
   orderNumberPrefix: process.env.ORDER_NUMBER_PREFIX || "HA",
   businessCountry: process.env.BUSINESS_COUNTRY || "SI",
   pricesIncludeTax: process.env.PRICES_INCLUDE_TAX !== "false",

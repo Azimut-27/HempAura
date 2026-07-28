@@ -53,8 +53,7 @@ verified information and receives the required approvals.
 1. Install Node.js 20 or newer.
 2. Run `npm install`.
 3. Copy `.env.example` to `.env.local` and fill only the services being tested.
-4. Run the Supabase migration in
-   `supabase/migrations/202607160001_initial_schema.sql`.
+4. Run all Supabase migrations in `supabase/migrations/` in filename order.
 5. Run `npm run dev`.
 6. Open `http://127.0.0.1:5173`.
 7. Run `npm test`, `npm run lint`, and `npm run build` before deployment.
@@ -95,6 +94,7 @@ Server-only:
 - `STRIPE_WEBHOOK_SECRET`
 - `STRIPE_PUBLISHABLE_KEY`
 - `SUPABASE_URL`
+- `SUPABASE_SECRET_KEY` for current Supabase projects
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `SUPABASE_ANON_KEY`
 - `ORDER_NUMBER_PREFIX`
@@ -142,6 +142,7 @@ Tables:
 - `orders`
 - `order_items`
 - `payment_events`
+- `order_email_deliveries`
 - `contact_submissions`
 - `newsletter_subscribers`
 
@@ -171,11 +172,13 @@ Tables:
    newsletter confirmation, paid-order confirmation, and owner new-order
    notification.
 9. Monitor Resend for contact bounces. When Supabase persistence is enabled,
-   monitor `contact_submissions`, `email_events`, and `payment_events` for
+   monitor `contact_submissions`, `email_events`, `payment_events`, and
+   `order_email_deliveries` for
    `email_retry_required` or `email_attention_required`. Add a scheduled retry
    worker before meaningful volume.
 
 See `docs/resend-contact-setup.md` for the complete deployment checklist.
+See `docs/order-confirmation-setup.md` for the paid-order email flow.
 
 ## Stripe setup
 

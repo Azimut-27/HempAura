@@ -1,18 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { getServerProduct } from "../api/data/serverProducts.js";
-import { generateOrderNumber } from "../api/lib/orderNumber.js";
-import { checkoutSchema } from "../api/lib/validation.js";
-import { calculateShipping } from "../api/services/shipping.js";
+import { getServerProduct } from "../server/data/serverProducts.js";
+import { generateOrderNumber } from "../server/lib/orderNumber.js";
+import { checkoutSchema } from "../server/lib/validation.js";
+import { calculateShipping } from "../server/services/shipping.js";
 
 describe("server catalogue and checkout validation", () => {
   it("looks up products by stable IDs", () => {
-    expect(getServerProduct("cbd-oil-5")?.name).toBe("CBD olje 5%");
+    expect(getServerProduct("hempaura-cbd-kapljice-5")?.name).toBe(
+      "HempAura CBD kapljice 5%"
+    );
     expect(getServerProduct("unknown")).toBeUndefined();
   });
 
   it("rejects client-supplied prices", () => {
     const result = checkoutSchema.safeParse({
-      items: [{ productId: "cbd-oil-5", quantity: 1, priceCents: 1 }],
+      items: [
+        {
+          productId: "hempaura-cbd-kapljice-5",
+          quantity: 1,
+          priceCents: 1,
+        },
+      ],
     });
     expect(result.success).toBe(false);
   });
