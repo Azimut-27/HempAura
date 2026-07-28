@@ -19,6 +19,17 @@ function stringEnv(...names) {
   return "";
 }
 
+function supabaseUrlEnv() {
+  const value = stringEnv("SUPABASE_URL");
+  if (!value) return "";
+  try {
+    const url = new URL(value);
+    return `${url.origin}`;
+  } catch {
+    return value.replace(/\/+$/, "");
+  }
+}
+
 const legalCommerceConfigurationComplete = [
   ["LEGAL_ENTITY_NAME"],
   ["BUSINESS_ADDRESS"],
@@ -56,7 +67,7 @@ export const serverConfig = {
   vatId: process.env.VAT_ID || "",
   returnAddress: process.env.RETURN_ADDRESS || "",
   deliveryPartner: process.env.DELIVERY_PARTNER || "",
-  supabaseUrl: process.env.SUPABASE_URL || "",
+  supabaseUrl: supabaseUrlEnv(),
   supabaseServiceRoleKey: stringEnv(
     "SUPABASE_SECRET_KEY",
     "SUPABASE_SERVICE_ROLE_KEY"
