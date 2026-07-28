@@ -35,6 +35,13 @@ function supabaseUrlEnv() {
   }
 }
 
+function supabaseSecretEnv() {
+  return stringEnv("SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY")
+    .replace(/^SUPABASE_(SECRET_KEY|SERVICE_ROLE_KEY)\s*=\s*/i, "")
+    .replace(/^['"]|['"]$/g, "")
+    .trim();
+}
+
 const legalCommerceConfigurationComplete = [
   ["LEGAL_ENTITY_NAME"],
   ["BUSINESS_ADDRESS"],
@@ -73,10 +80,7 @@ export const serverConfig = {
   returnAddress: process.env.RETURN_ADDRESS || "",
   deliveryPartner: process.env.DELIVERY_PARTNER || "",
   supabaseUrl: supabaseUrlEnv(),
-  supabaseServiceRoleKey: stringEnv(
-    "SUPABASE_SECRET_KEY",
-    "SUPABASE_SERVICE_ROLE_KEY"
-  ),
+  supabaseServiceRoleKey: supabaseSecretEnv(),
   orderNumberPrefix: process.env.ORDER_NUMBER_PREFIX || "HA",
   businessCountry: process.env.BUSINESS_COUNTRY || "SI",
   pricesIncludeTax: process.env.PRICES_INCLUDE_TAX !== "false",
