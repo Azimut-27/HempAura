@@ -234,13 +234,10 @@ export default async function handler(request, response) {
       processed_at: new Date().toISOString(),
       status: eventStatus,
     });
-    if (eventStatus === "email_retry_required") {
-      sendJson(response, 500, {
-        message: "Naročilo je shranjeno, e-pošto pa bo sistem poskusil poslati znova.",
-      });
-      return;
-    }
-    sendJson(response, 200, { received: true });
+    sendJson(response, 200, {
+      received: true,
+      emailStatus: eventStatus,
+    });
   } catch (error) {
     safeError(error, "stripe-webhook");
     try {
