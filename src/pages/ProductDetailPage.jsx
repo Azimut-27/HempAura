@@ -8,7 +8,8 @@ import QuantityControl from "../components/QuantityControl.jsx";
 import Seo from "../components/Seo.jsx";
 import { siteConfig } from "../config/siteConfig.js";
 import { useCart } from "../context/CartContext.jsx";
-import { getProductBySlug, products } from "../data/products.js";
+import { useLanguage } from "../context/LanguageContext.jsx";
+import { getProductBySlug, getProductImage, products } from "../data/products.js";
 import { formatPrice, formatProductDetails } from "../lib/formatters.js";
 import NotFoundPage from "./NotFoundPage.jsx";
 
@@ -30,10 +31,12 @@ export default function ProductDetailPage() {
   const product = getProductBySlug(slug);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
+  const { language } = useLanguage();
   const navigate = useNavigate();
 
   const jsonLd = useMemo(() => {
     if (!product) return null;
+    const image = getProductImage(product, language);
     const data = {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -41,8 +44,8 @@ export default function ProductDetailPage() {
       description: product.shortDescription,
       sku: product.sku,
       brand: { "@type": "Brand", name: product.brand || "HempAura" },
-      image: product.images?.[0]?.src
-        ? new URL(product.images[0].src, window.location.origin).toString()
+      image: image?.src
+        ? new URL(image.src, window.location.origin).toString()
         : undefined,
     };
     if (Number.isInteger(product.priceCents)) {
@@ -57,7 +60,7 @@ export default function ProductDetailPage() {
       };
     }
     return data;
-  }, [product]);
+  }, [language, product]);
 
   if (!product) return <NotFoundPage />;
 

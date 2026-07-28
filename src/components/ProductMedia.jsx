@@ -1,7 +1,10 @@
 import { Droplets, Package } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext.jsx";
+import { getProductImage } from "../data/products.js";
 
 export default function ProductMedia({ product, className = "" }) {
-  const image = product.images?.[0];
+  const { language } = useLanguage();
+  const image = getProductImage(product, language);
   if (image?.src) {
     return (
       <img

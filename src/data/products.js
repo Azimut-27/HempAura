@@ -38,14 +38,26 @@ export const products = [
     sku: "HA-CBD-FS-500-10ML",
     stock: 1,
     lowStockThreshold: 2,
-    images: [
-      {
-        src: "/products/hemptouch-cbd-gold-500mg.webp",
-        alt: "HempAura CBD kapljice 5% Polni spekter, 500 mg CBD, 10 ml",
-        width: 900,
-        height: 900,
+    imagesByLanguage: {
+      sl: {
+        src: "/products/hempaura-cbd-oil-sl.png",
+        alt: "HempAura CBD olje Zlato s slovensko deklaracijo",
+        width: 1672,
+        height: 941,
       },
-    ],
+      en: {
+        src: "/products/hempaura-cbd-oil-en.png",
+        alt: "HempAura CBD Oil Gold with English label",
+        width: 1672,
+        height: 941,
+      },
+      de: {
+        src: "/products/hempaura-cbd-oil-de.png",
+        alt: "HempAura CBD Oil Gold mit deutscher Deklaration",
+        width: 1672,
+        height: 941,
+      },
+    },
     badge: "Polni spekter",
     featured: true,
     labReports: [],
@@ -112,14 +124,26 @@ export const products = [
     sku: "CNPCBGHFSC15-5G",
     stock: 1,
     lowStockThreshold: 2,
-    images: [
-      {
-        src: "/products/canalogy-soul-citron-cbg-15-5g.jpg",
-        alt: "Canalogy Soul Citron, 5 g cvetov industrijske konoplje s 15 % CBG",
-        width: 500,
-        height: 500,
+    imagesByLanguage: {
+      sl: {
+        src: "/products/hempaura-cbd-flower-sl.png",
+        alt: "HempAura CBD cvetovi Premium konoplja s slovensko deklaracijo",
+        width: 1024,
+        height: 1536,
       },
-    ],
+      en: {
+        src: "/products/hempaura-cbd-flower-en.png",
+        alt: "HempAura CBD Flower Premium Hemp with English label",
+        width: 1024,
+        height: 1536,
+      },
+      de: {
+        src: "/products/hempaura-cbd-flower-de.png",
+        alt: "HempAura CBD Blüte Premium Hanf mit deutscher Deklaration",
+        width: 1024,
+        height: 1536,
+      },
+    },
     badge: "15 % CBG",
     featured: true,
     labReports: [],
@@ -193,14 +217,26 @@ export const products = [
     sku: "HT-SOOTHING-BALM-50ML",
     stock: 1,
     lowStockThreshold: 2,
-    images: [
-      {
-        src: "/products/hemptouch-blazilno-cbd-mazilo-50ml.webp",
-        alt: "Hemptouch Blažilno CBD mazilo za kožo, 50 ml",
-        width: 900,
-        height: 900,
+    imagesByLanguage: {
+      sl: {
+        src: "/products/hempaura-cbd-balm-sl.png",
+        alt: "HempAura CBD balzam Polni spekter s slovensko deklaracijo",
+        width: 1402,
+        height: 1122,
       },
-    ],
+      en: {
+        src: "/products/hempaura-cbd-balm-en.png",
+        alt: "HempAura CBD Balm Full Spectrum with English label",
+        width: 1122,
+        height: 1402,
+      },
+      de: {
+        src: "/products/hempaura-cbd-balm-de.png",
+        alt: "HempAura CBD Balsam Vollspektrum mit deutscher Deklaration",
+        width: 1122,
+        height: 1402,
+      },
+    },
     badge: "Dermatološko testirano",
     featured: true,
     labReports: [],
@@ -224,3 +260,7 @@ export const getProductById = (id) => products.find((product) => product.id === 
 export const getProductBySlug = (slug) =>
   products.find((product) => product.slug === slug);
 export const activeProducts = products.filter((product) => product.status === "active");
+export const getProductImage = (product, language = "sl") =>
+  product?.imagesByLanguage?.[language] ||
+  product?.imagesByLanguage?.sl ||
+  product?.images?.[0];
