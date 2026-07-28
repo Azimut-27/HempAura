@@ -1,7 +1,7 @@
 import dns from "node:dns/promises";
-import { serverConfig } from "../../../server/config/serverConfig.js";
-import { sendJson } from "../../../server/lib/http.js";
-import { getSupabaseAdmin } from "../../../server/lib/supabase.js";
+import { serverConfig } from "../../server/config/serverConfig.js";
+import { sendJson } from "../../server/lib/http.js";
+import { getSupabaseAdmin } from "../../server/lib/supabase.js";
 
 function hostFromUrl(value) {
   try {
