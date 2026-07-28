@@ -1,3 +1,4 @@
+import { serverConfig } from "../../server/config/serverConfig.js";
 import { safeError, sendJson } from "../../server/lib/http.js";
 import { getPaymentProvider } from "../../server/payments/index.js";
 import { database } from "../../server/repositories/database.js";
@@ -18,7 +19,11 @@ export default async function handler(request, response) {
   try {
     const provider = getPaymentProvider();
     const session = await provider.retrievePayment(sessionId);
-    const order = await database.getOrderByProviderSession(sessionId);
+    const order = serverConfig.supabaseUrl
+      ? await database.getOrderByProviderSession(sessionId)
+      : null;
+    const orderReference =
+      session.metadata?.order_reference || session.client_reference_id || null;
 
     if (session.payment_status === "paid" && order?.payment_status === "paid") {
       sendJson(response, 200, {
@@ -30,9 +35,12 @@ export default async function handler(request, response) {
     }
     if (session.payment_status === "paid") {
       sendJson(response, 200, {
-        status: "processing",
+        status: serverConfig.supabaseUrl ? "processing" : "confirmed",
         message:
-          "Plačilo je pri ponudniku označeno kot plačano, zapis naročila pa se še obdeluje.",
+          serverConfig.supabaseUrl
+            ? "Plačilo je pri ponudniku označeno kot plačano, zapis naročila pa se še obdeluje."
+            : "Plačilo je potrjeno v Stripe testnem okolju. Zapis naročila bomo povezali v naslednjem koraku s Supabase.",
+        orderNumber: orderReference,
       });
       return;
     }
