@@ -1,6 +1,7 @@
 import { ShoppingBag, Trash2, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import ProductMedia from "./ProductMedia.jsx";
 import { useCart } from "../context/CartContext.jsx";
 import { getProductById } from "../data/products.js";
 import { formatPrice } from "../lib/formatters.js";
@@ -79,8 +80,8 @@ export default function CartDrawer() {
                 const product = getProductById(item.productId);
                 return (
                   <li key={item.productId} className="flex gap-4 py-5">
-                    <div className="grid size-20 shrink-0 place-items-center bg-sage text-xs font-bold text-forest">
-                      {product?.cbdPercentage ? `${product.cbdPercentage} %` : "HA"}
+                    <div className="size-20 shrink-0 overflow-hidden bg-cream">
+                      <ProductMedia product={product} fit="cover" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-forest">{product?.name}</p>
