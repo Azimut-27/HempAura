@@ -1,7 +1,7 @@
 export const serverProducts = [
   {
-    id: "hemptouch-cbd-gold-500",
-    name: "HempAura CBD kapljice 5% Polni spekter",
+    id: "hempaura-cbd-kapljice-5",
+    name: "HempAura CBD kapljice 5%",
     sku: "HA-CBD-FS-500-10ML",
     active: true,
     priceCents: 3100,
@@ -14,9 +14,9 @@ export const serverProducts = [
     taxBehavior: "inclusive",
   },
   {
-    id: "canalogy-soul-citron-cbg-15",
-    name: "Canalogy Soul Citron CBG 15 %",
-    sku: "CNPCBGHFSC15-5G",
+    id: "hempaura-cbg-cvetovi-citrin-15",
+    name: "HempAura CBG cvetovi Citrin 15 %",
+    sku: "HA-CBG-CITRIN-15-5G",
     active: true,
     priceCents: 2890,
     currency: "EUR",
@@ -28,9 +28,9 @@ export const serverProducts = [
     taxBehavior: "inclusive",
   },
   {
-    id: "hemptouch-soothing-cbd-balm",
-    name: "Hemptouch Blažilno CBD mazilo za kožo",
-    sku: "HT-SOOTHING-BALM-50ML",
+    id: "hempaura-cbd-krema-sprostitev",
+    name: "HempAura CBD krema za sprostitev",
+    sku: "HA-CBD-RELAX-CREAM-50ML",
     active: true,
     priceCents: 2200,
     currency: "EUR",
