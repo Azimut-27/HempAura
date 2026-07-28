@@ -2,9 +2,18 @@ import { Droplets, Package } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { getProductImage } from "../data/products.js";
 
-export default function ProductMedia({ product, className = "" }) {
+export default function ProductMedia({
+  product,
+  className = "",
+  fit = "contain",
+}) {
   const { language } = useLanguage();
   const image = getProductImage(product, language);
+  const imageClasses =
+    fit === "cover"
+      ? "object-cover"
+      : "bg-white object-contain p-4 sm:p-6";
+
   if (image?.src) {
     return (
       <img
@@ -13,7 +22,7 @@ export default function ProductMedia({ product, className = "" }) {
         width={image.width}
         height={image.height}
         loading="lazy"
-        className={`h-full w-full bg-white object-contain p-4 sm:p-6 ${className}`}
+        className={`block h-full w-full ${imageClasses} ${className}`}
       />
     );
   }
