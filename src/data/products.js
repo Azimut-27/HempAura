@@ -36,7 +36,7 @@ export const products = [
     compareAtPriceCents: null,
     currency: "EUR",
     sku: "HA-CBD-FS-500-10ML",
-    stock: 1,
+    stock: 20,
     lowStockThreshold: 2,
     imagesByLanguage: {
       sl: {
@@ -122,7 +122,7 @@ export const products = [
     compareAtPriceCents: null,
     currency: "EUR",
     sku: "HA-CBG-CITRIN-15-5G",
-    stock: 1,
+    stock: 20,
     lowStockThreshold: 2,
     imagesByLanguage: {
       sl: {
@@ -215,7 +215,7 @@ export const products = [
     compareAtPriceCents: null,
     currency: "EUR",
     sku: "HA-CBD-RELAX-CREAM-50ML",
-    stock: 1,
+    stock: 20,
     lowStockThreshold: 2,
     imagesByLanguage: {
       sl: {
