@@ -9,6 +9,8 @@ import {
   validateSameOrigin,
 } from "../../server/lib/http.js";
 import { rateLimit } from "../../server/lib/rateLimit.js";
+import { normalizeReferralCode } from "../../server/referrals/referralProgram.js";
+import { database } from "../../server/repositories/database.js";
 import { checkoutSchema } from "../../server/lib/validation.js";
 import { getPaymentProvider } from "../../server/payments/index.js";
 import { calculateShipping } from "../../server/services/shipping.js";
@@ -69,6 +71,13 @@ export default async function handler(request, response) {
       country: serverConfig.businessCountry,
       subtotalCents,
     });
+    const referralCode = normalizeReferralCode(parsed.data.referralCode || "");
+    const referralPartner = referralCode
+      ? await database.getActiveReferralPartnerByCode(referralCode)
+      : null;
+    if (referralPartner && !referralPartner.stripe_promotion_code_id) {
+      throw new Error("Referral partner is missing a Stripe promotion code.");
+    }
     const provider = getPaymentProvider();
     const session = await provider.createCheckoutSession({
       orderReference: generateOrderNumber(),
@@ -76,6 +85,12 @@ export default async function handler(request, response) {
       subtotalCents,
       shippingCents,
       currency: "EUR",
+      referral: referralPartner
+        ? {
+            code: referralPartner.public_code,
+            stripePromotionCodeId: referralPartner.stripe_promotion_code_id,
+          }
+        : null,
     });
     sendJson(response, 200, { id: session.id, url: session.url });
   } catch (error) {

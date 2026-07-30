@@ -113,6 +113,7 @@ function PrivacyPolicy() {
             "e-novice: e-poštni naslov, dokaz privolitve, čas potrditve in status odjave;",
             "tehnični in varnostni podatki: IP-naslov, čas zahtevka, pot, osnovni dnevniški podatki ter podatki za preprečevanje zlorab;",
             "podatki o plačilu, ki jih posreduje plačilni ponudnik, na primer identifikator transakcije in stanje plačila. HempAura ne prejme ali hrani celotne številke kartice.",
+            "partnerski program: uporabljena partnerska koda, povezano naročilo, popust, izračunana provizija ter status odobritve in izplačila.",
           ]}
         />
       </Section>
@@ -123,6 +124,7 @@ function PrivacyPolicy() {
             "izvedba naročila, dostave, plačila in podpora pred ali po sklenitvi pogodbe: izvajanje pogodbe oziroma ukrepi na zahtevo posameznika;",
             "izdaja in hramba računov, davčne evidence, odpoklic izdelkov in druge zakonske obveznosti: izpolnitev pravne obveznosti;",
             "varnost spletne strani, preprečevanje goljufij, dokazovanje zahtevkov in izboljšanje zanesljivosti: zakoniti interesi upravljavca, če ne prevladajo pravice posameznika;",
+            "uporaba zahtevanega partnerskega popusta ter obračun provizije partnerju: izvajanje naročila, partnerske pogodbe in zakoniti interes za pravilno evidenco prodaje;",
             "e-novice in nenujne trženjske tehnologije: predhodna, ločena privolitev, ki jo je mogoče kadarkoli preklicati.",
           ]}
         />
@@ -149,6 +151,7 @@ function PrivacyPolicy() {
           items={[
             "računi in davčna dokumentacija: 10 let po poteku leta, na katero se nanašajo;",
             "podatki o naročilu in pogodbi: toliko časa, kolikor je potrebno za izvedbo pogodbe, zakonske obveznosti ter uveljavljanje ali obrambo pravnih zahtevkov;",
+            "evidence partnerskih provizij in izplačil: skladno z roki za povezano pogodbeno, računovodsko in davčno dokumentacijo;",
             "sporočila podpori: praviloma do 24 mesecev po zaključku zadeve, dlje le ob odprtem zahtevku ali zakonski obveznosti;",
             "e-novice: do odjave ali preklica privolitve; nato se hrani le minimalen dokaz odjave, kadar je potreben za spoštovanje izbire;",
             "varnostni dnevniki: praviloma največ 12 mesecev, razen če je daljša hramba potrebna zaradi preiskave incidenta.",
@@ -448,6 +451,9 @@ function CookiesPolicy() {
         <p>
           Košarica se hrani v lokalni shrambi brskalnika, da ostane na voljo med
           obiski. Lokalna shramba ni klasičen piškotek, vendar je podobna tehnologija.
+          Če uporabnik odpre partnersko povezavo, se partnerska koda začasno shrani
+          v sejni shrambi trenutnega zavihka, da se ob plačilu uporabi pripadajoči
+          popust in zabeleži partner. Koda se ne uporablja za vedenjsko profiliranje.
           Spletna stran lahko uporablja tudi nujne varnostne in sejne tehnologije
           gostovanja ter API-storitev.
         </p>
@@ -473,7 +479,8 @@ function CookiesPolicy() {
       <Section title="4. Upravljanje podatkov v brskalniku">
         <p>
           Vsebino lokalne shrambe lahko izbrišete v nastavitvah brskalnika. S tem se
-          lahko izprazni košarica. Nujnih tehnologij, ki so potrebne za varnost ali
+          lahko izprazni košarica. Partnerska koda se izbriše ob zaprtju zavihka ali
+          z izbrisom sejne shrambe. Nujnih tehnologij, ki so potrebne za varnost ali
           zahtevano storitev, ni mogoče izključiti prek soglasja za trženje.
         </p>
       </Section>

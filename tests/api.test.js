@@ -206,10 +206,13 @@ describe("public API validation", () => {
       shippingAddress: { country: "SI" },
       billingAddress: { country: "SI" },
       currency: "EUR",
-      totalCents: 3490,
+      totalCents: 3180,
       subtotalCents: 3100,
+      discountCents: 310,
       shippingCents: 390,
       taxCents: 0,
+      stripePromotionCodeId: "promo_ana10",
+      promotionCode: "ANA10",
       orderReference: "HA-20260728-ABC123",
       cart: [{ productId: "hempaura-cbd-kapljice-5", quantity: 1 }],
     };
@@ -230,6 +233,9 @@ describe("public API validation", () => {
       claimOrderEmailDelivery: vi
         .fn()
         .mockImplementation((_orderId, kind) => ({ id: `delivery-${kind}` })),
+      recordReferralConversion: vi.fn().mockResolvedValue({
+        conversion_id: "conversion_test",
+      }),
       updateOrderEmailDelivery: vi.fn().mockResolvedValue({}),
       updatePaymentEvent: vi.fn().mockResolvedValue({}),
     };
@@ -246,6 +252,20 @@ describe("public API validation", () => {
 
     expect(response.statusCode).toBe(200);
     expect(database.createOrderWithItems).toHaveBeenCalledTimes(1);
+    expect(database.createOrderWithItems).toHaveBeenCalledWith(
+      expect.objectContaining({
+        discount_cents: 310,
+        promotion_code: "ANA10",
+      }),
+      expect.any(Array)
+    );
+    expect(database.recordReferralConversion).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stripePromotionCodeId: "promo_ana10",
+        grossSubtotalCents: 3100,
+        discountCents: 310,
+      })
+    );
     expect(sendEmail).toHaveBeenCalledTimes(2);
     expect(sendEmail).toHaveBeenCalledWith(
       expect.objectContaining({

@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { getServerProduct } from "../server/data/serverProducts.js";
 import { generateOrderNumber } from "../server/lib/orderNumber.js";
 import { checkoutSchema } from "../server/lib/validation.js";
+import {
+  calculateCommissionCents,
+  extractPromotionCodeReference,
+  normalizeReferralCode,
+} from "../server/referrals/referralProgram.js";
 import { calculateShipping } from "../server/services/shipping.js";
 
 describe("server catalogue and checkout validation", () => {
@@ -34,5 +39,56 @@ describe("server catalogue and checkout validation", () => {
     expect(() => calculateShipping({ country: "AT", subtotalCents: 1000 })).toThrow(
       /ni podprta/
     );
+  });
+
+  it("normalizes referral codes and rejects unsafe values", () => {
+    expect(normalizeReferralCode(" ana-10 ")).toBe("ANA-10");
+    expect(normalizeReferralCode("x")).toBe("");
+    expect(normalizeReferralCode("ANA 10")).toBe("");
+  });
+
+  it("accepts a referral code without accepting client prices", () => {
+    const result = checkoutSchema.safeParse({
+      items: [
+        {
+          productId: "hempaura-cbd-kapljice-5",
+          quantity: 1,
+        },
+      ],
+      referralCode: "ana10",
+    });
+    expect(result.success).toBe(true);
+    expect(result.data.referralCode).toBe("ANA10");
+  });
+
+  it("calculates partner commission after the customer discount", () => {
+    expect(
+      calculateCommissionCents({
+        subtotalCents: 10_000,
+        discountCents: 1_000,
+        commissionRateBps: 1_500,
+      })
+    ).toBe(1_350);
+  });
+
+  it("extracts an expanded Stripe promotion code", () => {
+    expect(
+      extractPromotionCodeReference({
+        total_details: {
+          breakdown: {
+            discounts: [
+              {
+                discount: {
+                  promotion_code: {
+                    id: "promo_test",
+                    code: "ana10",
+                  },
+                },
+              },
+            ],
+          },
+        },
+      })
+    ).toEqual({ id: "promo_test", code: "ANA10" });
   });
 });

@@ -8,6 +8,7 @@ const columns = [
       ["Izdelki", "/products"],
       ["Kakovost", "/quality"],
       ["Laboratorijska poročila", "/lab-reports"],
+      ["Partnerski program", "/partners"],
       ["Kontakt", "/contact"],
     ],
   },

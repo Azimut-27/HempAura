@@ -54,5 +54,11 @@ export const checkoutSchema = z
       )
       .min(1)
       .max(20),
+    referralCode: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .regex(/^[A-Z0-9][A-Z0-9_-]{2,31}$/)
+      .optional(),
   })
   .strict();

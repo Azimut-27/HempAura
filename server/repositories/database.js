@@ -158,6 +158,33 @@ export const database = {
     return assertResult(result, "Update order payment status");
   },
 
+  async getActiveReferralPartnerByCode(publicCode) {
+    const result = await getSupabaseAdmin()
+      .from("referral_partners")
+      .select(
+        "id,public_code,stripe_promotion_code_id,customer_discount_percent,commission_rate_bps"
+      )
+      .eq("public_code", publicCode)
+      .eq("status", "active")
+      .maybeSingle();
+    return assertResult(result, "Get referral partner");
+  },
+
+  async recordReferralConversion(values) {
+    const result = await getSupabaseAdmin()
+      .rpc("record_referral_conversion", {
+        p_order_id: values.orderId,
+        p_provider_session_id: values.providerSessionId,
+        p_stripe_promotion_code_id: values.stripePromotionCodeId,
+        p_promotion_code: values.promotionCode || "",
+        p_currency: values.currency,
+        p_gross_subtotal_cents: values.grossSubtotalCents,
+        p_discount_cents: values.discountCents,
+      })
+      .maybeSingle();
+    return assertResult(result, "Record referral conversion");
+  },
+
   async claimOrderEmailDelivery(orderId, kind, recipient) {
     const result = await getSupabaseAdmin()
       .rpc("claim_order_email_delivery", {

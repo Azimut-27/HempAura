@@ -132,8 +132,12 @@ export default async function handler(request, response) {
       (sum, item) => sum + item.line_total_cents,
       0
     );
+    const discountCents = payment.discountCents || 0;
     const calculatedTotal =
-      calculatedSubtotal + payment.shippingCents + payment.taxCents;
+      calculatedSubtotal -
+      discountCents +
+      payment.shippingCents +
+      payment.taxCents;
     if (
       calculatedSubtotal !== payment.subtotalCents ||
       calculatedTotal !== payment.totalCents
@@ -160,11 +164,14 @@ export default async function handler(request, response) {
           customer_name: payment.customerName,
           currency: payment.currency,
           subtotal_cents: calculatedSubtotal,
+          discount_cents: discountCents,
           shipping_cents: payment.shippingCents,
           tax_cents: payment.taxCents,
           total_cents: calculatedTotal,
           payment_status: paymentStatus,
           fulfillment_status: "unfulfilled",
+          promotion_code: payment.promotionCode,
+          stripe_promotion_code_id: payment.stripePromotionCodeId,
           shipping_address_json: payment.shippingAddress,
           billing_address_json: payment.billingAddress,
         },
@@ -180,6 +187,17 @@ export default async function handler(request, response) {
 
     let eventStatus = "processed";
     if (paymentStatus === "paid") {
+      if (payment.stripePromotionCodeId) {
+        await database.recordReferralConversion({
+          orderId: order.id,
+          providerSessionId: payment.sessionId,
+          stripePromotionCodeId: payment.stripePromotionCodeId,
+          promotionCode: payment.promotionCode,
+          currency: payment.currency,
+          grossSubtotalCents: calculatedSubtotal,
+          discountCents,
+        });
+      }
       if (!isEmailConfigured()) {
         eventStatus = "email_configuration_required";
       } else {

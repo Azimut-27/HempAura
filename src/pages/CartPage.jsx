@@ -8,6 +8,7 @@ import { siteConfig } from "../config/siteConfig.js";
 import { useCart } from "../context/CartContext.jsx";
 import { getProductById } from "../data/products.js";
 import { formatPrice } from "../lib/formatters.js";
+import { getStoredReferralCode } from "../lib/referral.js";
 import { createCheckoutSession } from "../services/api.js";
 
 export default function CartPage() {
@@ -29,7 +30,7 @@ export default function CartPage() {
     setStatus("loading");
     setMessage("");
     try {
-      const result = await createCheckoutSession(items);
+      const result = await createCheckoutSession(items, getStoredReferralCode());
       window.location.assign(result.url);
     } catch (error) {
       setStatus("error");
@@ -184,6 +185,9 @@ export default function CartPage() {
                 <p className="mt-4 text-xs leading-6 text-porcelain/60">
                   Končni znesek se vedno ponovno izračuna na strežniku. Podatki o
                   kartici se v tej aplikaciji ne shranjujejo.
+                </p>
+                <p className="mt-2 text-xs leading-6 text-porcelain/60">
+                  Kodo za popust lahko vneseš tudi v naslednjem varnem koraku.
                 </p>
               </aside>
             </div>

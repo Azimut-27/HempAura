@@ -14,6 +14,7 @@ const QualityPage = lazy(() => import("./pages/QualityPage.jsx"));
 const LabReportsPage = lazy(() => import("./pages/LabReportsPage.jsx"));
 const PolicyPage = lazy(() => import("./pages/PolicyPage.jsx"));
 const ResponsibleUsePage = lazy(() => import("./pages/ResponsibleUsePage.jsx"));
+const PartnerProgramPage = lazy(() => import("./pages/PartnerProgramPage.jsx"));
 const NewsletterStatusPage = lazy(() => import("./pages/NewsletterStatusPage.jsx"));
 const NewsletterUnsubscribePage = lazy(
   () => import("./pages/NewsletterUnsubscribePage.jsx")
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="terms" element={<PolicyPage type="terms" />} />
           <Route path="cookies" element={<PolicyPage type="cookies" />} />
           <Route path="responsible-use" element={<ResponsibleUsePage />} />
+          <Route path="partners" element={<PartnerProgramPage />} />
           <Route path="newsletter/confirm" element={<NewsletterStatusPage />} />
           <Route
             path="newsletter/unsubscribe"

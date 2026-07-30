@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { serverConfig } from "../config/serverConfig.js";
 import { readRawBody } from "../lib/http.js";
+import { extractPromotionCodeReference } from "../referrals/referralProgram.js";
 import { PaymentProvider } from "./PaymentProvider.js";
 
 export class StripePaymentProvider extends PaymentProvider {
@@ -11,6 +12,7 @@ export class StripePaymentProvider extends PaymentProvider {
   }
 
   async createCheckoutSession(orderDraft) {
+    const referral = orderDraft.referral || null;
     const session = await this.stripe.checkout.sessions.create({
       mode: "payment",
       customer_creation: "always",
@@ -73,12 +75,27 @@ export class StripePaymentProvider extends PaymentProvider {
         cart: JSON.stringify(
           orderDraft.items.map(({ productId, quantity }) => ({ productId, quantity }))
         ),
+        ...(referral
+          ? {
+              referral_code: referral.code,
+              referral_promotion_code_id: referral.stripePromotionCodeId,
+            }
+          : {}),
       },
       payment_intent_data: {
-        metadata: { order_reference: orderDraft.orderReference },
+        metadata: {
+          order_reference: orderDraft.orderReference,
+          ...(referral ? { referral_code: referral.code } : {}),
+        },
       },
       locale: "sl",
-      allow_promotion_codes: false,
+      ...(referral
+        ? {
+            discounts: [
+              { promotion_code: referral.stripePromotionCodeId },
+            ],
+          }
+        : { allow_promotion_codes: true }),
     });
 
     return { id: session.id, url: session.url };
@@ -99,13 +116,24 @@ export class StripePaymentProvider extends PaymentProvider {
   }
 
   async retrievePayment(reference) {
-    return this.stripe.checkout.sessions.retrieve(reference, {
+    const session = await this.stripe.checkout.sessions.retrieve(reference, {
       expand: ["line_items", "payment_intent"],
     });
+    const referenceFromDiscount = extractPromotionCodeReference(session);
+    const promotionCodeId =
+      referenceFromDiscount.id ||
+      session.metadata?.referral_promotion_code_id ||
+      "";
+    if (promotionCodeId.startsWith("promo_")) {
+      session._hempAuraPromotionCode =
+        await this.stripe.promotionCodes.retrieve(promotionCodeId);
+    }
+    return session;
   }
 
   normalizePaymentEvent(event) {
     const session = event.data.object;
+    const promotionCode = extractPromotionCodeReference(session);
     return {
       provider: "stripe",
       eventId: event.id,
@@ -123,8 +151,17 @@ export class StripePaymentProvider extends PaymentProvider {
       currency: (session.currency || "eur").toUpperCase(),
       totalCents: session.amount_total,
       subtotalCents: session.amount_subtotal,
+      discountCents: session.total_details?.amount_discount || 0,
       shippingCents: session.total_details?.amount_shipping || 0,
       taxCents: session.total_details?.amount_tax || 0,
+      stripePromotionCodeId:
+        promotionCode.id ||
+        session.metadata?.referral_promotion_code_id ||
+        null,
+      promotionCode:
+        promotionCode.code ||
+        session.metadata?.referral_code ||
+        null,
       orderReference:
         session.metadata?.order_reference || session.client_reference_id || null,
       cart: session.metadata?.cart ? JSON.parse(session.metadata.cart) : [],

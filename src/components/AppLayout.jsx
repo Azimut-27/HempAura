@@ -3,6 +3,7 @@ import CartDrawer from "./CartDrawer.jsx";
 import CartNotice from "./CartNotice.jsx";
 import Footer from "./Footer.jsx";
 import Header from "./Header.jsx";
+import ReferralAttribution from "./ReferralAttribution.jsx";
 import { useScrollRestoration } from "../hooks/useScrollRestoration.js";
 
 export default function AppLayout() {
@@ -10,6 +11,7 @@ export default function AppLayout() {
 
   return (
     <div className="site-shell min-h-screen text-ink">
+      <ReferralAttribution />
       <a className="skip-link" href="#main-content">
         Preskoči na vsebino
       </a>
