@@ -206,7 +206,7 @@ values
   (
     'hempaura-cbg-cvetovi-citrin-15',
     'hempaura-cbg-cvetovi-citrin-15-5g',
-    'HempAura CBG cvetovi Citrin 15 %',
+    'HempAura CBD cvetovi Citrin 15 %',
     true
   ),
   (

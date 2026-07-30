@@ -6,6 +6,7 @@ import QuantityControl from "../components/QuantityControl.jsx";
 import Seo from "../components/Seo.jsx";
 import { siteConfig } from "../config/siteConfig.js";
 import { useCart } from "../context/CartContext.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import { getProductById } from "../data/products.js";
 import { formatPrice } from "../lib/formatters.js";
 import {
@@ -18,6 +19,7 @@ import { createCheckoutSession, getReferralPreview } from "../services/api.js";
 
 export default function CartPage() {
   const { items, setQuantity, removeItem, clearCart, totals } = useCart();
+  const { language, t } = useLanguage();
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const [legalConsent, setLegalConsent] = useState(false);
@@ -107,7 +109,7 @@ export default function CartPage() {
     setStatus("loading");
     setMessage("");
     try {
-      const result = await createCheckoutSession(items, referralCode);
+      const result = await createCheckoutSession(items, referralCode, language);
       window.location.assign(result.url);
     } catch (error) {
       setStatus("error");
@@ -125,23 +127,23 @@ export default function CartPage() {
       <section className="bg-cream py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <h1 className="font-display text-5xl font-semibold text-forest sm:text-6xl">
-            Košarica
+            {t("Košarica")}
           </h1>
           {items.length === 0 ? (
             <div className="mt-10 grid min-h-80 place-items-center border border-forest/10 bg-white p-8 text-center">
               <div>
                 <ShoppingBag className="mx-auto text-gold" size={40} aria-hidden="true" />
                 <h2 className="mt-5 font-display text-3xl font-semibold text-forest">
-                  Košarica je prazna
+                  {t("Košarica je prazna")}
                 </h2>
                 <p className="mt-3 text-sm text-forest/65">
-                  Oglej si kolekcijo in preveri stanje posameznega izdelka.
+                  {t("Oglej si kolekcijo in preveri stanje posameznega izdelka.")}
                 </p>
                 <Link
                   to="/products"
                   className="mt-6 inline-flex min-h-12 items-center bg-forest px-6 text-sm font-bold text-porcelain"
                 >
-                  Odpri izdelke
+                  {t("Odpri izdelke")}
                 </Link>
               </div>
             </div>
@@ -181,7 +183,7 @@ export default function CartPage() {
                         type="button"
                         onClick={() => removeItem(product.id)}
                         className="grid size-11 place-items-center text-clay hover:bg-clay/10"
-                        aria-label={`Odstrani ${product.name}`}
+                        aria-label={`${t("Odstrani")} ${t(product.name)}`}
                       >
                         <Trash2 size={18} aria-hidden="true" />
                       </button>
@@ -194,22 +196,22 @@ export default function CartPage() {
                     className="text-sm font-bold text-clay underline"
                     onClick={clearCart}
                   >
-                    Izprazni košarico
+                    {t("Izprazni košarico")}
                   </button>
                 </div>
               </div>
               <aside className="h-fit bg-forest p-6 text-porcelain">
-                <h2 className="font-display text-3xl font-semibold">Povzetek</h2>
+                <h2 className="font-display text-3xl font-semibold">{t("Povzetek")}</h2>
                 <dl className="mt-6 space-y-4 text-sm">
                   <div className="flex justify-between">
-                    <dt>Vmesni seštevek</dt>
+                    <dt>{t("Vmesni seštevek")}</dt>
                     <dd>{formatPrice(totals.subtotalCents)}</dd>
                   </div>
                   {referralCode && (
                     <div className="border-y border-white/15 py-3">
                       <div className="flex justify-between gap-4">
                         <dt>
-                          Popust
+                          {t("Popust")}
                           <span className="ml-2 rounded-sm bg-gold/20 px-2 py-1 text-xs font-bold text-gold">
                             {referralCode}
                           </span>
@@ -218,33 +220,33 @@ export default function CartPage() {
                           {referralDiscountCents > 0
                             ? `-${formatPrice(referralDiscountCents)}`
                             : referralPreview.status === "loading"
-                              ? "Preverjanje ..."
-                              : "Preverjanje v Stripe"}
+                              ? t("Preverjanje ...")
+                              : t("Preverjanje v Stripe")}
                         </dd>
                       </div>
                       {referralPreview.data?.active && (
                         <p className="mt-2 text-xs leading-5 text-porcelain/60">
-                          {referralPreview.data.customerDiscountPercent}% popusta bo
-                          ponovno potrjeno v varnem plačilu.
+                          {referralPreview.data.customerDiscountPercent}%{" "}
+                          {t("popusta bo ponovno potrjeno v varnem plačilu.")}
                         </p>
                       )}
                       {!referralPreview.data?.active && referralPreview.data?.message && (
                         <p className="mt-2 text-xs leading-5 text-porcelain/60">
-                          {referralPreview.data.message}
+                          {t(referralPreview.data.message)}
                         </p>
                       )}
                     </div>
                   )}
                   <div className="flex justify-between text-porcelain/70">
-                    <dt>Dostava</dt>
+                    <dt>{t("Dostava")}</dt>
                     <dd>
                       {Number.isInteger(totals.shippingCents)
                         ? formatPrice(totals.shippingCents)
-                        : "Izračun pred plačilom"}
+                        : t("Izračun pred plačilom")}
                     </dd>
                   </div>
                   <div className="flex justify-between border-t border-white/15 pt-4 text-base font-bold">
-                    <dt>Ocenjeno skupaj</dt>
+                    <dt>{t("Ocenjeno skupaj")}</dt>
                     <dd>
                       {Number.isInteger(totals.shippingCents)
                         ? formatPrice(estimatedTotalCents)
@@ -257,7 +259,7 @@ export default function CartPage() {
                     className="text-xs font-bold uppercase text-porcelain/60"
                     htmlFor="cart-promo-code"
                   >
-                    Koda za popust
+                    {t("Koda za popust")}
                   </label>
                   <div className="mt-2 flex border border-white/20 bg-white/5 focus-within:border-gold">
                     <input
@@ -274,7 +276,7 @@ export default function CartPage() {
                       type="submit"
                       className="min-h-11 shrink-0 bg-porcelain px-4 text-xs font-bold text-forest hover:bg-gold"
                     >
-                      Uporabi
+                      {t("Uporabi")}
                     </button>
                   </div>
                   {referralCode && (
@@ -289,12 +291,12 @@ export default function CartPage() {
                         setMessage("");
                       }}
                     >
-                      Odstrani kodo
+                      {t("Odstrani kodo")}
                     </button>
                   )}
                   {!referralCode && referralPreview.data?.message && (
                     <p className="mt-2 text-xs leading-5 text-porcelain/60">
-                      {referralPreview.data.message}
+                      {t(referralPreview.data.message)}
                     </p>
                   )}
                 </form>
@@ -305,10 +307,10 @@ export default function CartPage() {
                   className="mt-7 min-h-12 w-full bg-gold px-5 text-sm font-bold text-ink disabled:opacity-60"
                 >
                   {status === "loading"
-                    ? "Odpiranje varnega plačila ..."
+                    ? t("Odpiranje varnega plačila ...")
                     : siteConfig.paymentsEnabled
-                      ? "Nadaljuj na plačilo"
-                      : "Prodaja se odpre kmalu"}
+                      ? t("Nadaljuj na plačilo")
+                      : t("Prodaja se odpre kmalu")}
                 </button>
                 <label className="mt-5 flex gap-3 text-sm leading-6 text-porcelain/76">
                   <input
@@ -318,13 +320,23 @@ export default function CartPage() {
                     className="mt-1 size-5 shrink-0 accent-gold"
                   />
                   <span>
-                    Strinjam se s <Link className="underline" to="/terms">pogoji poslovanja</Link>,
-                    prebral/-a sem <Link className="underline" to="/privacy">politiko zasebnosti</Link>
-                    {" "}in <Link className="underline" to="/shipping-and-returns">informacije o vračilih</Link>.
+                    {t("Strinjam se s")}{" "}
+                    <Link className="underline" to="/terms">
+                      {t("pogoji poslovanja")}
+                    </Link>
+                    , {t("prebral/-a sem")}{" "}
+                    <Link className="underline" to="/privacy">
+                      {t("politiko zasebnosti")}
+                    </Link>{" "}
+                    {t("in")}{" "}
+                    <Link className="underline" to="/shipping-and-returns">
+                      {t("informacije o vračilih")}
+                    </Link>
+                    .
                   </span>
                 </label>
                 <p className="mt-4 min-h-6 text-sm text-porcelain/80" aria-live="polite">
-                  {message}
+                  {t(message)}
                 </p>
                 {status === "error" && (
                   <button
@@ -332,15 +344,14 @@ export default function CartPage() {
                     className="text-sm font-bold text-gold underline"
                     onClick={() => navigate("/contact")}
                   >
-                    Kontaktiraj podporo
+                    {t("Kontaktiraj podporo")}
                   </button>
                 )}
                 <p className="mt-4 text-xs leading-6 text-porcelain/60">
-                  Končni znesek se vedno ponovno izračuna na strežniku. Podatki o
-                  kartici se v tej aplikaciji ne shranjujejo.
+                  {t("Končni znesek se vedno ponovno izračuna na strežniku. Podatki o kartici se v tej aplikaciji ne shranjujejo.")}
                 </p>
                 <p className="mt-2 text-xs leading-6 text-porcelain/60">
-                  Kodo za popust lahko vneseš tudi v naslednjem varnem koraku.
+                  {t("Kodo za popust lahko vneseš tudi v naslednjem varnem koraku.")}
                 </p>
               </aside>
             </div>

@@ -57,9 +57,11 @@ describe("server catalogue and checkout validation", () => {
         },
       ],
       referralCode: "ana10",
+      language: "en",
     });
     expect(result.success).toBe(true);
     expect(result.data.referralCode).toBe("ANA10");
+    expect(result.data.language).toBe("en");
   });
 
   it("calculates partner commission after the customer discount", () => {

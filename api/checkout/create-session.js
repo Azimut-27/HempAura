@@ -85,6 +85,7 @@ export default async function handler(request, response) {
       subtotalCents,
       shippingCents,
       currency: "EUR",
+      locale: parsed.data.language,
       referral: referralPartner
         ? {
             code: referralPartner.public_code,

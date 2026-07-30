@@ -92,6 +92,35 @@ export const serverConfig = {
     siMinDays: integerEnv("SHIPPING_SI_MIN_DAYS"),
     siMaxDays: integerEnv("SHIPPING_SI_MAX_DAYS"),
   },
+  gls: {
+    baseUrl:
+      stringEnv("GLS_BASE_URL") ||
+      "https://api.test.mygls.si/ParcelService.svc/json/PrintLabels",
+    username: stringEnv("GLS_USERNAME"),
+    clientNumber: integerEnv("GLS_CLIENT_NUMBER"),
+    password: stringEnv("GLS_PASSWORD"),
+    adminToken: stringEnv("GLS_ADMIN_TOKEN"),
+    webshopEngine: stringEnv("GLS_WEBSHOP_ENGINE") || "HempAura",
+    printerType: stringEnv("GLS_PRINTER_TYPE") || "A4_2x2",
+    printPosition: integerEnv("GLS_PRINT_POSITION", 1),
+    hidePhoneNumberOnLabels: booleanEnv(
+      "GLS_HIDE_PHONE_NUMBER_ON_LABELS",
+      false
+    ),
+    timeoutMs: integerEnv("GLS_TIMEOUT_MS", 15_000),
+    pickupAddress: {
+      name: stringEnv("GLS_PICKUP_NAME"),
+      countryIsoCode: stringEnv("GLS_PICKUP_COUNTRY") || "SI",
+      zipCode: stringEnv("GLS_PICKUP_ZIP"),
+      city: stringEnv("GLS_PICKUP_CITY"),
+      street: stringEnv("GLS_PICKUP_STREET"),
+      houseNumber: stringEnv("GLS_PICKUP_HOUSE_NUMBER"),
+      houseNumberInfo: stringEnv("GLS_PICKUP_HOUSE_NUMBER_INFO"),
+      contactName: stringEnv("GLS_PICKUP_CONTACT_NAME"),
+      contactPhone: stringEnv("GLS_PICKUP_CONTACT_PHONE"),
+      contactEmail: stringEnv("GLS_PICKUP_CONTACT_EMAIL"),
+    },
+  },
   contactRateLimit: {
     max: integerEnv("CONTACT_RATE_LIMIT_MAX", 5),
     windowSeconds: integerEnv("CONTACT_RATE_LIMIT_WINDOW_SECONDS", 900),

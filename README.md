@@ -201,6 +201,48 @@ exact products, countries, claims, and business model before enabling checkout.
 9. Test duplicate webhook delivery and delayed payment events.
 10. Set `VITE_PAYMENTS_ENABLED=true` only after all checks pass.
 
+## GLS Slovenia label integration
+
+GLS label creation is server-only and uses the Slovenian MyGLS JSON
+`PrintLabels` endpoint. A label is created only for a paid order, stored in the
+private `gls_shipments` table, and returned as a PDF. Repeating the same request
+returns the stored label instead of creating another GLS parcel.
+
+The GLS test-account instructions supplied for HempAura require a SHA-256
+password byte array, which is implemented in `getGlsPasswordHash`. The current
+regional MyGLS manual describes SHA-512 instead. Confirm the assigned algorithm
+with GLS Slovenia before changing from the test account to production.
+
+1. Run `supabase/migrations/202607300001_gls_shipping.sql` in the Supabase SQL
+   editor.
+2. Add every `GLS_*` value from `.env.example` to Vercel Production and Preview.
+   `GLS_PASSWORD` and `GLS_ADMIN_TOKEN` must be Sensitive variables.
+3. Generate `GLS_ADMIN_TOKEN` locally with `openssl rand -hex 32`. It protects
+   label creation and is not a GLS credential.
+4. Set the pickup address exactly as approved in the GLS agreement. Keep the
+   numeric house number in `GLS_PICKUP_HOUSE_NUMBER`; put letters, building, or
+   unit details in `GLS_PICKUP_HOUSE_NUMBER_INFO`.
+5. Set `DELIVERY_PARTNER=GLS` and `VITE_DELIVERY_PARTNER=GLS`.
+6. Redeploy Vercel after saving the variables.
+
+Create or download the label for a paid test order:
+
+```bash
+export GLS_ADMIN_TOKEN='paste-your-64-character-token'
+
+curl --fail-with-body \
+  -X POST 'https://hemp-aura.vercel.app/api/shipping/gls/labels' \
+  -H "Authorization: Bearer $GLS_ADMIN_TOKEN" \
+  -H 'Content-Type: application/json' \
+  --data '{"orderNumber":"HA-20260730-ABC123"}' \
+  --output 'HA-20260730-ABC123-GLS-label.pdf'
+```
+
+If GLS rejected the first attempt, correct the address or configuration and use
+`{"orderNumber":"HA-20260730-ABC123","retry":true}`. Never send the GLS password
+or administrator token to React, browser storage, GitHub, screenshots, or
+customer-facing APIs.
+
 Stripe-hosted Checkout is used. This application never collects or stores raw card
 data. Redirect success is not trusted; the webhook and server-side status check are
 the source of truth.

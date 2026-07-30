@@ -28,12 +28,13 @@ export const unsubscribeNewsletter = (data) =>
     body: JSON.stringify(data),
   });
 
-export const createCheckoutSession = (items, referralCode = "") =>
+export const createCheckoutSession = (items, referralCode = "", language = "sl") =>
   request("/api/checkout/create-session", {
     method: "POST",
     body: JSON.stringify({
       items: items.map(({ productId, quantity }) => ({ productId, quantity })),
       ...(referralCode ? { referralCode } : {}),
+      language,
     }),
   });
 

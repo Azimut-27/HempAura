@@ -158,6 +158,86 @@ export const database = {
     return assertResult(result, "Update order payment status");
   },
 
+  async getPaidOrderForGls(orderNumber) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .select(
+        "id,public_order_number,customer_email,customer_name,payment_status,fulfillment_status,shipping_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
+      )
+      .eq("public_order_number", orderNumber)
+      .maybeSingle();
+    return assertResult(result, "Get order for GLS");
+  },
+
+  async claimGlsShipment(values, retry = false) {
+    const insertResult = await getSupabaseAdmin()
+      .from("gls_shipments")
+      .insert({
+        order_id: values.orderId,
+        environment: values.environment,
+        client_reference: values.clientReference,
+        request_fingerprint: values.requestFingerprint,
+        status: "processing",
+      })
+      .select("*")
+      .single();
+
+    if (!insertResult.error) {
+      return { ...insertResult.data, claimed: true };
+    }
+    if (insertResult.error.code !== "23505") {
+      return assertResult(insertResult, "Claim GLS shipment");
+    }
+
+    const existingResult = await getSupabaseAdmin()
+      .from("gls_shipments")
+      .select("*")
+      .eq("order_id", values.orderId)
+      .single();
+    const existing = assertResult(existingResult, "Get GLS shipment");
+
+    if (retry && existing.status === "failed") {
+      const retryResult = await getSupabaseAdmin()
+        .from("gls_shipments")
+        .update({
+          status: "processing",
+          request_fingerprint: values.requestFingerprint,
+          error_code: null,
+          error_message: null,
+          attempts: existing.attempts + 1,
+          last_attempt_at: new Date().toISOString(),
+        })
+        .eq("id", existing.id)
+        .eq("status", "failed")
+        .select("*")
+        .maybeSingle();
+      const claimedRetry = assertResult(retryResult, "Retry GLS shipment");
+      if (claimedRetry) return { ...claimedRetry, claimed: true };
+    }
+
+    return { ...existing, claimed: false };
+  },
+
+  async updateGlsShipment(id, values) {
+    const result = await getSupabaseAdmin()
+      .from("gls_shipments")
+      .update(values)
+      .eq("id", id)
+      .select("*")
+      .single();
+    return assertResult(result, "Update GLS shipment");
+  },
+
+  async updateOrderFulfillmentStatus(orderId, fulfillmentStatus) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .update({ fulfillment_status: fulfillmentStatus })
+      .eq("id", orderId)
+      .select("id,fulfillment_status")
+      .single();
+    return assertResult(result, "Update order fulfillment status");
+  },
+
   async getActiveReferralPartnerByCode(publicCode) {
     const result = await getSupabaseAdmin()
       .from("referral_partners")

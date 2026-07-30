@@ -4,6 +4,8 @@ import { readRawBody } from "../lib/http.js";
 import { extractPromotionCodeReference } from "../referrals/referralProgram.js";
 import { PaymentProvider } from "./PaymentProvider.js";
 
+const SUPPORTED_CHECKOUT_LOCALES = new Set(["sl", "en", "de"]);
+
 export class StripePaymentProvider extends PaymentProvider {
   constructor() {
     super();
@@ -17,6 +19,7 @@ export class StripePaymentProvider extends PaymentProvider {
       mode: "payment",
       customer_creation: "always",
       customer_email: orderDraft.customerEmail || undefined,
+      phone_number_collection: { enabled: true },
       billing_address_collection: "required",
       shipping_address_collection: { allowed_countries: ["SI"] },
       line_items: orderDraft.items.map((item) => ({
@@ -88,7 +91,9 @@ export class StripePaymentProvider extends PaymentProvider {
           ...(referral ? { referral_code: referral.code } : {}),
         },
       },
-      locale: "sl",
+      locale: SUPPORTED_CHECKOUT_LOCALES.has(orderDraft.locale)
+        ? orderDraft.locale
+        : "sl",
       ...(referral
         ? {
             discounts: [
@@ -146,7 +151,23 @@ export class StripePaymentProvider extends PaymentProvider {
       paymentStatus: session.payment_status || "unknown",
       customerEmail: session.customer_details?.email || session.customer_email || null,
       customerName: session.customer_details?.name || null,
-      shippingAddress: session.shipping_details?.address || null,
+      shippingAddress: session.shipping_details?.address
+        ? {
+            ...session.shipping_details.address,
+            name:
+              session.shipping_details.name ||
+              session.customer_details?.name ||
+              null,
+            phone:
+              session.shipping_details.phone ||
+              session.customer_details?.phone ||
+              null,
+            email:
+              session.customer_details?.email ||
+              session.customer_email ||
+              null,
+          }
+        : null,
       billingAddress: session.customer_details?.address || null,
       currency: (session.currency || "eur").toUpperCase(),
       totalCents: session.amount_total,

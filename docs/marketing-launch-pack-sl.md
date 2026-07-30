@@ -52,7 +52,7 @@ Polnospektralni konopljin izvleček v MCT olju. Ena 10 ml steklenička vsebuje
 Bogata brezvodna nega s konopljinim oljem, rastlinskimi masli, ognjičem, sivko
 in kamilico. Namenjena je zunanji uporabi in vsakodnevni negi kože.
 
-### HempAura CBG cvetovi Citrin 15 %
+### HempAura CBD cvetovi Citrin 15 %
 
 Izbrani cvetovi industrijske konoplje z izrazitim citrusnim aromatskim profilom.
 Izdelek je namenjen izključno uporabi, navedeni na potrjeni deklaraciji.
@@ -100,7 +100,7 @@ Izdelek je namenjen izključno uporabi, navedeni na potrjeni deklaraciji.
    Jasne informacije. Premišljeno izbiro. Odgovorno komunikacijo.
 
 2. **Spoznaj kolekcijo HempAura**  
-   CBD kapljice 5 % · CBD krema za sprostitev · CBG cvetovi Citrin 15 %
+   CBD kapljice 5 % · CBD krema za sprostitev · CBD cvetovi Citrin 15 %
 
 3. **Tvoj miren ritual se začne tukaj**  
    Poziv: Odkrij kolekcijo
@@ -123,7 +123,7 @@ Besedilo:
 > mirno in odgovorno predstavitev.
 >
 > V prvi kolekciji predstavljamo CBD kapljice 5 %, CBD kremo za sprostitev in
-> CBG cvetove Citrin 15 %. Pri vsakem izdelku so na enem mestu zbrane sestava,
+> CBD cvetove Citrin 15 %. Pri vsakem izdelku so na enem mestu zbrane sestava,
 > količine, navodila in opozorila.
 >
 > Brez medicinskih obljub in brez skrivanja pomembnih podatkov.
@@ -182,7 +182,7 @@ Partner ne sme uporabljati trditev, kot so:
 | 6 | CBD krema za sprostitev | Izdelek |
 | 7 | Odgovorna uporaba | Zaupanje |
 | 8 | Zakulisje znamke | Človeška zgodba |
-| 9 | CBG cvetovi Citrin 15 % | Izdelek |
+| 9 | CBD cvetovi Citrin 15 % | Izdelek |
 | 10 | Kako beremo deklaracijo | Izobraževanje |
 | 11 | Partnerjeva vsebina | Družbeni dokaz |
 | 12 | Dostava in vračila | Odstranjevanje ovir |
@@ -198,4 +198,3 @@ Partner ne sme uporabljati trditev, kot so:
 - pogodbo in navodila za partnerje;
 - sledljivost soglasij za e-poštno trženje;
 - pravila platform za oglaševanje CBD/konopljinih izdelkov.
-

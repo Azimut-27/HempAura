@@ -60,5 +60,6 @@ export const checkoutSchema = z
       .toUpperCase()
       .regex(/^[A-Z0-9][A-Z0-9_-]{2,31}$/)
       .optional(),
+    language: z.enum(["sl", "en", "de"]).optional().default("sl"),
   })
   .strict();

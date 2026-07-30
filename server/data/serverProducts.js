@@ -15,8 +15,8 @@ export const serverProducts = [
   },
   {
     id: "hempaura-cbg-cvetovi-citrin-15",
-    name: "HempAura CBG cvetovi Citrin 15 %",
-    sku: "HA-CBG-CITRIN-15-5G",
+    name: "HempAura CBD cvetovi Citrin 15 %",
+    sku: "HA-CBD-CITRIN-15-5G",
     active: true,
     priceCents: 2890,
     currency: "EUR",

@@ -36,7 +36,7 @@ export default async function handler(request, response) {
     sendJson(response, 200, {
       active: false,
       code,
-      message: "Kodo za popust bomo ponovno preverili v varnem placilnem koraku.",
+      message: "Kodo za popust bomo ponovno preverili v varnem plačilnem koraku.",
     });
   }
 }
