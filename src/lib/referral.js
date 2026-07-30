@@ -22,6 +22,14 @@ export function rememberReferralCode(value, now = Date.now()) {
   return code;
 }
 
+export function clearReferralCode() {
+  try {
+    sessionStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Checkout continues without attribution when storage is unavailable.
+  }
+}
+
 export function getStoredReferralCode() {
   try {
     const attribution = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "null");

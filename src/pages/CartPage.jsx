@@ -1,5 +1,5 @@
 import { ShoppingBag, Trash2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProductMedia from "../components/ProductMedia.jsx";
 import QuantityControl from "../components/QuantityControl.jsx";
@@ -8,7 +8,12 @@ import { siteConfig } from "../config/siteConfig.js";
 import { useCart } from "../context/CartContext.jsx";
 import { getProductById } from "../data/products.js";
 import { formatPrice } from "../lib/formatters.js";
-import { getStoredReferralCode } from "../lib/referral.js";
+import {
+  clearReferralCode,
+  getStoredReferralCode,
+  normalizeReferralCode,
+  rememberReferralCode,
+} from "../lib/referral.js";
 import { createCheckoutSession, getReferralPreview } from "../services/api.js";
 
 export default function CartPage() {
@@ -16,7 +21,8 @@ export default function CartPage() {
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const [legalConsent, setLegalConsent] = useState(false);
-  const referralCode = useMemo(() => getStoredReferralCode(), []);
+  const [referralCode, setReferralCode] = useState(() => getStoredReferralCode());
+  const [promoCodeInput, setPromoCodeInput] = useState(referralCode);
   const [referralPreview, setReferralPreview] = useState({
     status: referralCode ? "loading" : "idle",
     data: null,
@@ -58,6 +64,36 @@ export default function CartPage() {
       ? referralPreview.data.discountCents
       : 0;
   const estimatedTotalCents = Math.max(0, totals.totalCents - referralDiscountCents);
+
+  function applyPromoCode(event) {
+    event.preventDefault();
+    const code = normalizeReferralCode(promoCodeInput);
+
+    if (!promoCodeInput.trim()) {
+      clearReferralCode();
+      setReferralCode("");
+      setReferralPreview({ status: "idle", data: null });
+      setMessage("");
+      return;
+    }
+
+    if (!code) {
+      setReferralPreview({
+        status: "error",
+        data: {
+          active: false,
+          code: promoCodeInput.trim(),
+          message: "Koda ni v pravilnem formatu.",
+        },
+      });
+      return;
+    }
+
+    rememberReferralCode(code);
+    setPromoCodeInput(code);
+    setReferralCode(code);
+    setMessage("");
+  }
 
   async function checkout() {
     if (!siteConfig.paymentsEnabled) {
@@ -216,6 +252,52 @@ export default function CartPage() {
                     </dd>
                   </div>
                 </dl>
+                <form className="mt-5" onSubmit={applyPromoCode}>
+                  <label
+                    className="text-xs font-bold uppercase text-porcelain/60"
+                    htmlFor="cart-promo-code"
+                  >
+                    Koda za popust
+                  </label>
+                  <div className="mt-2 flex border border-white/20 bg-white/5 focus-within:border-gold">
+                    <input
+                      id="cart-promo-code"
+                      type="text"
+                      value={promoCodeInput}
+                      onChange={(event) => setPromoCodeInput(event.target.value)}
+                      placeholder="ANA10"
+                      className="min-h-11 w-full bg-transparent px-3 text-sm font-bold uppercase text-porcelain outline-none placeholder:text-porcelain/35"
+                      autoComplete="off"
+                      spellCheck="false"
+                    />
+                    <button
+                      type="submit"
+                      className="min-h-11 shrink-0 bg-porcelain px-4 text-xs font-bold text-forest hover:bg-gold"
+                    >
+                      Uporabi
+                    </button>
+                  </div>
+                  {referralCode && (
+                    <button
+                      type="button"
+                      className="mt-2 text-xs font-bold text-gold underline"
+                      onClick={() => {
+                        clearReferralCode();
+                        setReferralCode("");
+                        setPromoCodeInput("");
+                        setReferralPreview({ status: "idle", data: null });
+                        setMessage("");
+                      }}
+                    >
+                      Odstrani kodo
+                    </button>
+                  )}
+                  {!referralCode && referralPreview.data?.message && (
+                    <p className="mt-2 text-xs leading-5 text-porcelain/60">
+                      {referralPreview.data.message}
+                    </p>
+                  )}
+                </form>
                 <button
                   type="button"
                   disabled={status === "loading"}
