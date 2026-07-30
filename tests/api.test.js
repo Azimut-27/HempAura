@@ -178,6 +178,32 @@ describe("public API validation", () => {
     expect(response.statusCode).toBe(400);
   });
 
+  it("referral preview returns the active discount estimate", async () => {
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        getActiveReferralPartnerByCode: vi.fn().mockResolvedValue({
+          public_code: "ANA10",
+          customer_discount_percent: 10,
+        }),
+      },
+    }));
+    const { default: handler } = await import("../api/referrals/preview.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "GET",
+        query: { code: "ana10", subtotal_cents: "5990" },
+      },
+      response
+    );
+    expect(response.statusCode).toBe(200);
+    expect(JSON.parse(response.body)).toMatchObject({
+      active: true,
+      code: "ANA10",
+      discountCents: 599,
+    });
+  });
+
   it("webhook rejects a bad signature", async () => {
     vi.doMock("../server/payments/index.js", () => ({
       getPaymentProvider: () => ({

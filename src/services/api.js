@@ -37,5 +37,12 @@ export const createCheckoutSession = (items, referralCode = "") =>
     }),
   });
 
+export const getReferralPreview = (code, subtotalCents) =>
+  request(
+    `/api/referrals/preview?code=${encodeURIComponent(code)}&subtotal_cents=${encodeURIComponent(
+      subtotalCents
+    )}`
+  );
+
 export const getCheckoutStatus = (sessionId) =>
   request(`/api/checkout/status?session_id=${encodeURIComponent(sessionId)}`);

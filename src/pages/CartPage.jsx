@@ -1,5 +1,5 @@
 import { ShoppingBag, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ProductMedia from "../components/ProductMedia.jsx";
 import QuantityControl from "../components/QuantityControl.jsx";
@@ -9,14 +9,55 @@ import { useCart } from "../context/CartContext.jsx";
 import { getProductById } from "../data/products.js";
 import { formatPrice } from "../lib/formatters.js";
 import { getStoredReferralCode } from "../lib/referral.js";
-import { createCheckoutSession } from "../services/api.js";
+import { createCheckoutSession, getReferralPreview } from "../services/api.js";
 
 export default function CartPage() {
   const { items, setQuantity, removeItem, clearCart, totals } = useCart();
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const [legalConsent, setLegalConsent] = useState(false);
+  const referralCode = useMemo(() => getStoredReferralCode(), []);
+  const [referralPreview, setReferralPreview] = useState({
+    status: referralCode ? "loading" : "idle",
+    data: null,
+  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!referralCode || totals.subtotalCents <= 0) {
+      setReferralPreview({ status: "idle", data: null });
+      return undefined;
+    }
+
+    let cancelled = false;
+    setReferralPreview((current) => ({ ...current, status: "loading" }));
+    getReferralPreview(referralCode, totals.subtotalCents)
+      .then((data) => {
+        if (!cancelled) setReferralPreview({ status: "ready", data });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setReferralPreview({
+            status: "error",
+            data: {
+              active: false,
+              code: referralCode,
+              message: "Kodo za popust bomo preverili v varnem plačilnem koraku.",
+            },
+          });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [referralCode, totals.subtotalCents]);
+
+  const referralDiscountCents =
+    referralPreview.data?.active && Number.isInteger(referralPreview.data.discountCents)
+      ? referralPreview.data.discountCents
+      : 0;
+  const estimatedTotalCents = Math.max(0, totals.totalCents - referralDiscountCents);
 
   async function checkout() {
     if (!siteConfig.paymentsEnabled) {
@@ -30,7 +71,7 @@ export default function CartPage() {
     setStatus("loading");
     setMessage("");
     try {
-      const result = await createCheckoutSession(items, getStoredReferralCode());
+      const result = await createCheckoutSession(items, referralCode);
       window.location.assign(result.url);
     } catch (error) {
       setStatus("error");
@@ -128,6 +169,36 @@ export default function CartPage() {
                     <dt>Vmesni seštevek</dt>
                     <dd>{formatPrice(totals.subtotalCents)}</dd>
                   </div>
+                  {referralCode && (
+                    <div className="border-y border-white/15 py-3">
+                      <div className="flex justify-between gap-4">
+                        <dt>
+                          Popust
+                          <span className="ml-2 rounded-sm bg-gold/20 px-2 py-1 text-xs font-bold text-gold">
+                            {referralCode}
+                          </span>
+                        </dt>
+                        <dd>
+                          {referralDiscountCents > 0
+                            ? `-${formatPrice(referralDiscountCents)}`
+                            : referralPreview.status === "loading"
+                              ? "Preverjanje ..."
+                              : "Preverjanje v Stripe"}
+                        </dd>
+                      </div>
+                      {referralPreview.data?.active && (
+                        <p className="mt-2 text-xs leading-5 text-porcelain/60">
+                          {referralPreview.data.customerDiscountPercent}% popusta bo
+                          ponovno potrjeno v varnem plačilu.
+                        </p>
+                      )}
+                      {!referralPreview.data?.active && referralPreview.data?.message && (
+                        <p className="mt-2 text-xs leading-5 text-porcelain/60">
+                          {referralPreview.data.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <div className="flex justify-between text-porcelain/70">
                     <dt>Dostava</dt>
                     <dd>
@@ -140,7 +211,7 @@ export default function CartPage() {
                     <dt>Ocenjeno skupaj</dt>
                     <dd>
                       {Number.isInteger(totals.shippingCents)
-                        ? formatPrice(totals.totalCents)
+                        ? formatPrice(estimatedTotalCents)
                         : formatPrice(totals.subtotalCents)}
                     </dd>
                   </div>

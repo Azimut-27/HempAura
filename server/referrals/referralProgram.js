@@ -19,6 +19,12 @@ export function calculateCommissionCents({
   return Math.round((qualifyingCents * safeRate) / 10_000);
 }
 
+export function calculateReferralDiscountCents(subtotalCents, discountPercent) {
+  const subtotal = Math.max(0, Number(subtotalCents || 0));
+  const percent = Math.min(100, Math.max(0, Number(discountPercent || 0)));
+  return Math.round((subtotal * percent) / 100);
+}
+
 function promotionCodeFromDiscountEntry(entry) {
   const discount = entry?.discount || entry;
   const candidates = [

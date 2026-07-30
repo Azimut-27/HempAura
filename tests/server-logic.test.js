@@ -4,6 +4,7 @@ import { generateOrderNumber } from "../server/lib/orderNumber.js";
 import { checkoutSchema } from "../server/lib/validation.js";
 import {
   calculateCommissionCents,
+  calculateReferralDiscountCents,
   extractPromotionCodeReference,
   normalizeReferralCode,
 } from "../server/referrals/referralProgram.js";
@@ -69,6 +70,11 @@ describe("server catalogue and checkout validation", () => {
         commissionRateBps: 1_500,
       })
     ).toBe(1_350);
+  });
+
+  it("calculates a customer referral discount preview", () => {
+    expect(calculateReferralDiscountCents(5990, 10)).toBe(599);
+    expect(calculateReferralDiscountCents(5990, 150)).toBe(5990);
   });
 
   it("extracts an expanded Stripe promotion code", () => {
