@@ -14,3 +14,5 @@ pnpm-debug.log*
 .env
 .env.local
 .DS_Store
+gls-label*.pdf
+*-GLS-label.pdf

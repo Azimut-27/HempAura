@@ -56,6 +56,7 @@ const legalCommerceConfigurationComplete = [
 ].every((names) => names.some((name) => process.env[name]?.trim()));
 
 export const serverConfig = {
+  adminDashboardToken: stringEnv("ADMIN_DASHBOARD_TOKEN"),
   siteUrl: process.env.VITE_SITE_URL || "http://localhost:5173",
   paymentsEnabled:
     process.env.VITE_PAYMENTS_ENABLED === "true" &&

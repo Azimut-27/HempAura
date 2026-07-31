@@ -19,6 +19,9 @@ verified information and receives the required approvals.
 
 ## Routes
 
+- `/admin/orders` — private order operations dashboard. It is intentionally not
+  linked from the storefront and requires `ADMIN_DASHBOARD_TOKEN`.
+
 - `/`
 - `/products`
 - `/products/:slug`

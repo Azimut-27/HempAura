@@ -1,6 +1,6 @@
-import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { serverConfig } from "../../../server/config/serverConfig.js";
+import { hasValidBearerToken } from "../../../server/lib/adminAuth.js";
 import { safeError, sendJson } from "../../../server/lib/http.js";
 import { getPaymentProvider } from "../../../server/payments/index.js";
 import { database } from "../../../server/repositories/database.js";
@@ -24,20 +24,6 @@ const requestSchema = z
     retry: z.boolean().optional().default(false),
   })
   .strict();
-
-function hasValidAdminToken(request) {
-  const expected = serverConfig.gls.adminToken;
-  if (!expected || expected.length < 32) return false;
-  const authorization = request.headers.authorization || "";
-  if (!authorization.startsWith("Bearer ")) return false;
-  const provided = authorization.slice(7);
-  const expectedBuffer = Buffer.from(expected);
-  const providedBuffer = Buffer.from(provided);
-  return (
-    expectedBuffer.length === providedBuffer.length &&
-    timingSafeEqual(expectedBuffer, providedBuffer)
-  );
-}
 
 function sendLabel(response, orderNumber, labelBase64, parcelNumber) {
   const label = Buffer.from(labelBase64, "base64");
@@ -81,13 +67,22 @@ export default async function handler(request, response) {
     sendJson(response, 405, { message: "Method not allowed." });
     return;
   }
-  if (!serverConfig.gls.adminToken || serverConfig.gls.adminToken.length < 32) {
+  if (
+    (!serverConfig.gls.adminToken || serverConfig.gls.adminToken.length < 32) &&
+    (!serverConfig.adminDashboardToken || serverConfig.adminDashboardToken.length < 32)
+  ) {
     sendJson(response, 503, {
-      message: "GLS_ADMIN_TOKEN must be configured with at least 32 characters.",
+      message: "GLS or dashboard administrator token is not configured.",
     });
     return;
   }
-  if (!hasValidAdminToken(request)) {
+  if (
+    !hasValidBearerToken(
+      request,
+      serverConfig.gls.adminToken,
+      serverConfig.adminDashboardToken
+    )
+  ) {
     sendJson(response, 401, { message: "Invalid GLS administrator token." });
     return;
   }

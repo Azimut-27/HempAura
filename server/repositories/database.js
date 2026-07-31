@@ -6,6 +6,27 @@ function assertResult(result, label) {
 }
 
 export const database = {
+  async listAdminOrders(limit = 75) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .select(
+        "id,public_order_number,provider,customer_email,customer_name,currency,subtotal_cents,discount_cents,shipping_cents,tax_cents,total_cents,payment_status,fulfillment_status,promotion_code,shipping_address_json,billing_address_json,created_at,updated_at,order_items(id,sku_snapshot,name_snapshot,quantity,unit_price_cents,line_total_cents),gls_shipments(id,environment,status,parcel_number,error_message,attempts,label_created_at),order_email_deliveries(id,kind,recipient,status,last_error,sent_at)"
+      )
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    return assertResult(result, "List administrator orders");
+  },
+
+  async setAdminOrderFulfillmentStatus(orderNumber, fulfillmentStatus) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .update({ fulfillment_status: fulfillmentStatus })
+      .eq("public_order_number", orderNumber)
+      .select("id,public_order_number,fulfillment_status,updated_at")
+      .maybeSingle();
+    return assertResult(result, "Update administrator order status");
+  },
+
   async createContactSubmission(values) {
     const result = await getSupabaseAdmin()
       .from("contact_submissions")

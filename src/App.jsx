@@ -19,6 +19,7 @@ const NewsletterStatusPage = lazy(() => import("./pages/NewsletterStatusPage.jsx
 const NewsletterUnsubscribePage = lazy(
   () => import("./pages/NewsletterUnsubscribePage.jsx")
 );
+const AdminOrdersPage = lazy(() => import("./pages/AdminOrdersPage.jsx"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage.jsx"));
 
 function PageLoader() {
@@ -33,6 +34,7 @@ export default function App() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
+        <Route path="admin/orders" element={<AdminOrdersPage />} />
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="products" element={<ProductsPage />} />
