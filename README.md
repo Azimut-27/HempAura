@@ -209,9 +209,11 @@ private `gls_shipments` table, and returned as a PDF. Repeating the same request
 returns the stored label instead of creating another GLS parcel.
 
 The GLS test-account instructions supplied for HempAura require a SHA-256
-password byte array, which is implemented in `getGlsPasswordHash`. The current
-regional MyGLS manual describes SHA-512 instead. Confirm the assigned algorithm
-with GLS Slovenia before changing from the test account to production.
+password byte array, which is implemented in `getGlsPasswordHash`. Some current
+regional MyGLS manuals describe SHA-512 instead, so the request algorithm can be
+changed with `GLS_PASSWORD_HASH_ALGORITHM=sha256` or `sha512`. If GLS returns
+`Unauthorized` while username, client number, and password are correct, try the
+algorithm assigned by GLS Slovenia before changing from test to production.
 
 1. Run `supabase/migrations/202607300001_gls_shipping.sql` in the Supabase SQL
    editor.

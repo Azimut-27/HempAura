@@ -3,6 +3,7 @@ import {
   GlsApiError,
   GlsClient,
   getGlsPasswordHash,
+  getGlsPasswordHashWithAlgorithm,
 } from "../server/shipping/glsClient.js";
 import {
   getDeliveryAddress,
@@ -15,6 +16,7 @@ const clientConfig = {
   username: "stakingforge@gmail.com",
   clientNumber: 490007000,
   password: "password",
+  passwordHashAlgorithm: "sha256",
   webshopEngine: "HempAura",
   printerType: "A4_2x2",
   printPosition: 1,
@@ -32,6 +34,14 @@ describe("GLS Slovenia client", () => {
     expect(bytes).toHaveLength(32);
     expect(Buffer.from(bytes).toString("hex")).toBe(
       "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+    );
+  });
+
+  it("supports SHA-512 password byte arrays for GLS accounts that require it", () => {
+    const bytes = getGlsPasswordHashWithAlgorithm("password", "sha512");
+    expect(bytes).toHaveLength(64);
+    expect(Buffer.from(bytes).toString("hex")).toBe(
+      "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86"
     );
   });
 
@@ -104,7 +114,9 @@ describe("GLS Slovenia client", () => {
       clientConfig.baseUrl,
       expect.objectContaining({ method: "POST" })
     );
-    expect(request.Password).toEqual(getGlsPasswordHash("password"));
+    expect(request.Password).toEqual(
+      getGlsPasswordHashWithAlgorithm("password", "sha256")
+    );
     expect(request.Password).not.toContain("password");
     expect(request.ParcelList).toEqual([parcel]);
     expect(result.label.equals(pdf)).toBe(true);

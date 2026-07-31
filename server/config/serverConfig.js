@@ -99,6 +99,8 @@ export const serverConfig = {
     username: stringEnv("GLS_USERNAME"),
     clientNumber: integerEnv("GLS_CLIENT_NUMBER"),
     password: stringEnv("GLS_PASSWORD"),
+    passwordHashAlgorithm:
+      stringEnv("GLS_PASSWORD_HASH_ALGORITHM").toLowerCase() || "sha256",
     adminToken: stringEnv("GLS_ADMIN_TOKEN"),
     webshopEngine: stringEnv("GLS_WEBSHOP_ENGINE") || "HempAura",
     printerType: stringEnv("GLS_PRINTER_TYPE") || "A4_2x2",

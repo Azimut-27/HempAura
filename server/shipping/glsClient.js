@@ -14,6 +14,17 @@ export function getGlsPasswordHash(password) {
   return Array.from(hash);
 }
 
+export function getGlsPasswordHashWithAlgorithm(password, algorithm = "sha256") {
+  const normalizedAlgorithm = String(algorithm || "sha256").toLowerCase();
+  if (!["sha256", "sha512"].includes(normalizedAlgorithm)) {
+    throw new GlsApiError(
+      "GLS_PASSWORD_HASH_ALGORITHM must be sha256 or sha512."
+    );
+  }
+  const hash = createHash(normalizedAlgorithm).update(password).digest();
+  return Array.from(hash);
+}
+
 export class GlsApiError extends Error {
   constructor(message, { status = null, errors = [], cause } = {}) {
     super(message, { cause });
@@ -52,6 +63,11 @@ function assertClientConfig(config) {
   }
   if (!ALLOWED_PRINTER_TYPES.has(config.printerType)) {
     throw new GlsApiError("GLS_PRINTER_TYPE is not supported.");
+  }
+  if (!["sha256", "sha512"].includes(config.passwordHashAlgorithm || "sha256")) {
+    throw new GlsApiError(
+      "GLS_PASSWORD_HASH_ALGORITHM must be sha256 or sha512."
+    );
   }
   if (
     !Number.isInteger(config.printPosition) ||
@@ -126,7 +142,10 @@ export class GlsClient {
         },
         body: JSON.stringify({
           Username: this.config.username,
-          Password: getGlsPasswordHash(this.config.password),
+          Password: getGlsPasswordHashWithAlgorithm(
+            this.config.password,
+            this.config.passwordHashAlgorithm
+          ),
           WebshopEngine: this.config.webshopEngine,
           ParcelList: parcelList,
           PrintPosition: this.config.printPosition,
