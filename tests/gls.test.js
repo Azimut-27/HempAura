@@ -4,7 +4,10 @@ import {
   GlsClient,
   getGlsPasswordHash,
 } from "../server/shipping/glsClient.js";
-import { splitGlsStreetAddress } from "../server/shipping/glsShipment.js";
+import {
+  getDeliveryAddress,
+  splitGlsStreetAddress,
+} from "../server/shipping/glsShipment.js";
 
 const clientConfig = {
   baseUrl:
@@ -40,6 +43,35 @@ describe("GLS Slovenia client", () => {
         houseNumberInfo: "A, stanovanje 4",
       }
     );
+  });
+
+  it("uses billing address as the GLS delivery fallback when shipping is missing", () => {
+    const deliveryAddress = getDeliveryAddress({
+      public_order_number: "HA-20260731-2BD127",
+      customer_name: "Martin Jancar",
+      customer_email: "martin@example.com",
+      shipping_address_json: null,
+      billing_address_json: {
+        name: "Martin Jancar",
+        line1: "Slovenska cesta 10",
+        line2: "",
+        postal_code: "1000",
+        city: "Ljubljana",
+        country: "SI",
+        phone: "031123456",
+        email: "martin@example.com",
+      },
+      order_items: [],
+    });
+
+    expect(deliveryAddress).toMatchObject({
+      Name: "Martin Jancar",
+      CountryIsoCode: "SI",
+      ZipCode: "1000",
+      City: "Ljubljana",
+      Street: "Slovenska cesta",
+      HouseNumber: "10",
+    });
   });
 
   it("posts a PrintLabels request and decodes the PDF byte array", async () => {
@@ -123,4 +155,3 @@ describe("GLS Slovenia client", () => {
     ).toThrow(GlsApiError);
   });
 });
-

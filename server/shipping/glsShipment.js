@@ -62,10 +62,10 @@ function getPickupAddress() {
   };
 }
 
-function getDeliveryAddress(order) {
-  const address = order.shipping_address_json;
+export function getDeliveryAddress(order) {
+  const address = order.shipping_address_json || order.billing_address_json;
   if (!address || typeof address !== "object") {
-    throw new Error("Order does not contain a shipping address.");
+    throw new Error("Order does not contain a shipping or billing address.");
   }
   const street = splitGlsStreetAddress(address.line1, address.line2);
   const country = requiredText(
@@ -129,4 +129,3 @@ export function getGlsRequestFingerprint(order) {
     .update(JSON.stringify(parcel))
     .digest("hex");
 }
-

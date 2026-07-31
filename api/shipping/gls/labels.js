@@ -64,12 +64,13 @@ async function ensureOrderHasShippingAddress(order) {
     data: { object: session },
   });
 
-  if (!payment.shippingAddress) return order;
+  const deliveryAddress = payment.shippingAddress || payment.billingAddress;
+  if (!deliveryAddress) return order;
 
   return database.updateOrderAddressDetails(order.id, {
     customer_email: payment.customerEmail || order.customer_email,
     customer_name: payment.customerName || order.customer_name,
-    shipping_address_json: payment.shippingAddress,
+    shipping_address_json: deliveryAddress,
     billing_address_json: payment.billingAddress,
   });
 }

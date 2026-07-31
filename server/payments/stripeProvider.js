@@ -168,7 +168,17 @@ export class StripePaymentProvider extends PaymentProvider {
               null,
           }
         : null,
-      billingAddress: session.customer_details?.address || null,
+      billingAddress: session.customer_details?.address
+        ? {
+            ...session.customer_details.address,
+            name: session.customer_details?.name || null,
+            phone: session.customer_details?.phone || null,
+            email:
+              session.customer_details?.email ||
+              session.customer_email ||
+              null,
+          }
+        : null,
       currency: (session.currency || "eur").toUpperCase(),
       totalCents: session.amount_total,
       subtotalCents: session.amount_subtotal,
