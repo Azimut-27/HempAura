@@ -145,12 +145,18 @@ export const database = {
     return assertResult(result, "Get order");
   },
 
-  async updateOrderPaymentStatus(providerSessionId, paymentStatus, providerPaymentId) {
+  async updateOrderPaymentStatus(
+    providerSessionId,
+    paymentStatus,
+    providerPaymentId,
+    values = {}
+  ) {
     const result = await getSupabaseAdmin()
       .from("orders")
       .update({
         payment_status: paymentStatus,
         provider_payment_id: providerPaymentId,
+        ...values,
       })
       .eq("provider_session_id", providerSessionId)
       .select("*")
@@ -158,11 +164,23 @@ export const database = {
     return assertResult(result, "Update order payment status");
   },
 
+  async updateOrderAddressDetails(orderId, values) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .update(values)
+      .eq("id", orderId)
+      .select(
+        "id,public_order_number,provider_session_id,customer_email,customer_name,payment_status,fulfillment_status,shipping_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
+      )
+      .single();
+    return assertResult(result, "Update order address details");
+  },
+
   async getPaidOrderForGls(orderNumber) {
     const result = await getSupabaseAdmin()
       .from("orders")
       .select(
-        "id,public_order_number,customer_email,customer_name,payment_status,fulfillment_status,shipping_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
+        "id,public_order_number,provider_session_id,customer_email,customer_name,payment_status,fulfillment_status,shipping_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
       )
       .eq("public_order_number", orderNumber)
       .maybeSingle();

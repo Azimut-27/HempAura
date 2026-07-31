@@ -2,6 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { serverConfig } from "../../../server/config/serverConfig.js";
 import { safeError, sendJson } from "../../../server/lib/http.js";
+import { getPaymentProvider } from "../../../server/payments/index.js";
 import { database } from "../../../server/repositories/database.js";
 import {
   GlsApiError,
@@ -52,6 +53,27 @@ function sendLabel(response, orderNumber, labelBase64, parcelNumber) {
   response.end(label);
 }
 
+async function ensureOrderHasShippingAddress(order) {
+  if (order.shipping_address_json) return order;
+  if (!order.provider_session_id) return order;
+
+  const provider = getPaymentProvider();
+  const session = await provider.retrievePayment(order.provider_session_id);
+  const payment = provider.normalizePaymentEvent({
+    type: "checkout.session.completed",
+    data: { object: session },
+  });
+
+  if (!payment.shippingAddress) return order;
+
+  return database.updateOrderAddressDetails(order.id, {
+    customer_email: payment.customerEmail || order.customer_email,
+    customer_name: payment.customerName || order.customer_name,
+    shipping_address_json: payment.shippingAddress,
+    billing_address_json: payment.billingAddress,
+  });
+}
+
 export default async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -77,7 +99,7 @@ export default async function handler(request, response) {
 
   let shipment;
   try {
-    const order = await database.getPaidOrderForGls(parsed.data.orderNumber);
+    let order = await database.getPaidOrderForGls(parsed.data.orderNumber);
     if (!order) {
       sendJson(response, 404, { message: "Order not found." });
       return;
@@ -88,6 +110,7 @@ export default async function handler(request, response) {
       });
       return;
     }
+    order = await ensureOrderHasShippingAddress(order);
 
     const requestFingerprint = getGlsRequestFingerprint(order);
     shipment = await database.claimGlsShipment(
@@ -173,4 +196,3 @@ export default async function handler(request, response) {
     });
   }
 }
-

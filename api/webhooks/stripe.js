@@ -181,7 +181,13 @@ export default async function handler(request, response) {
       order = await database.updateOrderPaymentStatus(
         payment.sessionId,
         paymentStatus,
-        payment.paymentId
+        payment.paymentId,
+        {
+          customer_email: payment.customerEmail,
+          customer_name: payment.customerName,
+          shipping_address_json: payment.shippingAddress,
+          billing_address_json: payment.billingAddress,
+        }
       );
     }
 
