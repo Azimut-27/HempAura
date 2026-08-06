@@ -100,14 +100,18 @@ export default function Header() {
           className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8"
           aria-label="Glavna navigacija"
         >
-          <Link to="/" className="flex min-h-12 items-center" aria-label="HerbaGallus domov">
+          <Link to="/" className="flex min-h-12 items-center gap-3" aria-label="HerbaGallus domov">
             <img
-              src="/brand/herbagallus-logo.png"
-              alt="HerbaGallus"
-              width="440"
-              height="245"
-              className="h-14 w-auto max-w-[10rem] object-contain sm:h-[3.75rem] sm:max-w-[11rem]"
+              src="/brand/herbagallus-mark.png"
+              alt=""
+              width="170"
+              height="160"
+              className="size-10 shrink-0 object-contain"
+              aria-hidden="true"
             />
+            <span className="hidden font-display text-3xl font-semibold text-forest sm:inline">
+              HerbaGallus
+            </span>
           </Link>
 
           <div className="hidden items-center gap-7 lg:flex">
@@ -235,14 +239,16 @@ export default function Header() {
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-forest/10 pb-5">
-              <span className="flex items-center">
+              <span className="flex items-center gap-3">
                 <img
-                  src="/brand/herbagallus-logo.png"
-                  alt="HerbaGallus"
-                  width="440"
-                  height="245"
-                  className="h-[4.5rem] w-auto max-w-[12rem] object-contain"
+                  src="/brand/herbagallus-mark.png"
+                  alt=""
+                  width="170"
+                  height="160"
+                  className="size-10 shrink-0 object-contain"
+                  aria-hidden="true"
                 />
+                <span className="font-display text-3xl font-semibold text-forest">HerbaGallus</span>
               </span>
               <button
                 type="button"
