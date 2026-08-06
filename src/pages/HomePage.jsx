@@ -5,6 +5,7 @@ import FaqList from "../components/FaqList.jsx";
 import NewsletterForm from "../components/NewsletterForm.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import Seo from "../components/Seo.jsx";
+import { useLanguage } from "../context/LanguageContext.jsx";
 import { faqs } from "../data/faqs.js";
 import { products } from "../data/products.js";
 
@@ -18,6 +19,8 @@ const trustItems = [
 ];
 
 export default function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <>
       <Seo
@@ -38,8 +41,7 @@ export default function HomePage() {
               PREMIUM OUTDOOR CBD
             </p>
             <h1 className="hero-title mt-6 max-w-[12ch] font-display text-5xl font-semibold leading-[0.98] text-forest sm:text-6xl lg:max-w-none lg:text-7xl">
-              <span className="lg:block">Kakovost se začne</span>{" "}
-              <span>pri izbiri.</span>
+              {t("Sprostite se, spite bolje in uživajte v življenju.")}
             </h1>
             <p className="mt-8 max-w-[38rem] text-base leading-8 text-forest/75 sm:text-lg">
               HerbaGallus združuje premium CBD, outdoor pristop in bio usmerjeno

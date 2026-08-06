@@ -61,6 +61,7 @@ const en = {
   "Povečaj količino za": "Increase quantity for",
 
   "PREMIUM OUTDOOR CBD": "PREMIUM OUTDOOR CBD",
+  "Sprostite se, spite bolje in uživajte v življenju.": "Relax, sleep better and enjoy your life.",
   "Kakovost se začne": "Quality begins",
   "pri izbiri.": "with selection.",
   "Kakovost se začne pri izbiri.": "Quality begins with selection.",
@@ -427,6 +428,7 @@ const de = {
   "Povečaj količino za": "Menge erhoehen fuer",
 
   "PREMIUM OUTDOOR CBD": "PREMIUM OUTDOOR CBD",
+  "Sprostite se, spite bolje in uživajte v življenju.": "Entspannen Sie sich, schlafen Sie besser und genießen Sie Ihr Leben.",
   "Kakovost se začne": "Qualitaet beginnt",
   "pri izbiri.": "bei der Auswahl.",
   "Kakovost se začne pri izbiri.": "Qualitaet beginnt bei der Auswahl.",
