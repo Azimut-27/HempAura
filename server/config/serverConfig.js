@@ -67,7 +67,7 @@ export const serverConfig = {
   resendApiKey: process.env.RESEND_API_KEY || "",
   resendFromEmail:
     stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL") ||
-    "HempAura <onboarding@resend.dev>",
+    "HerbaGallus <onboarding@resend.dev>",
   resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET || "",
   contactToEmail: stringEnv("CONTACT_TO_EMAIL") || "stakingforge@gmail.com",
   supportEmail:
@@ -103,7 +103,7 @@ export const serverConfig = {
     passwordHashAlgorithm:
       stringEnv("GLS_PASSWORD_HASH_ALGORITHM").toLowerCase() || "sha256",
     adminToken: stringEnv("GLS_ADMIN_TOKEN"),
-    webshopEngine: stringEnv("GLS_WEBSHOP_ENGINE") || "HempAura",
+    webshopEngine: stringEnv("GLS_WEBSHOP_ENGINE") || "HerbaGallus",
     printerType: stringEnv("GLS_PRINTER_TYPE") || "A4_2x2",
     printPosition: integerEnv("GLS_PRINT_POSITION", 1),
     hidePhoneNumberOnLabels: booleanEnv(

@@ -62,7 +62,7 @@ export default async function handler(request, response) {
     const confirmationUrl = `${serverConfig.siteUrl}/newsletter/confirm?token=${token}`;
     await sendEmail({
       to: parsed.data.email,
-      subject: "Potrdi prijavo | HempAura",
+      subject: "Potrdi prijavo | HerbaGallus",
       html: NewsletterConfirmationEmail({ confirmationUrl }),
     });
 

@@ -40,7 +40,7 @@ export default function CheckoutSuccessPage() {
     <>
       <Seo
         title="Stanje plačila"
-        description="Varno preverjanje stanja naročila HempAura."
+        description="Varno preverjanje stanja naročila HerbaGallus."
         path="/checkout/success"
       />
       <section className="grid min-h-[65vh] place-items-center bg-cream px-5 py-16">

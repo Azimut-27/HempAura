@@ -13,17 +13,17 @@ describe("cart", () => {
   it("adds active products and caps quantity at available stock", () => {
     const state = cartReducer(initialCartState, {
       type: "add",
-      productId: "hemptouch-cbd-gold-500",
-      quantity: 4,
+      productId: "hempaura-cbd-kapljice-5",
+      quantity: 40,
     });
     expect(state.items).toEqual([
-      { productId: "hemptouch-cbd-gold-500", quantity: 1 },
+      { productId: "hempaura-cbd-kapljice-5", quantity: 20 },
     ]);
   });
 
   it("calculates totals from approved catalogue values only", () => {
     expect(
-      getCartTotals([{ productId: "hemptouch-cbd-gold-500", quantity: 1 }])
+      getCartTotals([{ productId: "hempaura-cbd-kapljice-5", quantity: 1 }])
     ).toEqual({
       subtotalCents: 3100,
       shippingCents: null,

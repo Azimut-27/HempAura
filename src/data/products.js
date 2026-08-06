@@ -2,15 +2,15 @@ export const products = [
   {
     id: "hempaura-cbd-kapljice-5",
     slug: "hempaura-cbd-kapljice-5",
-    name: "HempAura CBD kapljice 5%",
+    name: "HerbaGallus CBD kapljice 5%",
     subtitle: "500 mg CBD · polni spekter · THC < 0,2 %",
-    brand: "HempAura",
+    brand: "HerbaGallus",
     type: "oil",
     status: "active",
     shortDescription:
       "Polnospektralni izvleček industrijske konoplje v MCT olju z naravno prisotnimi kanabinoidi, terpeni in flavonoidi.",
     description:
-      "HempAura CBD kapljice 5% so zasnovane kot vsakodnevna konopljina podpora z izvlečkom Cannabis sativa L. in MCT kokosovim oljem. Steklenička 10 ml vsebuje 500 mg CBD-ja; naravni profil vključuje tudi druge prisotne kanabinoide, terpene in flavonoide za celovito rastlinsko sestavo. Izdelek je veganski, brez konzervansov in GSO, vsebnost THC pa ostaja pod 0,2 % v skladu z evropskimi omejitvami.",
+      "HerbaGallus CBD kapljice 5% so zasnovane kot vsakodnevna konopljina podpora z izvlečkom Cannabis sativa L. in MCT kokosovim oljem. Steklenička 10 ml vsebuje 500 mg CBD-ja; naravni profil vključuje tudi druge prisotne kanabinoide, terpene in flavonoide za celovito rastlinsko sestavo. Izdelek je veganski, brez konzervansov in GSO, vsebnost THC pa ostaja pod 0,2 % v skladu z evropskimi omejitvami.",
     spectrum: "Polni spekter",
     cbdPercentage: 5,
     cbdAmountMg: 500,
@@ -41,19 +41,19 @@ export const products = [
     imagesByLanguage: {
       sl: {
         src: "/products/hempaura-cbd-oil-sl.png",
-        alt: "HempAura CBD olje Zlato s slovensko deklaracijo",
+        alt: "HerbaGallus CBD olje Zlato s slovensko deklaracijo",
         width: 1672,
         height: 941,
       },
       en: {
         src: "/products/hempaura-cbd-oil-en.png",
-        alt: "HempAura CBD Oil Gold with English label",
+        alt: "HerbaGallus CBD Oil Gold with English label",
         width: 1672,
         height: 941,
       },
       de: {
         src: "/products/hempaura-cbd-oil-de.png",
-        alt: "HempAura CBD Oil Gold mit deutscher Deklaration",
+        alt: "HerbaGallus CBD Oil Gold mit deutscher Deklaration",
         width: 1672,
         height: 941,
       },
@@ -67,7 +67,7 @@ export const products = [
     taxRatePercent: 22,
     taxBehavior: "inclusive",
     metadata: {
-      manufacturer: "HempAura",
+      manufacturer: "HerbaGallus",
       origin: "EU",
       thcContent: "< 0,2 %",
       vegan: true,
@@ -78,15 +78,15 @@ export const products = [
   {
     id: "hempaura-cbg-cvetovi-citrin-15",
     slug: "hempaura-cbg-cvetovi-citrin-15-5g",
-    name: "HempAura CBD cvetovi Citrin 15 %",
-    subtitle: "5 g · indoor cvetovi · citrusna aroma",
-    brand: "HempAura",
+    name: "HerbaGallus CBD cvetovi Citrin 15 %",
+    subtitle: "5 g · zunanji cvetovi · bio usmerjeno",
+    brand: "HerbaGallus",
     type: "flower",
     status: "active",
     shortDescription:
-      "Kompaktni cvetovi industrijske konoplje s 15 % CBD-ja in svežim citrusnim aromatskim profilom.",
+      "Cvetovi industrijske konoplje, pridelani na prostem, s 15 % CBD-ja in svežim citrusnim aromatskim profilom.",
     description:
-      "Citrin je HempAura izbor kompaktnih cvetov Cannabis sativa L. z izrazitim citrusnim aromatskim profilom. Cvetovi vsebujejo 15 % CBD-ja in manj kot 0,2 % THC-ja. Sušeni so v temi najmanj 14 dni in pakirani v neprepustno embalažo, ki pomaga ohraniti svežino in aromo.",
+      "Citrin je HerbaGallus izbor cvetov Cannabis sativa L., pridelanih na prostem, z izrazitim citrusnim aromatskim profilom. Cvetovi vsebujejo 15 % CBD-ja in manj kot 0,2 % THC-ja. Sušeni so v temi najmanj 14 dni in pakirani v neprepustno embalažo, ki pomaga ohraniti svežino in aromo. HerbaGallus pri izboru sledi naravnemu, bio usmerjenemu pristopu brez nepreverjenih certifikacijskih trditev.",
     spectrum: "Cel cvet",
     cbdPercentage: 15,
     cbdAmountMg: 750,
@@ -124,22 +124,22 @@ export const products = [
     lowStockThreshold: 2,
     imagesByLanguage: {
       sl: {
-        src: "/products/hempaura-cbd-flower-sl.png",
-        alt: "HempAura CBD cvetovi Citrin s slovensko deklaracijo",
-        width: 1024,
-        height: 1536,
+        src: "/products/herbagallus-cbd-flower.png",
+        alt: "HerbaGallus CBD cvetovi Citrin",
+        width: 1087,
+        height: 1449,
       },
       en: {
-        src: "/products/hempaura-cbd-flower-en.png",
-        alt: "HempAura Citrine CBD Flowers with English label",
-        width: 1024,
-        height: 1536,
+        src: "/products/herbagallus-cbd-flower.png",
+        alt: "HerbaGallus CBD flowers",
+        width: 1087,
+        height: 1449,
       },
       de: {
-        src: "/products/hempaura-cbd-flower-de.png",
-        alt: "HempAura Citrin CBD-Blüten mit deutscher Deklaration",
-        width: 1024,
-        height: 1536,
+        src: "/products/herbagallus-cbd-flower.png",
+        alt: "HerbaGallus CBD-Blüten",
+        width: 1087,
+        height: 1449,
       },
     },
     badge: "15 % CBD",
@@ -151,7 +151,7 @@ export const products = [
     taxRatePercent: 22,
     taxBehavior: "inclusive",
     metadata: {
-      manufacturer: "HempAura",
+      manufacturer: "HerbaGallus",
       origin: "EU",
       thcContent: "< 0,2 %",
       ageRestricted: true,
@@ -162,9 +162,9 @@ export const products = [
   {
     id: "hempaura-cbd-krema-sprostitev",
     slug: "hempaura-cbd-krema-za-sprostitev-50ml",
-    name: "HempAura CBD krema za sprostitev",
+    name: "HerbaGallus CBD krema za sprostitev",
     subtitle: "50 ml · konopljina nega · brez THC-ja",
-    brand: "HempAura",
+    brand: "HerbaGallus",
     type: "balm",
     status: "active",
     shortDescription:
@@ -218,19 +218,19 @@ export const products = [
     imagesByLanguage: {
       sl: {
         src: "/products/hempaura-cbd-balm-sl.png",
-        alt: "HempAura CBD krema za sprostitev s slovensko deklaracijo",
+        alt: "HerbaGallus CBD krema za sprostitev s slovensko deklaracijo",
         width: 1402,
         height: 1122,
       },
       en: {
         src: "/products/hempaura-cbd-balm-en.png",
-        alt: "HempAura CBD Relaxing Cream with English label",
+        alt: "HerbaGallus CBD Relaxing Cream with English label",
         width: 1122,
         height: 1402,
       },
       de: {
         src: "/products/hempaura-cbd-balm-de.png",
-        alt: "HempAura CBD Entspannungscreme mit deutscher Deklaration",
+        alt: "HerbaGallus CBD Entspannungscreme mit deutscher Deklaration",
         width: 1122,
         height: 1402,
       },
@@ -244,7 +244,7 @@ export const products = [
     taxRatePercent: 22,
     taxBehavior: "inclusive",
     metadata: {
-      manufacturer: "HempAura",
+      manufacturer: "HerbaGallus",
       origin: "EU",
       thcContent: "0 %",
       vegan: true,

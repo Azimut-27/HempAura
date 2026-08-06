@@ -41,7 +41,7 @@ export default function PartnerProgramPage() {
     <>
       <Seo
         title="Partnerski program"
-        description="Partnerski program HempAura za odgovorne ustvarjalce: koda za popust, sledljive konverzije in pregledna provizija."
+        description="Partnerski program HerbaGallus za odgovorne ustvarjalce: koda za popust, sledljive konverzije in pregledna provizija."
         path="/partners"
       />
 
@@ -49,7 +49,7 @@ export default function PartnerProgramPage() {
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:px-8">
           <div className="max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">
-              Partnerski program HempAura
+              Partnerski program HerbaGallus
             </p>
             <h1 className="mt-5 font-display text-5xl font-semibold leading-[0.95] text-forest sm:text-7xl">
               Ustvarjaj z nami. Zasluži z zaupanjem.
@@ -131,7 +131,7 @@ export default function PartnerProgramPage() {
       <section className="bg-porcelain py-16 text-center sm:py-20">
         <div className="mx-auto max-w-2xl px-5 sm:px-6">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">
-            Postani HempAura partner
+            Postani HerbaGallus partner
           </p>
           <h2 className="mt-4 font-display text-4xl font-semibold text-forest sm:text-5xl">
             Povej nam, kaj ustvarjaš

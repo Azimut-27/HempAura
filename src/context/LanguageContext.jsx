@@ -22,8 +22,8 @@ function buildLookup() {
     for (const [source, translated] of Object.entries(dictionary)) {
       lookup.set(normalizeText(source), source);
       lookup.set(normalizeText(translated), source);
-      lookup.set(normalizeText(`${translated} | HempAura`), `${source} | HempAura`);
-      if (language !== "sl") lookup.set(normalizeText(`${source} | HempAura`), `${source} | HempAura`);
+      lookup.set(normalizeText(`${translated} | HerbaGallus`), `${source} | HerbaGallus`);
+      if (language !== "sl") lookup.set(normalizeText(`${source} | HerbaGallus`), `${source} | HerbaGallus`);
     }
   }
   return lookup;
@@ -35,11 +35,11 @@ function translateString(value, language) {
   const normalized = normalizeText(value);
   if (!normalized) return value;
   const source = sourceLookup.get(normalized) || normalized;
-  if (source.endsWith(" | HempAura")) {
-    const titleSource = source.replace(" | HempAura", "");
+  if (source.endsWith(" | HerbaGallus")) {
+    const titleSource = source.replace(" | HerbaGallus", "");
     const translatedTitle =
       language === "sl" ? titleSource : translations[language]?.[titleSource] || titleSource;
-    return `${translatedTitle} | HempAura`;
+    return `${translatedTitle} | HerbaGallus`;
   }
   return language === "sl" ? source : translations[language]?.[source] || value;
 }

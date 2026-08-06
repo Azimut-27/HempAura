@@ -97,7 +97,7 @@ function parcelContent(order) {
   const itemNames = (order.order_items || [])
     .map((item) => item.sku_snapshot || item.name_snapshot)
     .filter(Boolean);
-  return [`HempAura ${order.public_order_number}`, ...itemNames]
+  return [`HerbaGallus ${order.public_order_number}`, ...itemNames]
     .join(" | ")
     .slice(0, 100);
 }

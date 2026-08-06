@@ -121,7 +121,7 @@ export default function CartPage() {
     <>
       <Seo
         title="Košarica"
-        description="Preglej izdelke v košarici HempAura in nadaljuj na varno gostovano plačilo, ko bo prodaja omogočena."
+        description="Preglej izdelke v košarici HerbaGallus in nadaljuj na varno gostovano plačilo, ko bo prodaja omogočena."
         path="/cart"
       />
       <section className="bg-cream py-14 sm:py-20">

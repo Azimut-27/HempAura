@@ -17,7 +17,7 @@ export default function FaqPage() {
     <>
       <Seo
         title="Pogosta vprašanja"
-        description="Odgovori o izdelkih, laboratorijskih poročilih, naročilih in odgovorni uporabi HempAura."
+        description="Odgovori o izdelkih, laboratorijskih poročilih, naročilih in odgovorni uporabi HerbaGallus."
         path="/faq"
         jsonLd={jsonLd}
       />

@@ -16,7 +16,7 @@ const publicLegalConfigurationComplete = requiredPublicLegalValues.every(
 );
 
 export const siteConfig = {
-  brandName: "HempAura",
+  brandName: "HerbaGallus",
   legalBusinessName: import.meta.env.VITE_LEGAL_ENTITY_NAME || "",
   businessAddress: import.meta.env.VITE_BUSINESS_ADDRESS || "",
   registrationNumber: import.meta.env.VITE_REGISTRATION_NUMBER || "",

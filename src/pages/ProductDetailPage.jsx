@@ -43,7 +43,7 @@ export default function ProductDetailPage() {
       name: product.name,
       description: product.shortDescription,
       sku: product.sku,
-      brand: { "@type": "Brand", name: product.brand || "HempAura" },
+      brand: { "@type": "Brand", name: product.brand || "HerbaGallus" },
       image: image?.src
         ? new URL(image.src, window.location.origin).toString()
         : undefined,

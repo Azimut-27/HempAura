@@ -14,7 +14,7 @@ function setMeta(name, content, property = false) {
 
 export default function Seo({ title, description, path = "/", jsonLd }) {
   useEffect(() => {
-    const fullTitle = title ? `${title} | HempAura` : "HempAura";
+    const fullTitle = title ? `${title} | HerbaGallus` : "HerbaGallus";
     const canonicalUrl = new URL(path, siteConfig.domain).toString();
     document.title = fullTitle;
     setMeta("description", description);

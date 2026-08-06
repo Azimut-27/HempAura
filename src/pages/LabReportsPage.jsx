@@ -21,7 +21,7 @@ export default function LabReportsPage() {
     <>
       <Seo
         title="Laboratorijska poročila"
-        description="Poišči pristna laboratorijska poročila HempAura po izdelku in seriji."
+        description="Poišči pristna laboratorijska poročila HerbaGallus po izdelku in seriji."
         path="/lab-reports"
       />
       <section className="bg-cream py-14 sm:py-20">

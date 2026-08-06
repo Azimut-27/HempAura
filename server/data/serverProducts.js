@@ -1,7 +1,7 @@
 export const serverProducts = [
   {
     id: "hempaura-cbd-kapljice-5",
-    name: "HempAura CBD kapljice 5%",
+    name: "HerbaGallus CBD kapljice 5%",
     sku: "HA-CBD-FS-500-10ML",
     active: true,
     priceCents: 3100,
@@ -15,7 +15,7 @@ export const serverProducts = [
   },
   {
     id: "hempaura-cbg-cvetovi-citrin-15",
-    name: "HempAura CBD cvetovi Citrin 15 %",
+    name: "HerbaGallus CBD cvetovi Citrin 15 %",
     sku: "HA-CBD-CITRIN-15-5G",
     active: true,
     priceCents: 2890,
@@ -29,7 +29,7 @@ export const serverProducts = [
   },
   {
     id: "hempaura-cbd-krema-sprostitev",
-    name: "HempAura CBD krema za sprostitev",
+    name: "HerbaGallus CBD krema za sprostitev",
     sku: "HA-CBD-RELAX-CREAM-50ML",
     active: true,
     priceCents: 2200,

@@ -99,7 +99,7 @@ describe("public API validation", () => {
   });
 
   it("contact endpoint sends customer acknowledgement only when enabled", async () => {
-    vi.stubEnv("RESEND_FROM_EMAIL", "HempAura <noreply@example.com>");
+    vi.stubEnv("RESEND_FROM_EMAIL", "HerbaGallus <noreply@example.com>");
     vi.stubEnv("CONTACT_CUSTOMER_ACK_ENABLED", "true");
     const sendEmail = vi.fn().mockResolvedValue({ id: "email_test" });
     vi.doMock("../server/services/email.js", () => ({ sendEmail }));
@@ -156,6 +156,16 @@ describe("public API validation", () => {
 
   it("checkout endpoint rejects client-supplied prices", async () => {
     vi.stubEnv("VITE_PAYMENTS_ENABLED", "true");
+    vi.stubEnv("LEGAL_ENTITY_NAME", "HerbaGallus");
+    vi.stubEnv("BUSINESS_ADDRESS", "Ljubljana");
+    vi.stubEnv("REGISTRATION_NUMBER", "1234567");
+    vi.stubEnv("TAX_NUMBER", "SI12345678");
+    vi.stubEnv("RETURN_ADDRESS", "Ljubljana");
+    vi.stubEnv("DELIVERY_PARTNER", "GLS");
+    vi.stubEnv("SUPPORT_EMAIL", "support@example.com");
+    vi.stubEnv("SHIPPING_SI_STANDARD_CENTS", "390");
+    vi.stubEnv("SHIPPING_SI_MIN_DAYS", "1");
+    vi.stubEnv("SHIPPING_SI_MAX_DAYS", "3");
     const { default: handler } = await import("../api/checkout/create-session.js");
     const response = mockResponse();
     await handler(

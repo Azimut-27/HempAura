@@ -6,7 +6,7 @@ export default function CheckoutCancelPage() {
     <>
       <Seo
         title="Plačilo preklicano"
-        description="Plačilo HempAura je bilo preklicano in košarica je ohranjena."
+        description="Plačilo HerbaGallus je bilo preklicano in košarica je ohranjena."
         path="/checkout/cancel"
       />
       <section className="grid min-h-[65vh] place-items-center bg-cream px-5 py-16">

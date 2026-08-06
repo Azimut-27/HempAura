@@ -7,17 +7,17 @@ export default function ProductsPage() {
     <>
       <Seo
         title="Izdelki"
-        description="Oglej si HempAura konopljine izdelke in preveri razpoložljivost, sestavo ter dokumentacijo."
+        description="Oglej si HerbaGallus konopljine izdelke in preveri razpoložljivost, sestavo ter dokumentacijo."
         path="/products"
       />
       <section className="bg-cream py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
           <p className="text-xs font-bold uppercase text-clay">Katalog</p>
           <h1 className="mt-3 font-display text-5xl font-semibold text-forest sm:text-6xl">
-            HempAura izdelki
+            HerbaGallus izdelki
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-forest/70">
-            Izbrani izdelki HempAura z jasno navedenimi sestavinami, količinami
+            Izbrani izdelki HerbaGallus z jasno navedenimi sestavinami, količinami
             učinkovin, opozorili, cenami in razpoložljivostjo.
           </p>
           {activeProducts.length ? (

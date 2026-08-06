@@ -98,7 +98,7 @@ function AdminLogin({ onLogin, error, loading }) {
           Zasebni dostop
         </p>
         <h1 className="mt-2 font-display text-4xl font-semibold text-forest">
-          HempAura upravljanje
+          HerbaGallus upravljanje
         </h1>
         <p className="mt-3 text-sm leading-6 text-forest/65">
           Vnesi administratorski ključ za pregled naročil, e-pošte in GLS nalepk.
@@ -151,7 +151,7 @@ export default function AdminOrdersPage() {
 
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Naročila | HempAura Admin";
+    document.title = "Naročila | HerbaGallus Admin";
     const robots = document.createElement("meta");
     robots.name = "robots";
     robots.content = "noindex, nofollow, noarchive";
@@ -265,7 +265,7 @@ export default function AdminOrdersPage() {
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-5 sm:px-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">Zasebna nadzorna plošča</p>
-            <h1 className="mt-1 font-display text-3xl font-semibold text-forest">HempAura naročila</h1>
+            <h1 className="mt-1 font-display text-3xl font-semibold text-forest">HerbaGallus naročila</h1>
           </div>
           <div className="flex gap-2">
             <button

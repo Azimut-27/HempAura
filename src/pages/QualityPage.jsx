@@ -26,7 +26,7 @@ export default function QualityPage() {
     <>
       <Seo
         title="Kakovost in sledljivost"
-        description="Pristop HempAura k predstavitvi kakovosti, dokumentacije in sledljivosti brez izmišljenih certifikatov."
+        description="Pristop HerbaGallus k premium outdoor kakovosti, bio usmerjeni filozofiji, dokumentaciji in sledljivosti brez izmišljenih certifikatov."
         path="/quality"
       />
       <section className="bg-forest py-16 text-porcelain sm:py-24">
@@ -36,8 +36,9 @@ export default function QualityPage() {
             Transparentnost se začne pri tem, česar še ne vemo.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-porcelain/72">
-            HempAura ne prikazuje laboratorija, certifikata, porekla ali rezultata,
-            dokler lastnik ne predloži preverljivih podatkov.
+            HerbaGallus gradi na outdoor pristopu in bio usmerjeni filozofiji, vendar
+            ne prikazuje laboratorija, certifikata, porekla ali rezultata, dokler
+            lastnik ne predloži preverljivih podatkov.
           </p>
         </div>
       </section>

@@ -224,7 +224,7 @@ export default async function handler(request, response) {
             order,
             kind: "customer_confirmation",
             recipient: payment.customerEmail,
-            subject: `Potrditev naročila ${order.public_order_number} | HempAura`,
+            subject: `Potrditev naročila ${order.public_order_number} | HerbaGallus`,
             html: OrderConfirmationEmail({
               name: payment.customerName,
               orderNumber: order.public_order_number,

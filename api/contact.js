@@ -58,7 +58,7 @@ export default async function handler(request, response) {
     const emailTasks = [
       sendEmail({
         to: serverConfig.contactToEmail,
-        subject: `HempAura kontakt: ${parsed.data.subject}`,
+        subject: `HerbaGallus kontakt: ${parsed.data.subject}`,
         html: ContactNotificationEmail(emailData),
         text: ContactNotificationText(emailData),
         replyTo: parsed.data.email,
@@ -74,7 +74,7 @@ export default async function handler(request, response) {
       emailTasks.push(
         sendEmail({
           to: parsed.data.email,
-          subject: "Prejeli smo tvoje sporočilo | HempAura",
+          subject: "Prejeli smo tvoje sporočilo | HerbaGallus",
           html: ContactAcknowledgementEmail(emailData),
           text: ContactAcknowledgementText(emailData),
           replyTo: serverConfig.supportEmail,

@@ -13,7 +13,7 @@ import { calculateShipping } from "../server/services/shipping.js";
 describe("server catalogue and checkout validation", () => {
   it("looks up products by stable IDs", () => {
     expect(getServerProduct("hempaura-cbd-kapljice-5")?.name).toBe(
-      "HempAura CBD kapljice 5%"
+      "HerbaGallus CBD kapljice 5%"
     );
     expect(getServerProduct("unknown")).toBeUndefined();
   });

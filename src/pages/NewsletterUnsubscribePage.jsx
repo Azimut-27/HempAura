@@ -26,12 +26,12 @@ export default function NewsletterUnsubscribePage() {
     <>
       <Seo
         title="Odjava od e-novic"
-        description="Odjava e-poštnega naslova od HempAura e-novic."
+        description="Odjava e-poštnega naslova od HerbaGallus e-novic."
         path="/newsletter/unsubscribe"
       />
       <section className="grid min-h-[65vh] place-items-center bg-cream px-5 py-16">
         <form className="w-full max-w-lg bg-white p-8 sm:p-10" onSubmit={handleSubmit}>
-          <p className="text-xs font-bold uppercase text-clay">HempAura novice</p>
+          <p className="text-xs font-bold uppercase text-clay">HerbaGallus novice</p>
           <h1 className="mt-3 font-display text-4xl font-semibold text-forest">
             Odjava od e-novic
           </h1>

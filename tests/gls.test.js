@@ -17,7 +17,7 @@ const clientConfig = {
   clientNumber: 490007000,
   password: "password",
   passwordHashAlgorithm: "sha256",
-  webshopEngine: "HempAura",
+  webshopEngine: "HerbaGallus",
   printerType: "A4_2x2",
   printPosition: 1,
   hidePhoneNumberOnLabels: false,

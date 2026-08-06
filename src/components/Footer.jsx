@@ -3,7 +3,7 @@ import { siteConfig } from "../config/siteConfig.js";
 
 const columns = [
   {
-    title: "HempAura",
+    title: "HerbaGallus",
     links: [
       ["Izdelki", "/products"],
       ["Kakovost", "/quality"],
@@ -81,7 +81,7 @@ export default function Footer() {
               še niso vneseni.
             </p>
           )}
-          <p className="mt-3">© {new Date().getFullYear()} HempAura. Vse pravice pridržane.</p>
+          <p className="mt-3">© {new Date().getFullYear()} HerbaGallus. Vse pravice pridržane.</p>
         </div>
       </div>
     </footer>

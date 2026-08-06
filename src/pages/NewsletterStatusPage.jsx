@@ -34,12 +34,12 @@ export default function NewsletterStatusPage() {
     <>
       <Seo
         title="Potrditev e-novic"
-        description="Potrditev prijave na e-novice HempAura."
+        description="Potrditev prijave na e-novice HerbaGallus."
         path="/newsletter/confirm"
       />
       <section className="grid min-h-[65vh] place-items-center bg-cream px-5 py-16">
         <div className="max-w-xl bg-white p-8 text-center sm:p-12">
-          <p className="text-xs font-bold uppercase text-clay">HempAura novice</p>
+          <p className="text-xs font-bold uppercase text-clay">HerbaGallus novice</p>
           <h1 className="mt-3 font-display text-4xl font-semibold text-forest">
             {state.status === "success"
               ? "Prijava je potrjena"

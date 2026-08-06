@@ -10,7 +10,7 @@ export default function ResponsibleUsePage() {
     <>
       <Seo
         title="Odgovorna uporaba CBD in konopljinih izdelkov"
-        description="Razvrstitev izdelkov, omejitve uporabe, opozorila in odgovorna predstavitev CBD ter konopljinih izdelkov HempAura."
+        description="Razvrstitev izdelkov, omejitve uporabe, opozorila in odgovorna predstavitev CBD ter konopljinih izdelkov HerbaGallus."
         path="/responsible-use"
       />
       <article className="bg-cream py-14 sm:py-20">
@@ -85,7 +85,7 @@ export default function ResponsibleUsePage() {
 
             <Section title="5. Brez zdravstvenih obljub">
               <p>
-                HempAura ne diagnosticira, zdravi, preprečuje ali ozdravi bolezni.
+                HerbaGallus ne diagnosticira, zdravi, preprečuje ali ozdravi bolezni.
                 Opisi izdelkov, mnenja uporabnikov in laboratorijski podatki niso
                 zdravstveni nasvet. Ne nadomeščajo pregleda pri zdravniku ali nasveta
                 farmacevta.

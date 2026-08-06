@@ -8,7 +8,7 @@ export default function ContactCta() {
         <div>
           <p className="text-xs font-bold uppercase text-clay">Potrebuješ pomoč?</p>
           <h2 className="mt-2 font-display text-3xl font-semibold text-forest">
-            Piši ekipi HempAura
+            Piši ekipi HerbaGallus
           </h2>
         </div>
         <Link

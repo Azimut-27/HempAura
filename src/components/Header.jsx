@@ -100,7 +100,7 @@ export default function Header() {
           className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8"
           aria-label="Glavna navigacija"
         >
-          <Link to="/" className="flex min-h-12 items-center gap-3" aria-label="HempAura domov">
+          <Link to="/" className="flex min-h-12 items-center gap-3" aria-label="HerbaGallus domov">
             <img
               src="/logo-mark.svg"
               alt=""
@@ -110,7 +110,7 @@ export default function Header() {
               aria-hidden="true"
             />
             <span className="hidden font-display text-3xl font-semibold text-forest sm:inline">
-              HempAura
+              HerbaGallus
             </span>
           </Link>
 
@@ -248,7 +248,7 @@ export default function Header() {
                   className="size-10 shrink-0"
                   aria-hidden="true"
                 />
-                <span className="font-display text-3xl font-semibold text-forest">HempAura</span>
+                <span className="font-display text-3xl font-semibold text-forest">HerbaGallus</span>
               </span>
               <button
                 type="button"

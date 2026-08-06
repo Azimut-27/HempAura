@@ -23,13 +23,13 @@ const titleByType = {
 
 const descriptionByType = {
   privacy:
-    "Informacije o obdelavi osebnih podatkov kupcev, obiskovalcev in naročnikov HempAura.",
+    "Informacije o obdelavi osebnih podatkov kupcev, obiskovalcev in naročnikov HerbaGallus.",
   terms:
-    "Splošni pogoji poslovanja spletne trgovine HempAura za potrošnike v Sloveniji.",
+    "Splošni pogoji poslovanja spletne trgovine HerbaGallus za potrošnike v Sloveniji.",
   shipping:
     "Pogoji dostave, pravica do odstopa, vračila, reklamacije in obrazec za odstop.",
   cookies:
-    "Informacije o nujnih tehnologijah, lokalni shrambi in morebitnih piškotkih HempAura.",
+    "Informacije o nujnih tehnologijah, lokalni shrambi in morebitnih piškotkih HerbaGallus.",
 };
 
 export default function PolicyPage({ type }) {
@@ -88,7 +88,7 @@ function LegalReviewNotice() {
       <p className="mt-2">
         Manjkajo preverjeni podatki dejanskega trgovca: {missingLegalDetails.join(", ")}.
         Identitete, naslova ali davčnih številk družbe Hemptouch nismo prekopirali,
-        ker Hemptouch ni samodejno ponudnik trgovine HempAura.
+        ker Hemptouch ni samodejno ponudnik trgovine HerbaGallus.
       </p>
     </div>
   );
@@ -100,7 +100,7 @@ function PrivacyPolicy() {
       <Section title="1. Upravljavec osebnih podatkov">
         <BusinessIdentity />
         <p>
-          Upravljavec je dejanski ponudnik spletne trgovine HempAura. Vprašanja in
+          Upravljavec je dejanski ponudnik spletne trgovine HerbaGallus. Vprašanja in
           zahteve glede zasebnosti pošljite na {supportEmailText()}.
         </p>
       </Section>
@@ -112,7 +112,7 @@ function PrivacyPolicy() {
             "podpora: ime, e-pošta, zadeva, vsebina sporočila in po želji številka naročila;",
             "e-novice: e-poštni naslov, dokaz privolitve, čas potrditve in status odjave;",
             "tehnični in varnostni podatki: IP-naslov, čas zahtevka, pot, osnovni dnevniški podatki ter podatki za preprečevanje zlorab;",
-            "podatki o plačilu, ki jih posreduje plačilni ponudnik, na primer identifikator transakcije in stanje plačila. HempAura ne prejme ali hrani celotne številke kartice.",
+            "podatki o plačilu, ki jih posreduje plačilni ponudnik, na primer identifikator transakcije in stanje plačila. HerbaGallus ne prejme ali hrani celotne številke kartice.",
             "partnerski program: uporabljena partnerska koda, povezano naročilo, popust, izračunana provizija ter status odobritve in izplačila.",
           ]}
         />
@@ -180,7 +180,7 @@ function PrivacyPolicy() {
 
       <Section title="7. Avtomatizirano odločanje in obveznost podatkov">
         <p>
-          HempAura ne uporablja avtomatiziranega odločanja, ki bi imelo pravne ali
+          HerbaGallus ne uporablja avtomatiziranega odločanja, ki bi imelo pravne ali
           podobno pomembne učinke. Podatki, označeni kot obvezni pri naročilu, so
           potrebni za sklenitev in izvedbo pogodbe; brez njih naročila ni mogoče
           izvesti. Prijava na e-novice ni pogoj za nakup.
@@ -204,7 +204,7 @@ function TermsPolicy() {
       <Section title="1. Ponudnik in področje uporabe">
         <BusinessIdentity />
         <p>
-          Ti pogoji urejajo prodajo potrošnikom prek spletne trgovine HempAura v
+          Ti pogoji urejajo prodajo potrošnikom prek spletne trgovine HerbaGallus v
           Sloveniji. Pred oddajo naročila so kupcu na voljo bistvene lastnosti
           izdelka, cena z davkom, stroški dostave, način plačila in informacije o
           odstopu. Za posamezno naročilo velja različica pogojev, ki je bila kupcu
@@ -469,7 +469,7 @@ function CookiesPolicy() {
 
       <Section title="3. Analitika in trženje">
         <p>
-          HempAura trenutno nima vključene analitike, oglaševalskih pikslov ali
+          HerbaGallus trenutno nima vključene analitike, oglaševalskih pikslov ali
           trženjskih piškotkov. Če bodo dodani, se nenujne tehnologije ne smejo naložiti
           pred veljavno privolitvijo, kadar jo zakon zahteva. Zavrnitev nenujnih
           tehnologij ne sme preprečiti osnovnega nakupa.

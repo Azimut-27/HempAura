@@ -14,7 +14,7 @@ const trustItems = [
   [PackageCheck, "Jasni podatki o izdelku"],
   [FileSearch, "Poročila po izdelku in seriji"],
   [ShieldCheck, "Odgovorna predstavitev"],
-  [Leaf, "Premišljena premium izkušnja"],
+  [Leaf, "Outdoor pristop in bio usmerjenost"],
 ];
 
 export default function HomePage() {
@@ -22,12 +22,12 @@ export default function HomePage() {
     <>
       <Seo
         title="Premium konopljini izdelki"
-        description="HempAura predstavlja premium konopljine izdelke z jasno dokumentacijo, odgovorno komunikacijo in prodajo šele po potrditvi vseh podatkov."
+        description="HerbaGallus predstavlja premium CBD izdelke z outdoor pristopom, bio usmerjeno filozofijo, jasno dokumentacijo in odgovorno komunikacijo."
         path="/"
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "HempAura",
+          name: "HerbaGallus",
           url: window.location.origin,
         }}
       />
@@ -35,16 +35,16 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-16 lg:px-8 lg:py-20">
           <div className="max-w-xl lg:py-4">
             <p className="text-xs font-bold uppercase text-[#9b5940] sm:text-sm">
-              PREMIUM KONOPLJINI IZDELKI
+              PREMIUM OUTDOOR CBD
             </p>
             <h1 className="hero-title mt-6 max-w-[12ch] font-display text-5xl font-semibold leading-[0.98] text-forest sm:text-6xl lg:max-w-none lg:text-7xl">
               <span className="lg:block">Kakovost se začne</span>{" "}
               <span>pri izbiri.</span>
             </h1>
             <p className="mt-8 max-w-[38rem] text-base leading-8 text-forest/75 sm:text-lg">
-              Vsak izdelek v naši ponudbi je izbran zaradi svoje kakovosti,
-              transparentnega porekla in premišljene sestave. Ustvarjamo kolekcijo,
-              ki združuje naravo, estetiko in zaupanje v vsakodnevni ritual.
+              HerbaGallus združuje premium CBD, outdoor pristop in bio usmerjeno
+              filozofijo. Izbiramo izdelke z jasnim poreklom, premišljeno sestavo
+              in mirnim, naravnim značajem.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
@@ -62,7 +62,7 @@ export default function HomePage() {
                 to="/quality"
                 className="inline-flex min-h-14 items-center justify-center border border-forest/30 bg-porcelain/35 px-7 text-sm font-bold text-forest transition-[background-color,border-color,color] duration-300 hover:border-forest/60 hover:bg-sage/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-clay"
               >
-                Standard HempAura
+                Standard HerbaGallus
               </Link>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-forest/10 bg-forest text-porcelain" aria-label="Načela HempAura">
+      <section className="border-y border-forest/10 bg-forest text-porcelain" aria-label="Načela HerbaGallus">
         <div className="mx-auto grid max-w-7xl grid-cols-2 px-5 sm:px-6 lg:grid-cols-4 lg:px-8">
           {trustItems.map(([Icon, label]) => (
             <div key={label} className="flex min-h-24 items-center gap-3 border-white/10 px-2 py-5 lg:border-r lg:px-5">
@@ -105,8 +105,8 @@ export default function HomePage() {
                 Izbrana kolekcija
               </h2>
               <p className="mt-4 leading-7 text-forest/68">
-                Tri premišljeno izbrane konopljine formulacije z resničnimi
-                fotografijami, jasno sestavo in odgovorno predstavitvijo.
+                Tri premišljeno izbrane CBD formulacije z jasnimi sestavinami,
+                outdoor filozofijo in odgovorno predstavitvijo.
               </p>
             </div>
             <Link className="text-sm font-bold text-forest underline" to="/products">
@@ -124,15 +124,16 @@ export default function HomePage() {
       <section id="about" className="bg-porcelain py-18 sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
-            <p className="text-xs font-bold uppercase text-clay">Zakaj HempAura</p>
+            <p className="text-xs font-bold uppercase text-clay">Zakaj HerbaGallus</p>
             <h2 className="mt-3 font-display text-4xl font-semibold text-forest sm:text-5xl">
               Manj hrupa. Več uporabnih informacij.
             </h2>
           </div>
           <div className="space-y-5 text-base leading-8 text-forest/72">
             <p>
-              Znamka je zasnovana okoli jasne predstavitve sestave, uporabe,
-              opozoril, serij in dokumentacije. Podatki se ne zapolnijo z ugibanjem.
+              Znamka je zasnovana okoli kakovostne outdoor konoplje, jasne
+              predstavitve sestave, uporabe, opozoril, serij in dokumentacije.
+              Podatki se ne zapolnijo z ugibanjem.
             </p>
             <p>
               Trgovina se varno odpre šele po potrditvi ponudnika plačil, davčne
@@ -189,7 +190,7 @@ export default function HomePage() {
       <section className="bg-forest py-18 text-porcelain sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
-            <p className="text-xs font-bold uppercase text-gold">HempAura novice</p>
+            <p className="text-xs font-bold uppercase text-gold">HerbaGallus novice</p>
             <h2 className="mt-3 font-display text-4xl font-semibold">
               Potrjena prijava, brez tihega dodajanja
             </h2>

@@ -5,7 +5,7 @@ function layout(title, body) {
   <html lang="sl">
     <body style="margin:0;background:#f7f1e7;color:#1c211d;font-family:Arial,sans-serif">
       <div style="max-width:640px;margin:0 auto;padding:32px 20px">
-        <div style="background:#17382c;color:#fffaf1;padding:24px;font-size:28px;font-family:Georgia,serif">HempAura</div>
+        <div style="background:#17382c;color:#fffaf1;padding:24px;font-size:28px;font-family:Georgia,serif">HerbaGallus</div>
         <div style="background:#fffaf1;padding:28px">
           <h1 style="color:#17382c;font-family:Georgia,serif;font-size:32px">${escapeHtml(title)}</h1>
           ${body}
@@ -64,7 +64,7 @@ export function ContactAcknowledgementEmail(data) {
 
 export function ContactNotificationText(data) {
   return [
-    "HempAura — novo kontaktno sporočilo",
+    "HerbaGallus — novo kontaktno sporočilo",
     "",
     `Čas: ${data.submittedAt}`,
     `Ime: ${data.name}`,
@@ -90,7 +90,7 @@ export function ContactAcknowledgementText(data) {
 
 export function NewsletterConfirmationEmail({ confirmationUrl }) {
   return layout(
-    "Potrdi prijavo na HempAura novice",
+    "Potrdi prijavo na HerbaGallus novice",
     [
       p("Za dokončanje prijave potrdi svoj e-poštni naslov."),
       `<p><a href="${escapeHtml(confirmationUrl)}" style="display:inline-block;background:#17382c;color:#fffaf1;padding:14px 20px;text-decoration:none;font-weight:bold">Potrdi prijavo</a></p>`,

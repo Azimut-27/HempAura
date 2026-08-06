@@ -6,7 +6,7 @@ export default function NotFoundPage() {
     <>
       <Seo
         title="Stran ni najdena"
-        description="Zahtevana stran HempAura ne obstaja."
+        description="Zahtevana stran HerbaGallus ne obstaja."
         path="/404"
       />
       <section className="grid min-h-[65vh] place-items-center bg-cream px-5 py-16">

@@ -36,7 +36,7 @@ export default function ContactPage() {
     <>
       <Seo
         title="Kontakt"
-        description="Pošlji varno kontaktno sporočilo ekipi HempAura."
+        description="Pošlji varno kontaktno sporočilo ekipi HerbaGallus."
         path="/contact"
       />
       <section className="bg-cream py-14 sm:py-20">
@@ -102,7 +102,7 @@ export default function ContactPage() {
                   Osebno sporočilo
                 </p>
                 <h2 className="mt-2 font-display text-3xl font-semibold text-forest">
-                  Piši ekipi HempAura
+                  Piši ekipi HerbaGallus
                 </h2>
               </div>
               <p className="text-sm text-forest/60">{siteConfig.responseTime}</p>
