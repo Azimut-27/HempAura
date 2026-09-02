@@ -40,7 +40,7 @@ export default function HomePage() {
             <p className="text-xs font-bold uppercase text-[#9b5940] sm:text-sm">
               PREMIUM OUTDOOR CBD
             </p>
-            <h1 className="hero-title mt-6 max-w-[12ch] font-display text-5xl font-semibold leading-[0.98] text-forest sm:text-6xl lg:max-w-none lg:text-7xl">
+            <h1 className="hero-title mt-6 font-display text-5xl font-semibold leading-[1.05] text-forest text-balance sm:text-6xl lg:text-7xl">
               {t("Za trenutke, ko potrebujete sprostitev.")}
             </h1>
             <p className="mt-8 max-w-[38rem] text-base leading-8 text-forest/75 sm:text-lg">
