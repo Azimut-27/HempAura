@@ -41,12 +41,10 @@ export default function HomePage() {
               PREMIUM OUTDOOR CBD
             </p>
             <h1 className="hero-title mt-6 max-w-[12ch] font-display text-5xl font-semibold leading-[0.98] text-forest sm:text-6xl lg:max-w-none lg:text-7xl">
-              {t("Sprostite se, spite bolje in uživajte v življenju.")}
+              {t("Za trenutke, ko potrebujete sprostitev.")}
             </h1>
             <p className="mt-8 max-w-[38rem] text-base leading-8 text-forest/75 sm:text-lg">
-              HerbaGallus združuje premium CBD, outdoor pristop in bio usmerjeno
-              filozofijo. Izbiramo izdelke z jasnim poreklom, premišljeno sestavo
-              in mirnim, naravnim značajem.
+              {t("HerbaGallus združuje premium CBD, outdoor pristop in bio usmerjeno vizijo. Vsak izdelek odlikujejo preverjeno poreklo, 100 % naravne sestavine in laboratorijsko potrjena kakovost.")}
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link
