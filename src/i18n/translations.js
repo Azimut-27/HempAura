@@ -62,6 +62,8 @@ const en = {
 
   "PREMIUM OUTDOOR CBD": "PREMIUM OUTDOOR CBD",
   "Za trenutke, ko potrebujete sprostitev.": "For moments when you need relaxation.",
+  "Za trenutke,": "For moments,",
+  "ko potrebujete sprostitev.": "when you need relaxation.",
   "Kakovost se začne": "Quality begins",
   "pri izbiri.": "with selection.",
   "Kakovost se začne pri izbiri.": "Quality begins with selection.",
@@ -429,6 +431,8 @@ const de = {
 
   "PREMIUM OUTDOOR CBD": "PREMIUM OUTDOOR CBD",
   "Za trenutke, ko potrebujete sprostitev.": "Fuer Momente, in denen Sie Entspannung brauchen.",
+  "Za trenutke,": "Fuer Momente,",
+  "ko potrebujete sprostitev.": "in denen Sie Entspannung brauchen.",
   "Kakovost se začne": "Qualitaet beginnt",
   "pri izbiri.": "bei der Auswahl.",
   "Kakovost se začne pri izbiri.": "Qualitaet beginnt bei der Auswahl.",

@@ -40,8 +40,9 @@ export default function HomePage() {
             <p className="text-xs font-bold uppercase text-[#9b5940] sm:text-sm">
               PREMIUM OUTDOOR CBD
             </p>
-            <h1 className="hero-title mt-6 font-display text-5xl font-semibold leading-[1.05] text-forest text-balance sm:text-6xl lg:text-7xl">
-              {t("Za trenutke, ko potrebujete sprostitev.")}
+            <h1 className="hero-title mt-6 font-display text-4xl font-semibold leading-[1.12] text-forest sm:text-5xl lg:text-6xl">
+              <span className="inline-block whitespace-nowrap">{t("Za trenutke,")}&nbsp;</span>
+              <span className="inline-block">{t("ko potrebujete sprostitev.")}</span>
             </h1>
             <p className="mt-8 max-w-[38rem] text-base leading-8 text-forest/75 sm:text-lg">
               {t("HerbaGallus združuje premium CBD, outdoor pristop in bio usmerjeno vizijo. Vsak izdelek odlikujejo preverjeno poreklo, 100 % naravne sestavine in laboratorijsko potrjena kakovost.")}
