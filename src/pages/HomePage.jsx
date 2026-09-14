@@ -12,10 +12,10 @@ import { products } from "../data/products.js";
 const lifestyleImage = "/hemp-lifestyle.png";
 
 const trustItems = [
-  [PackageCheck, "Jasni podatki o izdelku"],
-  [FileSearch, "Poročila po izdelku in seriji"],
-  [ShieldCheck, "Odgovorna predstavitev"],
-  [Leaf, "Outdoor pristop in bio usmerjenost"],
+  [PackageCheck, "100 % transparentna sestava"],
+  [FileSearch, "Neodvisno laboratorijsko testirano"],
+  [ShieldCheck, "Varno & certificirano poreklo"],
+  [Leaf, "Ekološko pridelano v naravi"],
 ];
 
 export default function HomePage() {
@@ -91,7 +91,7 @@ export default function HomePage() {
           {trustItems.map(([Icon, label]) => (
             <div key={label} className="flex min-h-24 items-center gap-3 border-white/10 px-2 py-5 lg:border-r lg:px-5">
               <Icon className="shrink-0 text-gold" size={20} aria-hidden="true" />
-              <span className="text-sm font-semibold">{label}</span>
+              <span className="text-sm font-semibold">{t(label)}</span>
             </div>
           ))}
         </div>
