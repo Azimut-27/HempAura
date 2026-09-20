@@ -84,7 +84,7 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
                   {t(product.badgeTop)}
                 </span>
               )}
-              <ProductMedia product={product} fit="contain" className="p-6 object-contain" />
+              <ProductMedia product={product} fit="cover" className="h-full w-full object-cover" />
             </div>
 
             {/* Gallery Thumbnails */}

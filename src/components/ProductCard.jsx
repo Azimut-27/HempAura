@@ -37,7 +37,7 @@ export default function ProductCard({ product }) {
     <>
       <article className="group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-forest/10 bg-white shadow-[0_10px_30px_rgba(27,59,43,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(27,59,43,0.1)]">
         {/* Top Image Section */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream/40 p-4">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream/20">
           {/* Top Left Badges */}
           <div className="absolute left-3.5 top-3.5 z-10 flex flex-col gap-1.5 items-start">
             {product.badgeTop && (
@@ -68,13 +68,13 @@ export default function ProductCard({ product }) {
           >
             <ProductMedia
               product={product}
-              fit="contain"
-              className="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+              fit="cover"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </Link>
 
           {/* Hover Quick View Button */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto bg-black/10 backdrop-blur-[1px]">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto bg-black/15 backdrop-blur-[1px]">
             <button
               type="button"
               onClick={handleOpenQuickView}
