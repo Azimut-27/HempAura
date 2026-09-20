@@ -1,15 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
-  <g transform="translate(150, 160) scale(2.8)">
-    <g fill="#17382c">
-      <!-- 7-pointed cannabis leaf -->
-      <path d="M0,-45 C6,-24 14,-12 20,0 C11,10 4,16 0,32 C-4,16 -11,10 -20,0 C-14,-12 -6,-24 0,-45 Z"/>
-      <path d="M-11,-36 C-3,-14 9,2 16,9 C-3,22 -11,22 -20,13 Z" opacity="0.95"/>
-      <path d="M11,-36 C3,-14 -9,2 -16,9 C3,22 11,22 20,13 Z" opacity="0.95"/>
-      <path d="M-19,-20 C-7,0 3,10 10,16 C-7,26 -16,24 -24,18 Z" opacity="0.85"/>
-      <path d="M19,-20 C7,0 -3,10 -10,16 C7,26 16,24 24,18 Z" opacity="0.85"/>
-      <!-- Rooster Silhouette inside leaf center -->
-      <path d="M-3,8 C-3,2 -5,-2 -7,-4 C-4,-7 0,-9 3,-4 C5,-2 7,4 4,8 Z" fill="#fffaf1"/>
-      <path d="M0,-8 L2,-12 L4,-8 Z" fill="#b99552"/>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-28 -48 56 82" width="100%" height="100%">
+  <g fill="#17382c">
+    <!-- 7-pointed cannabis leaf -->
+    <path d="M0,-46 C6,-25 14,-12 21,0 C11,10 4,16 0,32 C-4,16 -11,10 -21,0 C-14,-12 -6,-25 0,-46 Z"/>
+    <path d="M-12,-37 C-3,-15 9,2 17,9 C-3,22 -11,22 -21,13 Z" opacity="0.95"/>
+    <path d="M12,-37 C3,-15 -9,2 -17,9 C3,22 11,22 21,13 Z" opacity="0.95"/>
+    <path d="M-20,-21 C-7,0 3,10 10,16 C-7,26 -16,24 -25,18 Z" opacity="0.85"/>
+    <path d="M20,-21 C7,0 -3,10 -10,16 C7,26 16,24 25,18 Z" opacity="0.85"/>
+    <path d="M-24,-4 C-10,8 -2,15 4,19 C-10,25 -19,20 -27,13 Z" opacity="0.75"/>
+    <path d="M24,-4 C10,8 2,15 -4,19 C10,25 19,20 27,13 Z" opacity="0.75"/>
+    <!-- Rooster Silhouette inside leaf center -->
+    <path d="M-3,8 C-3,2 -5,-2 -7,-4 C-4,-7 0,-9 3,-4 C5,-2 7,4 4,8 Z" fill="#fffaf1"/>
+    <path d="M0,-8 L2,-12 L4,-8 Z" fill="#b99552"/>
   </g>
 </svg>
