@@ -97,18 +97,18 @@ export default function Header() {
       )}
       <header className="sticky top-0 z-40 border-b border-forest/10 bg-porcelain/95 backdrop-blur">
         <nav
-          className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8"
+          className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-3.5 sm:px-6 lg:px-8"
           aria-label="Glavna navigacija"
         >
-          <Link to="/" className="flex min-h-12 items-center gap-2.5 sm:gap-3" aria-label="HerbaGallus domov">
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0 min-h-10" aria-label="HerbaGallus domov">
             <img
               src="/brand/herbagallus-mark.png"
               alt="HerbaGallus"
               width="170"
               height="160"
-              className="h-9 w-auto shrink-0 object-contain sm:h-10"
+              className="h-7 w-auto shrink-0 object-contain sm:h-9"
             />
-            <span className="font-display text-2xl font-bold tracking-tight text-forest sm:text-3xl">
+            <span className="font-display text-xl font-bold tracking-tight text-forest sm:text-2xl lg:text-3xl">
               HerbaGallus
             </span>
           </Link>
@@ -121,25 +121,26 @@ export default function Header() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             <div ref={languageMenuRef} className="relative">
               <button
                 type="button"
                 onClick={() => setLanguageOpen((current) => !current)}
-                className="group inline-flex min-h-11 items-center gap-2 border border-forest/15 bg-porcelain/75 px-2.5 text-forest shadow-[0_8px_24px_rgba(28,33,29,0.05)] transition duration-200 hover:border-gold/60 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay sm:px-3"
+                className="group inline-flex min-h-9 sm:min-h-11 items-center gap-1.5 sm:gap-2 border border-forest/15 bg-porcelain/75 px-2 sm:px-3 py-1 text-forest shadow-[0_4px_12px_rgba(28,33,29,0.04)] transition duration-200 hover:border-gold/60 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay"
                 aria-label={t("Izberi jezik")}
                 aria-haspopup="menu"
                 aria-expanded={languageOpen}
                 aria-controls="language-menu"
               >
-                <span className="grid size-7 place-items-center rounded-full bg-forest text-porcelain shadow-[inset_0_0_0_1px_rgba(185,149,82,0.35)] transition-colors group-hover:bg-ink">
-                  <Globe2 size={14} strokeWidth={1.8} aria-hidden="true" />
+                <span className="grid size-6 sm:size-7 place-items-center rounded-full bg-forest text-porcelain shadow-[inset_0_0_0_1px_rgba(185,149,82,0.35)] transition-colors group-hover:bg-ink">
+                  <Globe2 size={12} strokeWidth={1.8} aria-hidden="true" className="sm:hidden" />
+                  <Globe2 size={14} strokeWidth={1.8} aria-hidden="true" className="hidden sm:block" />
                 </span>
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]">
+                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.1em] sm:tracking-[0.14em]">
                   {languages.find((option) => option.code === language)?.shortLabel}
                 </span>
                 <ChevronDown
-                  size={14}
+                  size={12}
                   strokeWidth={2}
                   aria-hidden="true"
                   className={`text-moss transition-transform duration-200 ${languageOpen ? "rotate-180" : ""}`}
@@ -196,12 +197,13 @@ export default function Header() {
             <button
               type="button"
               onClick={openDrawer}
-              className="relative grid size-12 place-items-center text-forest hover:bg-sage focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay"
+              className="relative grid size-9 sm:size-12 place-items-center text-forest hover:bg-sage focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay"
               aria-label={`Odpri košarico, ${count} izdelkov`}
             >
-              <ShoppingBag size={21} aria-hidden="true" />
+              <ShoppingBag size={18} className="sm:hidden" aria-hidden="true" />
+              <ShoppingBag size={21} className="hidden sm:block" aria-hidden="true" />
               {count > 0 && (
-                <span className="absolute right-1.5 top-1.5 grid min-h-5 min-w-5 place-items-center rounded-full bg-clay px-1 text-[10px] font-bold text-white">
+                <span className="absolute right-0.5 top-0.5 sm:right-1.5 sm:top-1.5 grid min-h-4 min-w-4 sm:min-h-5 sm:min-w-5 place-items-center rounded-full bg-clay px-1 text-[9px] sm:text-[10px] font-bold text-white">
                   {count}
                 </span>
               )}
@@ -214,13 +216,14 @@ export default function Header() {
             </Link>
             <button
               type="button"
-              className="grid size-12 place-items-center text-forest hover:bg-sage lg:hidden"
+              className="grid size-9 sm:size-12 place-items-center text-forest hover:bg-sage lg:hidden"
               onClick={() => setOpen(true)}
               aria-label="Odpri meni"
               aria-expanded={open}
               aria-controls="mobile-navigation"
             >
-              <Menu size={23} aria-hidden="true" />
+              <Menu size={20} className="sm:hidden" aria-hidden="true" />
+              <Menu size={23} className="hidden sm:block" aria-hidden="true" />
             </button>
           </div>
         </nav>
