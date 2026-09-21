@@ -52,7 +52,7 @@ export default function HomePage() {
                 to="/products"
                 className="group inline-flex min-h-14 items-center justify-center gap-3 bg-forest px-7 text-sm font-bold text-porcelain shadow-[0_14px_34px_rgba(23,56,44,0.16)] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:bg-ink hover:shadow-[0_18px_40px_rgba(23,56,44,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-clay"
               >
-                Odkrij kolekcijo
+                {t("Poglej ponudbo")}
                 <ArrowRight
                   className="transition-transform duration-300 group-hover:translate-x-1"
                   size={17}
