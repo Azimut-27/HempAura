@@ -157,17 +157,15 @@ export default function HomePage() {
             />
           </div>
           <div className="max-w-xl">
-            <p className="text-xs font-bold uppercase text-gold">Vsakdanji ritual</p>
+            <p className="text-xs font-bold uppercase text-gold">{t("Vsakdanji ritual")}</p>
             <h2 className="mt-3 font-display text-4xl font-semibold sm:text-5xl">
-              Umirjena izkušnja brez medicinskih obljub
+              {t("Kakovost, ki govori sama zase.")}
             </h2>
             <p className="mt-5 text-lg leading-8 text-porcelain/74">
-              Vsebina se osredotoča na izdelek, njegovo deklaracijo in odgovorno
-              uporabo. Ne pripisuje zdravljenja, lajšanja bolezni ali zagotovljenih
-              učinkov.
+              {t("Pri izdelkih HerbaGallus so v ospredju kakovost, jasna deklaracija in odgovorna uporaba. Ne pripisujemo jim zdravilnih učinkov ali obljub, ki jih ni mogoče utemeljiti.")}
             </p>
-            <Link className="mt-7 inline-flex font-bold text-gold underline" to="/responsible-use">
-              Odgovorna uporaba
+            <Link className="mt-7 inline-flex font-bold text-gold underline hover:text-white transition-colors" to="/responsible-use">
+              {t("Odgovorna uporaba")}
             </Link>
           </div>
         </div>
