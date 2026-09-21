@@ -1,4 +1,5 @@
 import {
+  Check,
   Clock,
   Droplets,
   Eye,
@@ -32,6 +33,7 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
   const { t } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   const [activeThumb, setActiveThumb] = useState(0);
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -48,11 +50,21 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
 
   if (!isOpen || !product) return null;
 
+  const available =
+    product.status === "active" &&
+    product.stock > 0 &&
+    Number.isInteger(product.priceCents);
+
   const handleAddToCart = () => {
+    if (!available) return;
     for (let i = 0; i < quantity; i++) {
       addItem(product.id);
     }
-    onClose();
+    setIsAdded(true);
+    setTimeout(() => {
+      setIsAdded(false);
+      onClose();
+    }, 1200);
   };
 
   const totalPriceCents = (product.priceCents || 0) * quantity;
@@ -201,38 +213,58 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
             </div>
 
             {/* Bottom Action Bar */}
-            <div className="mt-8 flex flex-col gap-4 border-t border-forest/10 pt-6 sm:flex-row sm:items-center">
-              {/* Quantity Selector */}
-              <div className="flex h-13 items-center justify-between rounded-full border border-forest/20 bg-white px-4 py-2 sm:w-36">
+            <div className="mt-8 flex flex-col gap-3.5 border-t border-forest/10 pt-6 sm:flex-row sm:items-center">
+              {/* Compact Light Pill Quantity Stepper */}
+              <div className="flex h-13 sm:h-14 items-center justify-between rounded-full border border-forest/15 bg-white/90 px-3 py-1.5 shadow-[0_2px_10px_rgba(23,56,44,0.03)] sm:w-36">
                 <button
                   type="button"
+                  disabled={quantity <= 1 || !available}
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="text-forest/70 hover:text-forest transition-colors p-1"
+                  className="grid size-9 place-items-center rounded-full text-forest/70 transition-all hover:bg-forest/8 hover:text-forest active:scale-90 disabled:opacity-25 disabled:pointer-events-none"
                   aria-label={t("Zmanjšaj količino")}
                 >
-                  <Minus size={16} />
+                  <Minus size={15} strokeWidth={2.2} />
                 </button>
-                <span className="font-display text-lg font-bold text-forest">{quantity}</span>
+                <span className="font-display text-lg font-bold text-forest min-w-[28px] text-center select-none">
+                  {quantity}
+                </span>
                 <button
                   type="button"
+                  disabled={quantity >= (product.stock || 99) || !available}
                   onClick={() => setQuantity(quantity + 1)}
-                  className="text-forest/70 hover:text-forest transition-colors p-1"
+                  className="grid size-9 place-items-center rounded-full text-forest/70 transition-all hover:bg-forest/8 hover:text-forest active:scale-90 disabled:opacity-25 disabled:pointer-events-none"
                   aria-label={t("Povečaj količino")}
                 >
-                  <Plus size={16} />
+                  <Plus size={15} strokeWidth={2.2} />
                 </button>
               </div>
 
-              {/* Add To Cart CTA */}
+              {/* Dominant Conversion-Focused Primary CTA Button */}
               <button
                 type="button"
+                disabled={!available}
                 onClick={handleAddToCart}
-                className="flex h-13 flex-1 items-center justify-center gap-3 rounded-full bg-[#7C4828] hover:bg-[#683b1f] px-8 text-sm font-bold text-white shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
+                className={`group relative flex h-13 sm:h-14 flex-1 items-center justify-center gap-3 rounded-full px-8 text-sm sm:text-[15px] font-bold tracking-wide transition-all duration-300 ${
+                  isAdded
+                    ? "bg-emerald-700 text-white shadow-[0_12px_30px_rgba(4,120,87,0.28)] scale-[1.01]"
+                    : "bg-[#7C4828] text-porcelain shadow-[0_12px_30px_rgba(124,72,40,0.22)] hover:-translate-y-0.5 hover:bg-[#683b1f] hover:shadow-[0_18px_40px_rgba(124,72,40,0.32)] active:translate-y-0 active:scale-[0.98]"
+                } disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-500 disabled:shadow-none disabled:transform-none`}
               >
-                <ShoppingBag size={18} />
-                <span>
-                  {t("DODAJ V KOŠARICO")} • {formatPrice(totalPriceCents)}
-                </span>
+                {isAdded ? (
+                  <>
+                    <Check size={19} className="stroke-[2.5]" />
+                    <span>{t("Dodano v košarico ✓")}</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag size={18} className="transition-transform group-hover:scale-110" />
+                    <span>
+                      {available
+                        ? `${t("Dodaj v košarico")} · ${formatPrice(totalPriceCents)}`
+                        : t("Trenutno ni na zalogi")}
+                    </span>
+                  </>
+                )}
               </button>
             </div>
           </div>

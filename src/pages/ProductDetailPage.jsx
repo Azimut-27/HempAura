@@ -1,4 +1,4 @@
-import { ArrowLeft, FileText, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Check, FileText, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FaqList from "../components/FaqList.jsx";
@@ -30,8 +30,9 @@ export default function ProductDetailPage() {
   const { slug } = useParams();
   const product = getProductBySlug(slug);
   const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
   const { addItem } = useCart();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const navigate = useNavigate();
 
   const jsonLd = useMemo(() => {
@@ -142,35 +143,65 @@ export default function ProductDetailPage() {
                   : "Ni na zalogi"}
               </p>
               <p className="mt-6 leading-8 text-forest/72">{product.description}</p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <QuantityControl
-                  value={quantity}
-                  min={1}
-                  max={Math.max(1, product.stock)}
-                  onChange={setQuantity}
-                  label={product.name}
-                />
+              <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
+                {/* Compact Light Pill Quantity Stepper */}
+                <div className="flex h-13 sm:h-14 items-center justify-between rounded-full border border-forest/15 bg-white/90 px-3 py-1.5 shadow-[0_2px_10px_rgba(23,56,44,0.03)] sm:w-36">
+                  <button
+                    type="button"
+                    disabled={quantity <= 1 || !available}
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="grid size-9 place-items-center rounded-full text-forest/70 transition-all hover:bg-forest/8 hover:text-forest active:scale-90 disabled:opacity-25 disabled:pointer-events-none"
+                    aria-label={`Zmanjšaj količino za ${product.name}`}
+                  >
+                    <Minus size={15} strokeWidth={2.2} />
+                  </button>
+                  <span className="font-display text-lg font-bold text-forest min-w-[28px] text-center select-none">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    disabled={quantity >= (product.stock || 99) || !available}
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="grid size-9 place-items-center rounded-full text-forest/70 transition-all hover:bg-forest/8 hover:text-forest active:scale-90 disabled:opacity-25 disabled:pointer-events-none"
+                    aria-label={`Povečaj količino za ${product.name}`}
+                  >
+                    <Plus size={15} strokeWidth={2.2} />
+                  </button>
+                </div>
+
+                {/* Dominant Conversion-Focused Primary CTA Button */}
                 <button
                   type="button"
                   disabled={!available}
-                  onClick={() => addItem(product.id, quantity)}
-                  className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 bg-forest px-6 text-sm font-bold text-porcelain disabled:cursor-not-allowed disabled:bg-forest/30"
+                  onClick={() => {
+                    if (!available) return;
+                    addItem(product.id, quantity);
+                    setIsAdded(true);
+                    setTimeout(() => setIsAdded(false), 1500);
+                  }}
+                  className={`group relative flex h-13 sm:h-14 flex-1 items-center justify-center gap-3 rounded-full px-8 text-sm sm:text-[15px] font-bold tracking-wide transition-all duration-300 ${
+                    isAdded
+                      ? "bg-emerald-700 text-white shadow-[0_12px_30px_rgba(4,120,87,0.28)] scale-[1.01]"
+                      : "bg-[#7C4828] text-porcelain shadow-[0_12px_30px_rgba(124,72,40,0.22)] hover:-translate-y-0.5 hover:bg-[#683b1f] hover:shadow-[0_18px_40px_rgba(124,72,40,0.32)] active:translate-y-0 active:scale-[0.98]"
+                  } disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-500 disabled:shadow-none disabled:transform-none`}
                 >
-                  <ShoppingBag size={18} aria-hidden="true" />
-                  {available ? "Dodaj v košarico" : "Prodaja še ni odprta"}
+                  {isAdded ? (
+                    <>
+                      <Check size={19} className="stroke-[2.5]" />
+                      <span>{t("Dodano v košarico ✓")}</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag size={18} className="transition-transform group-hover:scale-110" />
+                      <span>
+                        {available
+                          ? `${t("Dodaj v košarico")} · ${formatPrice(product.priceCents * quantity)}`
+                          : t("Trenutno ni na zalogi")}
+                      </span>
+                    </>
+                  )}
                 </button>
               </div>
-              <button
-                type="button"
-                disabled={!available}
-                onClick={() => {
-                  addItem(product.id, quantity);
-                  navigate("/cart");
-                }}
-                className="mt-3 min-h-12 w-full border border-forest/20 text-sm font-bold text-forest disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Kupi zdaj
-              </button>
               <div className="mt-7 border-l-2 border-gold pl-4 text-sm leading-7 text-forest/68">
                 {siteConfig.productWarning}
               </div>
