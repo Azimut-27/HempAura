@@ -70,7 +70,7 @@ export default function HomePage() {
           <div className="hero-media-frame relative aspect-[4/3] min-w-0 overflow-hidden bg-cream sm:aspect-[16/11] lg:aspect-[4/3]">
             <img
               src={lifestyleImage}
-              alt="Jantarna steklenička ob konopljini rastlini in naravnih materialih"
+              alt="HerbaGallus premium CBD olje v elegantni embalaži z zlato konopljino ilustracijo"
               width="1536"
               height="1024"
               fetchPriority="high"
