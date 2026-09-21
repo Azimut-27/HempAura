@@ -100,17 +100,14 @@ export default function Header() {
           className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-3.5 sm:px-6 lg:px-8"
           aria-label="Glavna navigacija"
         >
-          <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0 min-h-10" aria-label="HerbaGallus domov">
+          <Link to="/" className="flex items-center shrink-0 min-h-10" aria-label="HerbaGallus domov">
             <img
-              src="/brand/herbagallus-mark.png"
+              src="/brand/herbagallus-logo.png"
               alt="HerbaGallus"
-              width="170"
-              height="160"
-              className="h-7 w-auto shrink-0 object-contain sm:h-9"
+              width="450"
+              height="140"
+              className="h-8 w-auto object-contain sm:h-10"
             />
-            <span className="font-display text-xl font-bold tracking-tight text-forest sm:text-2xl lg:text-3xl">
-              HerbaGallus
-            </span>
           </Link>
 
           <div className="hidden items-center gap-7 lg:flex">
@@ -241,16 +238,13 @@ export default function Header() {
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-forest/10 pb-5">
-              <span className="flex items-center gap-2.5">
-                <img
-                  src="/brand/herbagallus-mark.png"
-                  alt="HerbaGallus"
-                  width="170"
-                  height="160"
-                  className="h-9 w-auto shrink-0 object-contain"
-                />
-                <span className="font-display text-2xl font-bold text-forest">HerbaGallus</span>
-              </span>
+              <img
+                src="/brand/herbagallus-logo.png"
+                alt="HerbaGallus"
+                width="450"
+                height="140"
+                className="h-8 w-auto object-contain sm:h-9"
+              />
               <button
                 type="button"
                 className="grid size-12 place-items-center text-forest hover:bg-sage"
