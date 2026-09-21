@@ -125,23 +125,20 @@ export default function HomePage() {
       <section id="about" className="bg-porcelain py-18 sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
-            <p className="text-xs font-bold uppercase text-clay">Zakaj HerbaGallus</p>
+            <p className="text-xs font-bold uppercase text-clay">{t("Zakaj HerbaGallus")}</p>
             <h2 className="mt-3 font-display text-4xl font-semibold text-forest sm:text-5xl">
-              Manj hrupa. Več uporabnih informacij.
+              {t("Naravno pridelano. Kakovost na prvem mestu.")}
             </h2>
           </div>
           <div className="space-y-5 text-base leading-8 text-forest/72">
             <p>
-              Znamka je zasnovana okoli kakovostne outdoor konoplje, jasne
-              predstavitve sestave, uporabe, opozoril, serij in dokumentacije.
-              Podatki se ne zapolnijo z ugibanjem.
+              {t("HerbaGallus temelji na kakovostni outdoor konoplji, pregledni sestavi in jasnih informacijah o uporabi, serijah ter dokumentaciji.")}
             </p>
             <p>
-              Trgovina se varno odpre šele po potrditvi ponudnika plačil, davčne
-              obravnave, dostave in zakonsko ustreznih informacij o izdelkih.
+              {t("Naša trgovina je odprta z namenom, da vam ponudi kakovostne izdelke, pregledne informacije ter varen in enostaven nakup. Izbrane izdelke HerbaGallus lahko najdete tudi v trgovini Plečnikov čaj v Ljubljani.")}
             </p>
-            <Link className="inline-flex items-center gap-2 font-bold text-forest" to="/quality">
-              Preberi pristop h kakovosti <ArrowRight size={17} aria-hidden="true" />
+            <Link className="inline-flex items-center gap-2 font-bold text-forest hover:text-clay transition-colors" to="/quality">
+              {t("Preberi pristop h kakovosti")} <ArrowRight size={17} aria-hidden="true" />
             </Link>
           </div>
         </div>
