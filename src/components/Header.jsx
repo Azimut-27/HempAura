@@ -108,7 +108,7 @@ export default function Header() {
               height="240"
               className="h-8 w-auto object-contain sm:h-9"
             />
-            <span className="font-display text-xl font-bold tracking-tight text-forest sm:text-2xl lg:text-3xl">
+            <span className="font-display text-xl font-bold tracking-tight text-forest sm:text-2xl lg:text-3xl translate-y-[2px] sm:translate-y-[3px]">
               HerbaGallus
             </span>
           </Link>
@@ -249,7 +249,7 @@ export default function Header() {
                   height="240"
                   className="h-8 w-auto object-contain"
                 />
-                <span className="font-display text-2xl font-bold text-forest">HerbaGallus</span>
+                <span className="font-display text-2xl font-bold text-forest translate-y-[2px]">HerbaGallus</span>
               </span>
               <button
                 type="button"
