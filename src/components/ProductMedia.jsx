@@ -5,7 +5,7 @@ import { getProductImage } from "../data/products.js";
 export default function ProductMedia({
   product,
   className = "",
-  fit = "contain",
+  fit = "cover",
 }) {
   const { language } = useLanguage();
   const image = getProductImage(product, language);

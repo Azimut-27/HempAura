@@ -2,7 +2,7 @@ export const products = [
   {
     id: "hempaura-cbd-kapljice-5",
     slug: "hempaura-cbd-kapljice-5",
-    name: "HerbaGallus CBD kapljice 5 % — Zlati eliksir",
+    name: "HerbaGallus CBD kapljice 5 % — Premium",
     categoryLabel: "CBD OLJA",
     rating: 4.9,
     reviewCount: 128,
@@ -14,9 +14,9 @@ export const products = [
     type: "oil",
     status: "active",
     shortDescription:
-      "Polnospektralni izvleček industrijske konoplje v organskem MCT olju z naravno bogatimi kanabinoidi in terpeni.",
+      "Polnospektralni izvleček industrijske konoplje v bio ekstra deviškem olivnem olju z naravno bogatimi kanabinoidi in terpeni.",
     description:
-      "HerbaGallus CBD kapljice 5% so zasnovane kot vsakodnevna naravna podpora za telo in um. Vrhunski izvleček Cannabis sativa L. v kombinaciji s čistim kokosovim MCT oljem omogoča optimalno absorpcijo kanabinoidov. Steklenička 10 ml vsebuje 500 mg naravnega CBD-ja z ohranjenim celotnim rastlinskim spektrom, terpeni in flavonoidi za sinergijski učinek. 100 % naravno, vegansko in laboratorijsko preverjeno.",
+      "HerbaGallus CBD kapljice 5% Premium so zasnovane kot vsakodnevna naravna podpora za telo in um. Vrhunski izvleček Cannabis sativa L. v kombinaciji z bio ekstra deviškim olivnim oljem omogoča optimalno absorpcijo kanabinoidov. Steklenička 10 ml vsebuje 500 mg naravnega CBD-ja z ohranjenim celotnim rastlinskim spektrom, terpeni in flavonoidi za sinergijski učinek. 100 % naravno, vegansko in laboratorijsko preverjeno.",
     quote:
       "»Superkritična CO2 ekstrakcija iz neokrnjenih slovenskih nasadov ohranja najčistejše naravne spojine konoplje za popolno vsakodnevno harmonijo.«",
     spectrum: "Polni spekter",
@@ -26,14 +26,14 @@ export const products = [
     sizeMl: 10,
     sizeGrams: null,
     ingredients: [
-      "CAPRYLIC/CAPRIC TRIGLYCERIDE",
+      "OLEA EUROPAEA FRUIT OIL",
       "CANNABIDIOL",
       "CANNABIS SATIVA L. EXTRACT",
       "CANNABIGEROL",
       "β-CARYOPHYLLENE",
     ],
     compositionBreakdown: [
-      { name: "Organsko MCT kokosovo olje", percentage: "93.4 %", width: "93%" },
+      { name: "Bio ekstra deviško olivno olje", percentage: "93.4 %", width: "93%" },
       { name: "CBD (Kanabidiol)", percentage: "5.0 % (500 mg)", width: "50%" },
       { name: "CBG & CBC (Naravni kanabinoidi)", percentage: "1.2 %", width: "25%" },
       { name: "Terpenski profil (β-kariofilen, mircen)", percentage: "0.4 %", width: "15%" },
@@ -59,22 +59,22 @@ export const products = [
     lowStockThreshold: 2,
     imagesByLanguage: {
       sl: {
-        src: "/products/herbagallus-cbd-oil-sl.png",
-        alt: "HerbaGallus CBD olje Zlato s slovensko deklaracijo",
-        width: 1672,
-        height: 941,
+        src: "/products/herbagallus-cbd-oil-premium.jpg",
+        alt: "HerbaGallus CBD kapljice 5 % Premium z bio ekstra deviškim olivnim oljem",
+        width: 1024,
+        height: 1024,
       },
       en: {
-        src: "/products/herbagallus-cbd-oil-en.png",
-        alt: "HerbaGallus CBD Oil Gold with English label",
-        width: 1672,
-        height: 941,
+        src: "/products/herbagallus-cbd-oil-premium.jpg",
+        alt: "HerbaGallus CBD Oil Premium 5% with organic extra virgin olive oil",
+        width: 1024,
+        height: 1024,
       },
       de: {
-        src: "/products/herbagallus-cbd-oil-de.png",
-        alt: "HerbaGallus CBD Oil Gold mit deutscher Deklaration",
-        width: 1672,
-        height: 941,
+        src: "/products/herbagallus-cbd-oil-premium.jpg",
+        alt: "HerbaGallus CBD Tropfen 5 % Premium mit Bio-nativem Olivenöl extra",
+        width: 1024,
+        height: 1024,
       },
     },
     badge: "Polni spekter",

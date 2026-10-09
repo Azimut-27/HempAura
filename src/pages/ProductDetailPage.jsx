@@ -118,8 +118,8 @@ export default function ProductDetailPage() {
             <ArrowLeft size={17} aria-hidden="true" /> Nazaj na izdelke
           </Link>
           <div className="mt-8 grid gap-10 lg:grid-cols-2">
-            <div className="aspect-square overflow-hidden bg-sage">
-              <ProductMedia product={product} />
+            <div className="aspect-square overflow-hidden rounded-2xl bg-cream shadow-sm border border-forest/10">
+              <ProductMedia product={product} fit="cover" className="h-full w-full object-cover" />
             </div>
             <div className="lg:py-4">
               <p className="text-xs font-bold uppercase text-clay">
