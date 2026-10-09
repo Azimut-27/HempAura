@@ -147,7 +147,14 @@ export default function ProductQuickViewModal({ product, isOpen, onClose }) {
 
               {/* Title */}
               <h2 className="mt-2 font-display text-3xl font-semibold leading-tight text-forest sm:text-4xl">
-                {product.name}
+                {product.titleLines ? (
+                  <>
+                    <span className="block">{t(product.titleLines[0])}</span>
+                    <span className="block">{t(product.titleLines[1])}</span>
+                  </>
+                ) : (
+                  product.name
+                )}
               </h2>
 
               {/* Price Row */}

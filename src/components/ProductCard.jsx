@@ -106,7 +106,14 @@ export default function ProductCard({ product }) {
               to={`/products/${product.slug}`}
               className="hover:text-gold transition-colors"
             >
-              {product.name}
+              {product.titleLines ? (
+                <>
+                  <span className="block">{t(product.titleLines[0])}</span>
+                  <span className="block">{t(product.titleLines[1])}</span>
+                </>
+              ) : (
+                product.name
+              )}
             </Link>
           </h2>
 

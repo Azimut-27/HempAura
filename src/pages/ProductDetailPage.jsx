@@ -126,7 +126,14 @@ export default function ProductDetailPage() {
                 {details.join(" · ") || "Podatki v pripravi"}
               </p>
               <h1 className="mt-3 font-display text-5xl font-semibold text-forest sm:text-6xl">
-                {product.name}
+                {product.titleLines ? (
+                  <>
+                    <span className="block">{t(product.titleLines[0])}</span>
+                    <span className="block">{t(product.titleLines[1])}</span>
+                  </>
+                ) : (
+                  product.name
+                )}
               </h1>
               <p className="mt-4 text-lg text-forest/70">{product.subtitle}</p>
               <p className="mt-7 text-2xl font-bold text-forest">
