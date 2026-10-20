@@ -1,14 +1,42 @@
+const legalEntityName =
+  import.meta.env.VITE_LEGAL_ENTITY_NAME ||
+  "HERBA GALLUS PROMOCIJA IN TRŽENJE STANISLAV BREGAR S.P.";
+const businessAddress =
+  import.meta.env.VITE_BUSINESS_ADDRESS ||
+  "Prvomajska cesta 11, 8310 Šentjernej";
+const registrationNumber =
+  import.meta.env.VITE_REGISTRATION_NUMBER || "6079997000";
+const taxNumber = import.meta.env.VITE_TAX_NUMBER || "20543018";
+const vatId = import.meta.env.VITE_VAT_ID || "SI20543018";
+const supportEmail =
+  import.meta.env.VITE_SUPPORT_EMAIL || "caj.plecnik@gmail.com";
+const returnAddress =
+  import.meta.env.VITE_RETURN_ADDRESS ||
+  "Prvomajska cesta 11, 8310 Šentjernej";
+const deliveryPartner =
+  import.meta.env.VITE_DELIVERY_PARTNER || "GLS Slovenija";
+const irpsProvider =
+  import.meta.env.VITE_IRPS_PROVIDER ||
+  "Ponudnik ne priznava nobenega izvajalca IRPS kot pristojnega za reševanje potrošniških sporov.";
+const shippingSiStandardCents =
+  import.meta.env.VITE_SHIPPING_SI_STANDARD_CENTS || "390";
+const shippingSiFreeThresholdCents =
+  import.meta.env.VITE_SHIPPING_SI_FREE_THRESHOLD_CENTS || "5000";
+const shippingSiDeliveryEstimate =
+  import.meta.env.VITE_SHIPPING_SI_DELIVERY_ESTIMATE ||
+  "predvidoma 1–3 delovne dni";
+
 const requiredPublicLegalValues = [
-  import.meta.env.VITE_LEGAL_ENTITY_NAME,
-  import.meta.env.VITE_BUSINESS_ADDRESS,
-  import.meta.env.VITE_REGISTRATION_NUMBER,
-  import.meta.env.VITE_TAX_NUMBER,
-  import.meta.env.VITE_SUPPORT_EMAIL,
-  import.meta.env.VITE_RETURN_ADDRESS,
-  import.meta.env.VITE_DELIVERY_PARTNER,
-  import.meta.env.VITE_IRPS_PROVIDER,
-  import.meta.env.VITE_SHIPPING_SI_STANDARD_CENTS,
-  import.meta.env.VITE_SHIPPING_SI_DELIVERY_ESTIMATE,
+  legalEntityName,
+  businessAddress,
+  registrationNumber,
+  taxNumber,
+  supportEmail,
+  returnAddress,
+  deliveryPartner,
+  irpsProvider,
+  shippingSiStandardCents,
+  shippingSiDeliveryEstimate,
 ];
 
 const publicLegalConfigurationComplete = requiredPublicLegalValues.every(
@@ -17,19 +45,19 @@ const publicLegalConfigurationComplete = requiredPublicLegalValues.every(
 
 export const siteConfig = {
   brandName: "HerbaGallus",
-  legalBusinessName: import.meta.env.VITE_LEGAL_ENTITY_NAME || "",
-  businessAddress: import.meta.env.VITE_BUSINESS_ADDRESS || "",
-  registrationNumber: import.meta.env.VITE_REGISTRATION_NUMBER || "",
-  taxNumber: import.meta.env.VITE_TAX_NUMBER || "",
-  vatId: import.meta.env.VITE_VAT_ID || "",
+  legalBusinessName: legalEntityName,
+  businessAddress,
+  registrationNumber,
+  taxNumber,
+  vatId,
   domain: import.meta.env.VITE_SITE_URL || "http://localhost:5173",
-  supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || "stakingforge@gmail.com",
+  supportEmail,
   supportPhone: import.meta.env.VITE_SUPPORT_PHONE || "",
   responseTime: import.meta.env.VITE_RESPONSE_TIME || "v dveh delovnih dneh",
-  returnAddress: import.meta.env.VITE_RETURN_ADDRESS || "",
-  deliveryPartner: import.meta.env.VITE_DELIVERY_PARTNER || "",
-  irpsProvider: import.meta.env.VITE_IRPS_PROVIDER || "",
-  legalLastUpdated: "27. julij 2026",
+  returnAddress,
+  deliveryPartner,
+  irpsProvider,
+  legalLastUpdated: "20. oktober 2026",
   currency: "EUR",
   locale: "sl-SI",
   businessCountry: "SI",
@@ -41,27 +69,26 @@ export const siteConfig = {
   supportedCountries: ["SI"],
   announcement: {
     enabled: false,
-    text: "", // TODO(owner): add only verified shipping or launch information.
+    text: "",
     linkLabel: "",
     linkTo: "/products",
   },
   shipping: {
     standardCents: Number.isFinite(
-      Number.parseInt(import.meta.env.VITE_SHIPPING_SI_STANDARD_CENTS, 10)
+      Number.parseInt(shippingSiStandardCents, 10)
     )
-      ? Number.parseInt(import.meta.env.VITE_SHIPPING_SI_STANDARD_CENTS, 10)
-      : null,
+      ? Number.parseInt(shippingSiStandardCents, 10)
+      : 390,
     freeThresholdCents: Number.isFinite(
-      Number.parseInt(import.meta.env.VITE_SHIPPING_SI_FREE_THRESHOLD_CENTS, 10)
+      Number.parseInt(shippingSiFreeThresholdCents, 10)
     )
-      ? Number.parseInt(import.meta.env.VITE_SHIPPING_SI_FREE_THRESHOLD_CENTS, 10)
-      : null,
-    deliveryEstimate:
-      import.meta.env.VITE_SHIPPING_SI_DELIVERY_ESTIMATE || "predvidoma 1–3 delovne dni",
+      ? Number.parseInt(shippingSiFreeThresholdCents, 10)
+      : 5000,
+    deliveryEstimate: shippingSiDeliveryEstimate,
     returnPeriodDays: 14,
   },
   socialLinks: {
-    instagram: "", // TODO(owner): provide verified profile URLs.
+    instagram: "",
     facebook: "",
   },
   productWarning:
@@ -84,7 +111,7 @@ export const missingLegalDetails = requiredLegalDetails
   .map(([, label]) => label)
   .concat(
     siteConfig.shipping.standardCents === null ? ["cena standardne dostave"] : [],
-    !import.meta.env.VITE_SHIPPING_SI_DELIVERY_ESTIMATE?.trim()
+    !siteConfig.shipping.deliveryEstimate?.trim()
       ? ["potrjen rok dostave"]
       : []
   );
