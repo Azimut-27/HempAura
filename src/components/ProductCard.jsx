@@ -139,8 +139,8 @@ export default function ProductCard({ product }) {
           </h2>
 
           {/* Short Description */}
-          <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-forest/70 sm:text-sm">
-            {product.shortDescription}
+          <p className="mt-2.5 text-xs leading-relaxed text-forest/70 sm:text-sm">
+            {t(product.shortDescription)}
           </p>
 
           {/* Interactive Weight Variant Pills (Option A) */}
