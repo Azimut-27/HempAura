@@ -30,4 +30,19 @@ describe("cart", () => {
       totalCents: 3100,
     });
   });
+
+  it("supports 3g, 5g, 10g, and 25g flower weight variants in the cart", () => {
+    expect(
+      getCartTotals([
+        { productId: "hempaura-cbg-cvetovi-citrin-15-3g", quantity: 1 },
+        { productId: "hempaura-cbg-cvetovi-citrin-15-5g", quantity: 1 },
+        { productId: "hempaura-cbg-cvetovi-citrin-15-10g", quantity: 1 },
+        { productId: "hempaura-cbg-cvetovi-citrin-15-25g", quantity: 1 },
+      ])
+    ).toEqual({
+      subtotalCents: 1190 + 1890 + 3090 + 5590,
+      shippingCents: null,
+      totalCents: 11760,
+    });
+  });
 });

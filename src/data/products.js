@@ -149,12 +149,76 @@ export const products = [
       "Hranite zunaj dosega otrok, v suhem, hladnem in temnem prostoru.",
       "Izdelek ni namenjen neposrednemu uživanju ali kajenju.",
     ],
-    priceCents: 2890,
-    compareAtPriceCents: 3200,
+    priceCents: 1890,
+    compareAtPriceCents: 2200,
     currency: "EUR",
     sku: "HA-CBD-CITRIN-15-5G",
     stock: 20,
     lowStockThreshold: 2,
+    variants: [
+      {
+        id: "hempaura-cbg-cvetovi-citrin-15-3g",
+        label: "3 g",
+        sizeGrams: 3,
+        sizeBadge: "3 g",
+        priceCents: 1190,
+        compareAtPriceCents: 1400,
+        pricePerGramLabel: "3,97 € / g",
+        sku: "HA-CBD-CITRIN-15-3G",
+        stock: 20,
+        cbdAmountMg: 450,
+        cbdAmountLabel: "pribl. 450 mg CBD",
+        shippingWeightGrams: 10,
+      },
+      {
+        id: "hempaura-cbg-cvetovi-citrin-15-5g",
+        label: "5 g",
+        sizeGrams: 5,
+        sizeBadge: "5 g",
+        priceCents: 1890,
+        compareAtPriceCents: 2200,
+        pricePerGramLabel: "3,78 € / g",
+        sku: "HA-CBD-CITRIN-15-5G",
+        stock: 20,
+        cbdAmountMg: 750,
+        cbdAmountLabel: "pribl. 750 mg CBD",
+        shippingWeightGrams: 15,
+        default: true,
+        popular: true,
+      },
+      {
+        id: "hempaura-cbg-cvetovi-citrin-15-10g",
+        label: "10 g",
+        sizeGrams: 10,
+        sizeBadge: "10 g",
+        priceCents: 3090,
+        compareAtPriceCents: 3800,
+        pricePerGramLabel: "3,09 € / g",
+        savingsLabel: "-22 %",
+        sku: "HA-CBD-CITRIN-15-10G",
+        stock: 20,
+        cbdAmountMg: 1500,
+        cbdAmountLabel: "pribl. 1500 mg CBD",
+        shippingWeightGrams: 25,
+      },
+      {
+        id: "hempaura-cbg-cvetovi-citrin-15-25g",
+        label: "25 g",
+        sizeGrams: 25,
+        sizeBadge: "25 g",
+        priceCents: 5590,
+        compareAtPriceCents: 7000,
+        pricePerGramLabel: "2,24 € / g",
+        savingsLabel: "-44 %",
+        freeShipping: true,
+        bestValue: true,
+        sku: "HA-CBD-CITRIN-15-25G",
+        stock: 20,
+        cbdAmountMg: 3750,
+        cbdAmountLabel: "pribl. 3750 mg CBD",
+        shippingWeightGrams: 40,
+      },
+    ],
     imagesByLanguage: {
       sl: {
         src: "/products/herbagallus-cbd-flower-premium.jpg",
@@ -290,7 +354,24 @@ export const products = [
   },
 ];
 
-export const getProductById = (id) => products.find((product) => product.id === id);
+export const getProductById = (id) => {
+  for (const product of products) {
+    if (product.id === id) return product;
+    if (product.variants) {
+      const variant = product.variants.find((v) => v.id === id);
+      if (variant) {
+        return {
+          ...product,
+          ...variant,
+          parentId: product.id,
+          name: `${product.name} (${variant.label})`,
+          variantLabel: variant.label,
+        };
+      }
+    }
+  }
+  return undefined;
+};
 export const getProductBySlug = (slug) =>
   products.find((product) => product.slug === slug);
 export const activeProducts = products.filter((product) => product.status === "active");

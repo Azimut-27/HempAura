@@ -13,16 +13,37 @@ export default function ProductCard({ product }) {
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
+  const defaultVariant =
+    product.variants?.find((v) => v.default) || product.variants?.[0] || null;
+  const [selectedVariantId, setSelectedVariantId] = useState(
+    defaultVariant?.id || null
+  );
+
+  const activeVariant =
+    product.variants?.find((v) => v.id === selectedVariantId) || defaultVariant;
+
+  const targetProductId = activeVariant ? activeVariant.id : product.id;
+  const displayPriceCents = activeVariant
+    ? activeVariant.priceCents
+    : product.priceCents;
+  const displayCompareAtPriceCents = activeVariant
+    ? activeVariant.compareAtPriceCents
+    : product.compareAtPriceCents;
+  const displaySizeBadge = activeVariant
+    ? activeVariant.sizeBadge
+    : product.sizeBadge;
+  const displayStock = activeVariant ? activeVariant.stock : product.stock;
+
   const available =
     product.status === "active" &&
-    product.stock > 0 &&
-    Number.isInteger(product.priceCents);
+    displayStock > 0 &&
+    Number.isInteger(displayPriceCents);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (!available) return;
-    addItem(product.id);
+    addItem(targetProductId);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 1500);
   };
@@ -54,9 +75,9 @@ export default function ProductCard({ product }) {
           </div>
 
           {/* Bottom Right Size Badge */}
-          {product.sizeBadge && (
-            <span className="absolute bottom-3.5 right-3.5 z-10 rounded-lg bg-ink/85 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
-              {product.sizeBadge}
+          {displaySizeBadge && (
+            <span className="absolute bottom-3.5 right-3.5 z-10 rounded-lg bg-ink/85 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm transition-all">
+              {displaySizeBadge}
             </span>
           )}
 
@@ -122,17 +143,64 @@ export default function ProductCard({ product }) {
             {product.shortDescription}
           </p>
 
-          <div className="my-5 border-t border-forest/8" />
+          {/* Interactive Weight Variant Pills (Option A) */}
+          {product.variants?.length > 0 && (
+            <div className="mt-3.5">
+              <div
+                className="grid grid-cols-4 gap-1.5"
+                role="group"
+                aria-label={t("Izbira pakiranja")}
+              >
+                {product.variants.map((variant) => {
+                  const isSelected = variant.id === activeVariant?.id;
+                  return (
+                    <button
+                      key={variant.id}
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedVariantId(variant.id);
+                      }}
+                      className={`rounded-xl border py-1.5 text-center text-xs font-bold transition-all ${
+                        isSelected
+                          ? "border-forest bg-forest text-porcelain shadow-sm"
+                          : "border-forest/12 bg-cream/60 text-forest/75 hover:border-forest/35 hover:bg-cream"
+                      }`}
+                    >
+                      {variant.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {activeVariant?.pricePerGramLabel && (
+                <div className="mt-1.5 flex items-center justify-between text-[11px] font-medium text-forest/55">
+                  <span>{activeVariant.pricePerGramLabel}</span>
+                  {activeVariant.freeShipping ? (
+                    <span className="font-bold text-emerald-700">
+                      ✓ {t("Brezplačna dostava")}
+                    </span>
+                  ) : activeVariant.savingsLabel ? (
+                    <span className="font-bold text-clay">
+                      {t("Prihranek")} {activeVariant.savingsLabel}
+                    </span>
+                  ) : null}
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="my-4 border-t border-forest/8" />
 
           {/* Price & Action Row */}
           <div className="mt-auto flex items-center justify-between gap-3">
             <div className="flex items-baseline gap-2">
               <span className="font-display text-2xl font-bold text-forest">
-                {formatPrice(product.priceCents)}
+                {formatPrice(displayPriceCents)}
               </span>
-              {product.compareAtPriceCents && (
+              {displayCompareAtPriceCents && (
                 <span className="text-sm text-forest/40 line-through">
-                  {formatPrice(product.compareAtPriceCents)}
+                  {formatPrice(displayCompareAtPriceCents)}
                 </span>
               )}
             </div>
@@ -157,6 +225,8 @@ export default function ProductCard({ product }) {
       {/* Quick View Modal */}
       <ProductQuickViewModal
         product={product}
+        initialVariantId={activeVariant?.id}
+        onSelectVariant={setSelectedVariantId}
         isOpen={isQuickViewOpen}
         onClose={() => setIsQuickViewOpen(false)}
       />

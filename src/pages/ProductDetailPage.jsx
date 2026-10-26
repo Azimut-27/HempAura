@@ -35,6 +35,34 @@ export default function ProductDetailPage() {
   const { language, t } = useLanguage();
   const navigate = useNavigate();
 
+  const defaultVariant =
+    product?.variants?.find((v) => v.default) || product?.variants?.[0] || null;
+  const [selectedVariantId, setSelectedVariantId] = useState(
+    defaultVariant?.id || null
+  );
+
+  const activeVariant =
+    product?.variants?.find((v) => v.id === selectedVariantId) || defaultVariant;
+
+  const targetProductId = activeVariant ? activeVariant.id : product?.id;
+  const displayPriceCents = activeVariant
+    ? activeVariant.priceCents
+    : product?.priceCents;
+  const displayCompareAtPriceCents = activeVariant
+    ? activeVariant.compareAtPriceCents
+    : product?.compareAtPriceCents;
+  const displaySizeGrams = activeVariant
+    ? activeVariant.sizeGrams
+    : product?.sizeGrams;
+  const displayCbdAmountLabel = activeVariant
+    ? activeVariant.cbdAmountLabel
+    : product?.cbdAmountLabel;
+  const displayShippingWeightGrams = activeVariant
+    ? activeVariant.shippingWeightGrams
+    : product?.shippingWeightGrams;
+  const displayStock = activeVariant ? activeVariant.stock : product?.stock;
+  const displaySku = activeVariant ? activeVariant.sku : product?.sku;
+
   const jsonLd = useMemo(() => {
     if (!product) return null;
     const image = getProductImage(product, language);
@@ -43,48 +71,51 @@ export default function ProductDetailPage() {
       "@type": "Product",
       name: product.name,
       description: product.shortDescription,
-      sku: product.sku,
+      sku: displaySku,
       brand: { "@type": "Brand", name: product.brand || "HerbaGallus" },
       image: image?.src
         ? new URL(image.src, window.location.origin).toString()
         : undefined,
     };
-    if (Number.isInteger(product.priceCents)) {
+    if (Number.isInteger(displayPriceCents)) {
       data.offers = {
         "@type": "Offer",
         priceCurrency: product.currency,
-        price: (product.priceCents / 100).toFixed(2),
+        price: (displayPriceCents / 100).toFixed(2),
         availability:
-          product.stock > 0
+          displayStock > 0
             ? "https://schema.org/InStock"
             : "https://schema.org/OutOfStock",
       };
     }
     return data;
-  }, [language, product]);
+  }, [language, product, displaySku, displayPriceCents, displayStock]);
 
   if (!product) return <NotFoundPage />;
 
   const available =
-    siteConfig.paymentsEnabled &&
     product.status === "active" &&
-    product.stock > 0 &&
-    Number.isInteger(product.priceCents);
-  const details = formatProductDetails(product);
+    displayStock > 0 &&
+    Number.isInteger(displayPriceCents);
+
+  const effectiveProductForDetails = activeVariant
+    ? { ...product, ...activeVariant }
+    : product;
+  const details = formatProductDetails(effectiveProductForDetails);
   const related = products.filter((item) => item.id !== product.id).slice(0, 2);
   const facts = [
-    ["SKU", product.sku],
+    ["SKU", displaySku],
     ["Status", product.status === "active" ? "Aktiven" : "Neaktiven"],
-    ["Zaloga", product.stock === 1 ? "1 kos" : `${product.stock} kosov`],
+    ["Zaloga", displayStock === 1 ? "1 kos" : `${displayStock} kosov`],
     [
       "Velikost",
       product.sizeMl
         ? `${product.sizeMl} ml`
-        : product.sizeGrams
-          ? `${product.sizeGrams} g`
+        : displaySizeGrams
+          ? `${displaySizeGrams} g`
           : null,
     ],
-    ["CBD", product.cbdAmountLabel],
+    ["CBD", displayCbdAmountLabel],
     [
       "CBG",
       product.cbgAmountMg
@@ -92,7 +123,7 @@ export default function ProductDetailPage() {
         : null,
     ],
     ["THC", product.metadata?.thcContent],
-    ["Transportna teža", `${product.shippingWeightGrams} g`],
+    ["Transportna teža", `${displayShippingWeightGrams} g`],
     [
       "Davek",
       `${product.taxRatePercent} % DDV · ${
@@ -118,7 +149,12 @@ export default function ProductDetailPage() {
             <ArrowLeft size={17} aria-hidden="true" /> Nazaj na izdelke
           </Link>
           <div className="mt-8 grid gap-10 lg:grid-cols-2">
-            <div className="aspect-square overflow-hidden rounded-2xl bg-cream shadow-sm border border-forest/10">
+            <div className="relative aspect-square overflow-hidden rounded-2xl bg-cream shadow-sm border border-forest/10">
+              {activeVariant?.sizeBadge && (
+                <span className="absolute bottom-4 right-4 z-10 rounded-xl bg-ink/85 px-3.5 py-1 text-sm font-bold text-white shadow-md">
+                  {activeVariant.sizeBadge}
+                </span>
+              )}
               <ProductMedia product={product} fit="cover" className="h-full w-full object-cover" />
             </div>
             <div className="lg:py-4">
@@ -135,20 +171,102 @@ export default function ProductDetailPage() {
                   product.name
                 )}
               </h1>
-              <p className="mt-4 text-lg text-forest/70">{product.subtitle}</p>
-              <p className="mt-7 text-2xl font-bold text-forest">
-                {formatPrice(product.priceCents)}
+              <p className="mt-4 text-lg text-forest/70">
+                {activeVariant
+                  ? `${activeVariant.label} · zunanji cvetovi · sveža citrusna aroma`
+                  : product.subtitle}
               </p>
+              <div className="mt-6 flex flex-wrap items-baseline gap-3">
+                <p className="font-display text-3xl font-bold text-forest sm:text-4xl">
+                  {formatPrice(displayPriceCents)}
+                </p>
+                {displayCompareAtPriceCents && (
+                  <span className="text-lg text-forest/40 line-through">
+                    {formatPrice(displayCompareAtPriceCents)}
+                  </span>
+                )}
+                {activeVariant?.pricePerGramLabel && (
+                  <span className="rounded-full border border-forest/12 bg-cream px-3 py-1 text-xs font-bold text-forest/75">
+                    {activeVariant.pricePerGramLabel}
+                  </span>
+                )}
+              </div>
               <p className="mt-2 text-sm text-forest/60">
-                {siteConfig.taxLabel}. Dostava se izračuna pred plačilom.
+                {siteConfig.taxLabel}.{" "}
+                {activeVariant?.freeShipping ? (
+                  <span className="font-bold text-emerald-700">
+                    ✓ To pakiranje vključuje brezplačno dostavo!
+                  </span>
+                ) : (
+                  "Dostava se izračuna pred plačilom (brezplačna nad 50 €)."
+                )}
               </p>
               <p className="mt-2 text-sm font-bold text-clay">
-                {product.stock > 0
-                  ? product.stock === 1
+                {displayStock > 0
+                  ? displayStock === 1
                     ? "Na zalogi · zadnji kos"
-                    : `Na zalogi · ${product.stock} kosov`
+                    : `Na zalogi · ${displayStock} kosov`
                   : "Ni na zalogi"}
               </p>
+
+              {/* Variant Selector Grid on Detail Page */}
+              {product.variants?.length > 0 && (
+                <div className="mt-6">
+                  <div className="flex items-center justify-between text-xs font-extrabold uppercase tracking-wider text-forest/75">
+                    <span>{t("Izberi pakiranje (teža)")}:</span>
+                    {displayCbdAmountLabel && (
+                      <span className="text-moss">{displayCbdAmountLabel}</span>
+                    )}
+                  </div>
+                  <div className="mt-2.5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+                    {product.variants.map((variant) => {
+                      const isSelected = variant.id === activeVariant?.id;
+                      return (
+                        <button
+                          key={variant.id}
+                          type="button"
+                          onClick={() => setSelectedVariantId(variant.id)}
+                          className={`relative flex flex-col items-center justify-center rounded-2xl border p-3.5 text-center transition-all ${
+                            isSelected
+                              ? "border-forest bg-forest text-porcelain shadow-[0_8px_20px_rgba(23,56,44,0.18)] scale-[1.02]"
+                              : "border-forest/15 bg-white text-forest hover:border-forest/40 hover:bg-cream/50"
+                          }`}
+                        >
+                          {variant.bestValue ? (
+                            <span className="absolute -top-2.5 rounded-full bg-emerald-700 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                              {t("Najboljša vrednost")}
+                            </span>
+                          ) : variant.popular ? (
+                            <span className="absolute -top-2.5 rounded-full bg-[#A84A28] px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                              {t("Priljubljeno")}
+                            </span>
+                          ) : null}
+                          <span className="font-display text-xl font-bold">
+                            {variant.label}
+                          </span>
+                          <span
+                            className={`mt-0.5 text-xs font-bold ${
+                              isSelected ? "text-porcelain" : "text-forest"
+                            }`}
+                          >
+                            {formatPrice(variant.priceCents)}
+                          </span>
+                          {variant.pricePerGramLabel && (
+                            <span
+                              className={`mt-0.5 text-[10px] ${
+                                isSelected ? "text-porcelain/75" : "text-forest/55"
+                              }`}
+                            >
+                              {variant.pricePerGramLabel}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <p className="mt-6 leading-8 text-forest/72">{product.description}</p>
               <div className="mt-8 flex flex-col gap-3.5 sm:flex-row sm:items-center">
                 {/* Compact Light Pill Quantity Stepper */}
@@ -167,7 +285,7 @@ export default function ProductDetailPage() {
                   </span>
                   <button
                     type="button"
-                    disabled={quantity >= (product.stock || 99) || !available}
+                    disabled={quantity >= (displayStock || 99) || !available}
                     onClick={() => setQuantity(quantity + 1)}
                     className="grid size-9 place-items-center rounded-full text-forest/70 transition-all hover:bg-forest/8 hover:text-forest active:scale-90 disabled:opacity-25 disabled:pointer-events-none"
                     aria-label={`Povečaj količino za ${product.name}`}
@@ -182,7 +300,7 @@ export default function ProductDetailPage() {
                   disabled={!available}
                   onClick={() => {
                     if (!available) return;
-                    addItem(product.id, quantity);
+                    addItem(targetProductId, quantity);
                     setIsAdded(true);
                     setTimeout(() => setIsAdded(false), 1500);
                   }}
@@ -202,7 +320,7 @@ export default function ProductDetailPage() {
                       <ShoppingBag size={18} className="transition-transform group-hover:scale-110" />
                       <span>
                         {available
-                          ? `${t("Dodaj v košarico")} · ${formatPrice(product.priceCents * quantity)}`
+                          ? `${t("Dodaj v košarico")} · ${formatPrice(displayPriceCents * quantity)}`
                           : t("Trenutno ni na zalogi")}
                       </span>
                     </>
