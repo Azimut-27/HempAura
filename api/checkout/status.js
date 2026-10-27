@@ -9,9 +9,20 @@ export default async function handler(request, response) {
     sendJson(response, 405, { message: "Metoda ni dovoljena." });
     return;
   }
-  const sessionId =
-    typeof request.query.session_id === "string" ? request.query.session_id : "";
-  if (!/^cs_(test_|live_)?[A-Za-z0-9]+$/.test(sessionId)) {
+
+  let sessionId = "";
+  if (typeof request.query?.session_id === "string") {
+    sessionId = request.query.session_id.trim();
+  } else if (typeof request.url === "string") {
+    try {
+      const url = new URL(request.url, "http://localhost");
+      sessionId = String(url.searchParams.get("session_id") || "").trim();
+    } catch {
+      sessionId = "";
+    }
+  }
+
+  if (!/^cs_(test_|live_)?[A-Za-z0-9_-]+$/.test(sessionId)) {
     sendJson(response, 400, { message: "Identifikator seje ni veljaven." });
     return;
   }
@@ -19,34 +30,42 @@ export default async function handler(request, response) {
   try {
     const provider = getPaymentProvider();
     const session = await provider.retrievePayment(sessionId);
-    const order = serverConfig.supabaseUrl
-      ? await database.getOrderByProviderSession(sessionId)
-      : null;
     const orderReference =
       session.metadata?.order_reference || session.client_reference_id || null;
+
+    let order = null;
+    if (serverConfig.supabaseUrl && serverConfig.supabaseServiceRoleKey) {
+      try {
+        order = await database.getOrderByProviderSession(sessionId);
+      } catch (dbError) {
+        safeError(dbError, "checkout-status-db");
+      }
+    }
 
     if (session.payment_status === "paid" && order?.payment_status === "paid") {
       sendJson(response, 200, {
         status: "confirmed",
         message: "Plačilo je preverjeno, naročilo pa je zabeleženo.",
-        orderNumber: order.public_order_number,
+        orderNumber: order.public_order_number || orderReference,
       });
       return;
     }
+
     if (session.payment_status === "paid") {
       sendJson(response, 200, {
-        status: serverConfig.supabaseUrl ? "processing" : "confirmed",
-        message:
-          serverConfig.supabaseUrl
-            ? "Plačilo je pri ponudniku označeno kot plačano, zapis naročila pa se še obdeluje."
-            : "Plačilo je potrjeno v Stripe testnem okolju. Zapis naročila bomo povezali v naslednjem koraku s Supabase.",
-        orderNumber: orderReference,
+        status: order ? "confirmed" : "processing",
+        message: order
+          ? "Plačilo je preverjeno."
+          : "Plačilo je bilo pri ponudniku uspešno izvedeno. Zapis naročila se obdeluje.",
+        orderNumber: order?.public_order_number || orderReference,
       });
       return;
     }
+
     sendJson(response, 200, {
       status: "unconfirmed",
       message: "Plačilo še ni potrjeno.",
+      orderNumber: orderReference,
     });
   } catch (error) {
     safeError(error, "checkout-status");
