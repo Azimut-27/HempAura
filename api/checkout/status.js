@@ -42,21 +42,10 @@ export default async function handler(request, response) {
       }
     }
 
-    if (session.payment_status === "paid" && order?.payment_status === "paid") {
-      sendJson(response, 200, {
-        status: "confirmed",
-        message: "Plačilo je preverjeno, naročilo pa je zabeleženo.",
-        orderNumber: order.public_order_number || orderReference,
-      });
-      return;
-    }
-
     if (session.payment_status === "paid") {
       sendJson(response, 200, {
-        status: order ? "confirmed" : "processing",
-        message: order
-          ? "Plačilo je preverjeno."
-          : "Plačilo je bilo pri ponudniku uspešno izvedeno. Zapis naročila se obdeluje.",
+        status: "confirmed",
+        message: "Plačilo je bilo pri ponudniku uspešno izvedeno in potrjeno.",
         orderNumber: order?.public_order_number || orderReference,
       });
       return;

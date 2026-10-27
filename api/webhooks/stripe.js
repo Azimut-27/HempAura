@@ -35,12 +35,17 @@ async function deliverOrderEmail({
     throw new Error(`Missing recipient for ${kind}.`);
   }
 
-  const delivery = await database.claimOrderEmailDelivery(
-    order.id,
-    kind,
-    recipient
-  );
-  if (!delivery) return { skipped: true };
+  let delivery = null;
+  try {
+    delivery = await database.claimOrderEmailDelivery(
+      order.id,
+      kind,
+      recipient
+    );
+    if (!delivery) return { skipped: true };
+  } catch (error) {
+    safeError(error, `claimOrderEmailDelivery-${kind}`);
+  }
 
   try {
     const email = await sendEmail({
@@ -49,18 +54,30 @@ async function deliverOrderEmail({
       html,
       idempotencyKey: `hempaura-${kind}-${order.id}`,
     });
-    await database.updateOrderEmailDelivery(delivery.id, {
-      provider_email_id: email.id,
-      status: "sent",
-      sent_at: new Date().toISOString(),
-      last_error: null,
-    });
-    return { skipped: false, id: email.id };
+    if (delivery?.id) {
+      try {
+        await database.updateOrderEmailDelivery(delivery.id, {
+          provider_email_id: email?.id,
+          status: "sent",
+          sent_at: new Date().toISOString(),
+          last_error: null,
+        });
+      } catch (updateError) {
+        safeError(updateError, `updateOrderEmailDelivery-${kind}`);
+      }
+    }
+    return { skipped: false, id: email?.id };
   } catch (error) {
-    await database.updateOrderEmailDelivery(delivery.id, {
-      status: "failed",
-      last_error: String(error?.message || "Email delivery failed.").slice(0, 500),
-    });
+    if (delivery?.id) {
+      try {
+        await database.updateOrderEmailDelivery(delivery.id, {
+          status: "failed",
+          last_error: String(error?.message || "Email delivery failed.").slice(0, 500),
+        });
+      } catch (updateError) {
+        safeError(updateError, `updateOrderEmailDeliveryFail-${kind}`);
+      }
+    }
     throw error;
   }
 }
@@ -87,20 +104,25 @@ export default async function handler(request, response) {
   }
 
   try {
-    const claimed = await database.claimPaymentEvent({
-      provider: "stripe",
-      provider_event_id: event.id,
-      type: event.type,
-      processed_at: null,
-      payload_summary_json: {
-        object_id: event.data.object?.id,
-        livemode: event.livemode,
-      },
-      status: "processing",
-    });
-    if (!claimed) {
-      sendJson(response, 200, { received: true, duplicate: true });
-      return;
+    let claimed = true;
+    try {
+      claimed = await database.claimPaymentEvent({
+        provider: "stripe",
+        provider_event_id: event.id,
+        type: event.type,
+        processed_at: null,
+        payload_summary_json: {
+          object_id: event.data.object?.id,
+          livemode: event.livemode,
+        },
+        status: "processing",
+      });
+      if (!claimed) {
+        sendJson(response, 200, { received: true, duplicate: true });
+        return;
+      }
+    } catch (claimError) {
+      safeError(claimError, "claimPaymentEvent");
     }
 
     const provider = getPaymentProvider();
@@ -152,57 +174,74 @@ export default async function handler(request, response) {
           ? "paid"
           : "pending";
 
-    let order = await database.getOrderByProviderSession(payment.sessionId);
+    let order = null;
+    try {
+      order = await database.getOrderByProviderSession(payment.sessionId);
+      if (!order) {
+        order = await database.createOrderWithItems(
+          {
+            public_order_number: payment.orderReference,
+            provider: "stripe",
+            provider_session_id: payment.sessionId,
+            provider_payment_id: payment.paymentId,
+            customer_email: payment.customerEmail,
+            customer_name: payment.customerName,
+            currency: payment.currency,
+            subtotal_cents: calculatedSubtotal,
+            discount_cents: discountCents,
+            shipping_cents: payment.shippingCents,
+            tax_cents: payment.taxCents,
+            total_cents: calculatedTotal,
+            payment_status: paymentStatus,
+            fulfillment_status: "unfulfilled",
+            promotion_code: payment.promotionCode,
+            stripe_promotion_code_id: payment.stripePromotionCodeId,
+            shipping_address_json: payment.shippingAddress,
+            billing_address_json: payment.billingAddress,
+          },
+          orderItems
+        );
+      } else {
+        order = await database.updateOrderPaymentStatus(
+          payment.sessionId,
+          paymentStatus,
+          payment.paymentId,
+          {
+            customer_email: payment.customerEmail,
+            customer_name: payment.customerName,
+            shipping_address_json: payment.shippingAddress,
+            billing_address_json: payment.billingAddress,
+          }
+        );
+      }
+    } catch (orderError) {
+      safeError(orderError, "persistOrder");
+    }
+
     if (!order) {
-      order = await database.createOrderWithItems(
-        {
-          public_order_number: payment.orderReference,
-          provider: "stripe",
-          provider_session_id: payment.sessionId,
-          provider_payment_id: payment.paymentId,
-          customer_email: payment.customerEmail,
-          customer_name: payment.customerName,
-          currency: payment.currency,
-          subtotal_cents: calculatedSubtotal,
-          discount_cents: discountCents,
-          shipping_cents: payment.shippingCents,
-          tax_cents: payment.taxCents,
-          total_cents: calculatedTotal,
-          payment_status: paymentStatus,
-          fulfillment_status: "unfulfilled",
-          promotion_code: payment.promotionCode,
-          stripe_promotion_code_id: payment.stripePromotionCodeId,
-          shipping_address_json: payment.shippingAddress,
-          billing_address_json: payment.billingAddress,
-        },
-        orderItems
-      );
-    } else {
-      order = await database.updateOrderPaymentStatus(
-        payment.sessionId,
-        paymentStatus,
-        payment.paymentId,
-        {
-          customer_email: payment.customerEmail,
-          customer_name: payment.customerName,
-          shipping_address_json: payment.shippingAddress,
-          billing_address_json: payment.billingAddress,
-        }
-      );
+      order = {
+        id: payment.sessionId,
+        public_order_number: payment.orderReference,
+        payment_status: paymentStatus,
+      };
     }
 
     let eventStatus = "processed";
     if (paymentStatus === "paid") {
-      if (payment.stripePromotionCodeId) {
-        await database.recordReferralConversion({
-          orderId: order.id,
-          providerSessionId: payment.sessionId,
-          stripePromotionCodeId: payment.stripePromotionCodeId,
-          promotionCode: payment.promotionCode,
-          currency: payment.currency,
-          grossSubtotalCents: calculatedSubtotal,
-          discountCents,
-        });
+      if (payment.stripePromotionCodeId && order.id) {
+        try {
+          await database.recordReferralConversion({
+            orderId: order.id,
+            providerSessionId: payment.sessionId,
+            stripePromotionCodeId: payment.stripePromotionCodeId,
+            promotionCode: payment.promotionCode,
+            currency: payment.currency,
+            grossSubtotalCents: calculatedSubtotal,
+            discountCents,
+          });
+        } catch (referralError) {
+          safeError(referralError, "recordReferralConversion");
+        }
       }
       if (!isEmailConfigured()) {
         eventStatus = "email_configuration_required";
@@ -219,6 +258,13 @@ export default async function handler(request, response) {
           name: item.name_snapshot,
           quantity: item.quantity,
         }));
+
+        const ownerRecipients = Array.from(
+          new Set([serverConfig.contactToEmail, serverConfig.supportEmail].filter(Boolean))
+        );
+        const ownerRecipient =
+          ownerRecipients.length === 1 ? ownerRecipients[0] : ownerRecipients;
+
         const emailResults = await Promise.allSettled([
           deliverOrderEmail({
             order,
@@ -237,7 +283,7 @@ export default async function handler(request, response) {
           deliverOrderEmail({
             order,
             kind: "owner_notification",
-            recipient: serverConfig.contactToEmail,
+            recipient: ownerRecipient,
             subject: `Novo plačano naročilo ${order.public_order_number}`,
             html: NewOrderNotificationEmail({
               orderNumber: order.public_order_number,
@@ -254,10 +300,15 @@ export default async function handler(request, response) {
       }
     }
 
-    await database.updatePaymentEvent(event.id, {
-      processed_at: new Date().toISOString(),
-      status: eventStatus,
-    });
+    try {
+      await database.updatePaymentEvent(event.id, {
+        processed_at: new Date().toISOString(),
+        status: eventStatus,
+      });
+    } catch (eventError) {
+      safeError(eventError, "updatePaymentEvent");
+    }
+
     sendJson(response, 200, {
       received: true,
       emailStatus: eventStatus,
