@@ -17,6 +17,7 @@ export class StripePaymentProvider extends PaymentProvider {
     const referral = orderDraft.referral || null;
     const session = await this.stripe.checkout.sessions.create({
       mode: "payment",
+      payment_method_types: ["card"],
       customer_creation: "always",
       customer_email: orderDraft.customerEmail || undefined,
       phone_number_collection: { enabled: true },
