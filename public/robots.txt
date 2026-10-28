@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hemp-aura.vercel.app/sitemap.xml
+Sitemap: https://herbagallus.com/sitemap.xml
