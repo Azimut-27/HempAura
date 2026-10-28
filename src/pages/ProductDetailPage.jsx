@@ -105,7 +105,7 @@ export default function ProductDetailPage() {
   const related = products.filter((item) => item.id !== product.id).slice(0, 2);
   const facts = [
     ["SKU", displaySku],
-    ["Status", product.status === "active" ? "Aktiven" : "Neaktiven"],
+    ["Status", product.status === "active" ? "Aktiven" : product.status === "coming_soon" ? "Prihaja kmalu" : "Neaktiven"],
     ["Zaloga", displayStock === 1 ? "1 kos" : `${displayStock} kosov`],
     [
       "Velikost",
@@ -442,7 +442,7 @@ export default function ProductDetailPage() {
           onClick={() => addItem(product.id, quantity)}
           className="min-h-12 w-full bg-forest px-5 text-sm font-bold text-porcelain disabled:bg-forest/35"
         >
-          {available ? `Dodaj · ${formatPrice(product.priceCents)}` : "Prodaja še ni odprta"}
+          {available ? `Dodaj · ${formatPrice(product.priceCents)}` : product.status === "coming_soon" ? "Prihaja kmalu" : "Prodaja še ni odprta"}
         </button>
       </div>
     </>

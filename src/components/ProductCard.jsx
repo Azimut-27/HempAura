@@ -210,13 +210,25 @@ export default function ProductCard({ product }) {
               disabled={!available}
               onClick={handleAddToCart}
               className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold transition-all ${
-                isAdded
-                  ? "bg-emerald-700 text-white"
-                  : "bg-[#7C4828] text-white hover:bg-[#683b1f] active:scale-95 shadow-md"
-              } disabled:cursor-not-allowed disabled:opacity-50`}
+                !available
+                  ? "border border-forest/15 bg-forest/5 text-forest/45 cursor-not-allowed"
+                  : isAdded
+                    ? "bg-emerald-700 text-white"
+                    : "bg-[#7C4828] text-white hover:bg-[#683b1f] active:scale-95 shadow-md"
+              }`}
             >
-              <ShoppingBag size={15} />
-              <span>{isAdded ? t("DODANO ✓") : t("V KOŠARICO")}</span>
+              {!available ? (
+                <span>
+                  {product.status === "coming_soon"
+                    ? t("PRIHAJA KMALU")
+                    : t("NI NA VOLJO")}
+                </span>
+              ) : (
+                <>
+                  <ShoppingBag size={15} />
+                  <span>{isAdded ? t("DODANO ✓") : t("V KOŠARICO")}</span>
+                </>
+              )}
             </button>
           </div>
         </div>

@@ -263,13 +263,13 @@ export const products = [
     categoryLabel: "CBD NEGA",
     rating: 4.8,
     reviewCount: 76,
-    badgeTop: "BOTANIČNA NEGA",
-    badgePopular: "🌿 100 % NARAVNO",
+    badgeTop: "PRIHAJA KMALU",
+    badgePopular: "COMING SOON",
     sizeBadge: "50 ml",
     subtitle: "50 ml · konopljino maslo · sivka & kamilica",
     brand: "HerbaGallus",
     type: "balm",
-    status: "active",
+    status: "coming_soon",
     shortDescription:
       "Bogato negovalno maslo s konopljinim oljem, izvlečkom ognjiča ter eteričnimi olji sivke in kamilice za pomiritev kože.",
     description:

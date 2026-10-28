@@ -341,15 +341,17 @@ export default function ProductQuickViewModal({
                     <Check size={19} className="stroke-[2.5]" />
                     <span>{t("Dodano v košarico ✓")}</span>
                   </>
-                ) : (
+                ) : available ? (
                   <>
                     <ShoppingBag size={18} className="transition-transform group-hover:scale-110" />
-                    <span>
-                      {available
-                        ? `${t("Dodaj v košarico")} · ${formatPrice(totalPriceCents)}`
-                        : t("Trenutno ni na zalogi")}
-                    </span>
+                    <span>{`${t("Dodaj v košarico")} · ${formatPrice(totalPriceCents)}`}</span>
                   </>
+                ) : (
+                  <span>
+                    {product.status === "coming_soon"
+                      ? t("Prihaja kmalu")
+                      : t("Trenutno ni na zalogi")}
+                  </span>
                 )}
               </button>
             </div>

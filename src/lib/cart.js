@@ -11,7 +11,7 @@ export function sanitizeCartItems(items) {
 
   return items.flatMap((item) => {
     const product = getProductById(item.productId);
-    if (!product || product.status === "archived") return [];
+    if (!product || product.status !== "active") return [];
 
     const maxQuantity = Math.max(0, product.stock);
     const quantity = Math.min(Math.max(1, Number(item.quantity) || 1), maxQuantity);

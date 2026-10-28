@@ -87,7 +87,7 @@ export const serverProducts = [
     id: "hempaura-cbd-krema-sprostitev",
     name: "HerbaGallus CBD krema za sprostitev",
     sku: "HA-CBD-RELAX-CREAM-50ML",
-    active: true,
+    active: false,
     priceCents: 2200,
     currency: "EUR",
     stock: 20,
