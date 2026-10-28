@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout.jsx";
 
 const HomePage = lazy(() => import("./pages/HomePage.jsx"));
@@ -34,6 +34,7 @@ export default function App() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
+        <Route path="admin" element={<Navigate to="/admin/orders" replace />} />
         <Route path="admin/orders" element={<AdminOrdersPage />} />
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
