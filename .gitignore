@@ -16,3 +16,5 @@ pnpm-debug.log*
 .DS_Store
 gls-label*.pdf
 *-GLS-label.pdf
+.vercel
+.env*
