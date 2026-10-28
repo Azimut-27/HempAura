@@ -18,6 +18,11 @@ export class StripePaymentProvider extends PaymentProvider {
     const session = await this.stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
+      wallet_options: {
+        link: {
+          display: "never",
+        },
+      },
       customer_creation: "always",
       customer_email: orderDraft.customerEmail || undefined,
       phone_number_collection: { enabled: true },
