@@ -22,7 +22,6 @@ export default function CartPage() {
   const { language, t } = useLanguage();
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
-  const [legalConsent, setLegalConsent] = useState(false);
   const [referralCode, setReferralCode] = useState(() => getStoredReferralCode());
   const [promoCodeInput, setPromoCodeInput] = useState(referralCode);
   const [referralPreview, setReferralPreview] = useState({
@@ -100,10 +99,6 @@ export default function CartPage() {
   async function checkout() {
     if (!siteConfig.paymentsEnabled) {
       setMessage("Prodaja še ni odprta. Plačilo ni bilo izvedeno.");
-      return;
-    }
-    if (!legalConsent) {
-      setMessage("Pred nadaljevanjem potrdi pogoje, zasebnost in informacije o vračilih.");
       return;
     }
     setStatus("loading");
@@ -312,45 +307,38 @@ export default function CartPage() {
                       ? t("Nadaljuj na plačilo")
                       : t("Prodaja se odpre kmalu")}
                 </button>
-                <label className="mt-5 flex gap-3 text-sm leading-6 text-porcelain/76">
-                  <input
-                    type="checkbox"
-                    checked={legalConsent}
-                    onChange={(event) => setLegalConsent(event.target.checked)}
-                    className="mt-1 size-5 shrink-0 accent-gold"
-                  />
-                  <span>
-                    {t("Strinjam se s")}{" "}
-                    <Link className="underline" to="/terms">
-                      {t("pogoji poslovanja")}
-                    </Link>
-                    , {t("prebral/-a sem")}{" "}
-                    <Link className="underline" to="/privacy">
-                      {t("politiko zasebnosti")}
-                    </Link>{" "}
-                    {t("in")}{" "}
-                    <Link className="underline" to="/shipping-and-returns">
-                      {t("informacije o vračilih")}
-                    </Link>
-                    .
-                  </span>
-                </label>
-                <p className="mt-4 min-h-6 text-sm text-porcelain/80" aria-live="polite">
-                  {t(message)}
+                <p className="mt-3 text-center text-xs leading-5 text-porcelain/65">
+                  {t("Z nadaljevanjem na plačilo se strinjate s")}{" "}
+                  <Link className="underline hover:text-gold" to="/terms">
+                    {t("pogoji poslovanja")}
+                  </Link>
+                  {", "}
+                  <Link className="underline hover:text-gold" to="/privacy">
+                    {t("politiko zasebnosti")}
+                  </Link>{" "}
+                  {t("in")}{" "}
+                  <Link className="underline hover:text-gold" to="/shipping-and-returns">
+                    {t("informacijami o vračilih")}
+                  </Link>
+                  .
                 </p>
-                {status === "error" && (
-                  <button
-                    type="button"
-                    className="text-sm font-bold text-gold underline"
-                    onClick={() => navigate("/contact")}
-                  >
-                    {t("Kontaktiraj podporo")}
-                  </button>
+                {message && (
+                  <p className="mt-4 min-h-6 text-sm text-porcelain/80 text-center" aria-live="polite">
+                    {t(message)}
+                  </p>
                 )}
-                <p className="mt-4 text-xs leading-6 text-porcelain/60">
-                  {t("Končni znesek se vedno ponovno izračuna na strežniku. Podatki o kartici se v tej aplikaciji ne shranjujejo.")}
-                </p>
-                <p className="mt-2 text-xs leading-6 text-porcelain/60">
+                {status === "error" && (
+                  <div className="text-center mt-2">
+                    <button
+                      type="button"
+                      className="text-sm font-bold text-gold underline"
+                      onClick={() => navigate("/contact")}
+                    >
+                      {t("Kontaktiraj podporo")}
+                    </button>
+                  </div>
+                )}
+                <p className="mt-4 text-center text-xs leading-5 text-porcelain/60">
                   {t("Kodo za popust lahko vneseš tudi v naslednjem varnem koraku.")}
                 </p>
               </aside>
