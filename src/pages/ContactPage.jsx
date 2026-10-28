@@ -113,7 +113,7 @@ export default function ContactPage() {
                 label="Ime in priimek"
                 name="name"
                 autoComplete="name"
-                placeholder="Martin Jančar"
+                placeholder="Luka Novak"
               />
               <Field
                 id="contact-email"
