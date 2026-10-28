@@ -374,7 +374,9 @@ export const getProductById = (id) => {
 };
 export const getProductBySlug = (slug) =>
   products.find((product) => product.slug === slug);
-export const activeProducts = products.filter((product) => product.status === "active");
+export const activeProducts = products.filter(
+  (product) => product.status === "active" || product.status === "coming_soon"
+);
 export const getProductImage = (product, language = "sl") =>
   product?.imagesByLanguage?.[language] ||
   product?.imagesByLanguage?.sl ||
