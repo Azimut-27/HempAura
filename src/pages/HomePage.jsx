@@ -4,6 +4,7 @@ import ContactCta from "../components/ContactCta.jsx";
 import FaqList from "../components/FaqList.jsx";
 import NewsletterForm from "../components/NewsletterForm.jsx";
 import ProductCard from "../components/ProductCard.jsx";
+import ReviewsSection from "../components/ReviewsSection.jsx";
 import Seo from "../components/Seo.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
 import { faqs } from "../data/faqs.js";
@@ -121,6 +122,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <ReviewsSection />
 
       <section id="about" className="bg-porcelain py-18 sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
