@@ -6,6 +6,7 @@ import {
   getGlsPasswordHashWithAlgorithm,
 } from "../server/shipping/glsClient.js";
 import {
+  buildGlsParcel,
   getDeliveryAddress,
   splitGlsStreetAddress,
 } from "../server/shipping/glsShipment.js";
@@ -165,5 +166,57 @@ describe("GLS Slovenia client", () => {
           vi.fn()
         )
     ).toThrow(GlsApiError);
+  });
+
+  it("builds a parcel with COD service when order is cash on delivery", () => {
+    const parcel = buildGlsParcel({
+      public_order_number: "HA-20261029-A1B2C3",
+      customer_name: "Ana Novak",
+      customer_email: "ana@example.com",
+      provider: "cod",
+      payment_status: "cod_pending",
+      total_cents: 3490,
+      shipping_address_json: {
+        name: "Ana Novak",
+        line1: "Slovenska cesta 15",
+        line2: "",
+        postal_code: "1000",
+        city: "Ljubljana",
+        country: "SI",
+        phone: "041123456",
+      },
+      order_items: [{ sku_snapshot: "HA-CBD-FS-500-10ML" }],
+    });
+
+    expect(parcel.ServiceList).toEqual([
+      {
+        Code: "COD",
+        CODAmount: 34.9,
+        CODReference: "HA-20261029-A1B2C3",
+      },
+    ]);
+  });
+
+  it("builds a parcel without COD service when order is already paid", () => {
+    const parcel = buildGlsParcel({
+      public_order_number: "HA-20261029-A1B2C3",
+      customer_name: "Ana Novak",
+      customer_email: "ana@example.com",
+      provider: "stripe",
+      payment_status: "paid",
+      total_cents: 3490,
+      shipping_address_json: {
+        name: "Ana Novak",
+        line1: "Slovenska cesta 15",
+        line2: "",
+        postal_code: "1000",
+        city: "Ljubljana",
+        country: "SI",
+        phone: "041123456",
+      },
+      order_items: [{ sku_snapshot: "HA-CBD-FS-500-10ML" }],
+    });
+
+    expect(parcel.ServiceList).toEqual([]);
   });
 });

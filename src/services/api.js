@@ -38,6 +38,12 @@ export const createCheckoutSession = (items, referralCode = "", language = "sl")
     }),
   });
 
+export const createDirectOrder = (orderData) =>
+  request("/api/checkout/create-order", {
+    method: "POST",
+    body: JSON.stringify(orderData),
+  });
+
 export const getReferralPreview = (code, subtotalCents) =>
   request(
     `/api/referrals/preview?code=${encodeURIComponent(code)}&subtotal_cents=${encodeURIComponent(
@@ -53,11 +59,20 @@ export const getAdminOrders = (token) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-export const updateAdminOrderStatus = (token, orderNumber, fulfillmentStatus) =>
+export const updateAdminOrderStatus = (
+  token,
+  orderNumber,
+  fulfillmentStatus,
+  paymentStatus
+) =>
   request("/api/admin/orders", {
     method: "PATCH",
     headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ orderNumber, fulfillmentStatus }),
+    body: JSON.stringify({
+      orderNumber,
+      ...(fulfillmentStatus ? { fulfillmentStatus } : {}),
+      ...(paymentStatus ? { paymentStatus } : {}),
+    }),
   });
 
 export async function downloadAdminGlsLabel(token, orderNumber, retry = false) {

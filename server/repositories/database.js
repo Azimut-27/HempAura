@@ -27,6 +27,16 @@ export const database = {
     return assertResult(result, "Update administrator order status");
   },
 
+  async setAdminOrderPaymentStatus(orderNumber, paymentStatus) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .update({ payment_status: paymentStatus })
+      .eq("public_order_number", orderNumber)
+      .select("id,public_order_number,payment_status,updated_at")
+      .maybeSingle();
+    return assertResult(result, "Update administrator order payment status");
+  },
+
   async createContactSubmission(values) {
     const result = await getSupabaseAdmin()
       .from("contact_submissions")
@@ -191,7 +201,7 @@ export const database = {
       .update(values)
       .eq("id", orderId)
       .select(
-        "id,public_order_number,provider_session_id,customer_email,customer_name,payment_status,fulfillment_status,shipping_address_json,billing_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
+        "id,public_order_number,provider,provider_session_id,customer_email,customer_name,payment_status,fulfillment_status,total_cents,currency,shipping_address_json,billing_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
       )
       .single();
     return assertResult(result, "Update order address details");

@@ -146,3 +146,74 @@ export function ShippingUpdateEmail() {
     p("TODO(owner): pred uporabo poveži potrjene podatke o pošiljki in dostavnem partnerju.")
   );
 }
+
+export function CodOrderConfirmationEmail({
+  name,
+  orderNumber,
+  items,
+  shipping,
+  total,
+  paymentMethod,
+  deliveryAddress,
+  phone,
+  supportEmail,
+}) {
+  const methodLabel =
+    paymentMethod === "proforma"
+      ? "Plačilo po predračunu (UPN nalog)"
+      : "Plačilo ob prevzemu kurirju GLS (z gotovino ali kartico)";
+
+  const instructions =
+    paymentMethod === "proforma"
+      ? p("V kratkem vam bomo posredovali podatke za nakazilo prek spletne banke.")
+      : p("Znesek naročila boste poravnali dostavljavcu GLS ob izročitvi paketa. GLS kurir vas bo pred dostavo obvestil prek SMS sporočila.");
+
+  return layout(
+    "Naročilo je sprejeto",
+    [
+      p(`Pozdravljen/-a${name ? ` ${name}` : ""}, hvala za vaše naročilo v HerbaGallus.`),
+      p(`Številka naročila: ${orderNumber}`),
+      p(`Način plačila: ${methodLabel}`),
+      orderItemsList(items),
+      p(`Dostava: ${shipping}`),
+      p(`Skupaj za plačilo: ${total}`),
+      p(`Naslov za dostavo: ${deliveryAddress}`),
+      phone ? p(`Kontaktna telefonska številka za GLS obveščanje: ${phone}`) : "",
+      instructions,
+      p(`Za pomoč ali vprašanja nam pišite na ${supportEmail}.`),
+    ].join("")
+  );
+}
+
+export function CodNewOrderNotificationEmail({
+  orderNumber,
+  customerName,
+  customerEmail,
+  phone,
+  items,
+  shipping,
+  total,
+  paymentMethod,
+  deliveryAddress,
+  notes,
+}) {
+  const methodLabel =
+    paymentMethod === "proforma"
+      ? "Plačilo po predračunu"
+      : "Plačilo ob prevzemu (COD — kurir GLS)";
+
+  return layout(
+    `Novo naročilo: ${orderNumber}`,
+    [
+      p(`Novo naročilo: ${orderNumber}`),
+      p(`Način plačila: ${methodLabel}`),
+      p(`Kupec: ${customerName} (${customerEmail}, tel: ${phone || "ni navedeno"})`),
+      p(`Naslov za dostavo: ${deliveryAddress}`),
+      notes ? p(`Opombe kupca: ${notes}`) : "",
+      orderItemsList(items),
+      p(`Dostava: ${shipping}`),
+      p(`Skupaj: ${total}`),
+      p("Naročilo lahko pregledate in ustvarite GLS nalepko v administratorskem vmesniku /admin/orders."),
+    ].join("")
+  );
+}

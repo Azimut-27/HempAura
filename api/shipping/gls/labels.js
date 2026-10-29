@@ -41,7 +41,7 @@ function sendLabel(response, orderNumber, labelBase64, parcelNumber) {
 
 async function ensureOrderHasShippingAddress(order) {
   if (order.shipping_address_json) return order;
-  if (!order.provider_session_id) return order;
+  if (!order.provider_session_id || order.provider === "cod" || order.provider === "proforma") return order;
 
   const provider = getPaymentProvider();
   const session = await provider.retrievePayment(order.provider_session_id);
@@ -100,9 +100,11 @@ export default async function handler(request, response) {
       sendJson(response, 404, { message: "Order not found." });
       return;
     }
-    if (order.payment_status !== "paid") {
+    const isPayableCod =
+      order.provider === "cod" || order.payment_status === "cod_pending";
+    if (order.payment_status !== "paid" && !isPayableCod) {
       sendJson(response, 409, {
-        message: "A GLS label can only be created for a paid order.",
+        message: "A GLS label can only be created for a paid or cash-on-delivery order.",
       });
       return;
     }

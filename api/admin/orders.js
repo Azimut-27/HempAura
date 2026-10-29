@@ -11,7 +11,8 @@ import { database } from "../../server/repositories/database.js";
 const updateSchema = z
   .object({
     orderNumber: z.string().trim().toUpperCase().regex(/^HA-\d{8}-[A-F0-9]{6}$/),
-    fulfillmentStatus: z.enum(["unfulfilled", "processing", "fulfilled", "cancelled"]),
+    fulfillmentStatus: z.enum(["unfulfilled", "processing", "fulfilled", "cancelled"]).optional(),
+    paymentStatus: z.enum(["paid", "unpaid", "cod_pending", "proforma_pending", "cancelled"]).optional(),
   })
   .strict();
 
@@ -49,10 +50,19 @@ export default async function handler(request, response) {
       return;
     }
     try {
-      const order = await database.setAdminOrderFulfillmentStatus(
-        parsed.data.orderNumber,
-        parsed.data.fulfillmentStatus
-      );
+      let order = null;
+      if (parsed.data.fulfillmentStatus) {
+        order = await database.setAdminOrderFulfillmentStatus(
+          parsed.data.orderNumber,
+          parsed.data.fulfillmentStatus
+        );
+      }
+      if (parsed.data.paymentStatus) {
+        order = await database.setAdminOrderPaymentStatus(
+          parsed.data.orderNumber,
+          parsed.data.paymentStatus
+        );
+      }
       if (!order) {
         sendJson(response, 404, { message: "Naročilo ni bilo najdeno." });
         return;

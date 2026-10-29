@@ -63,3 +63,52 @@ export const checkoutSchema = z
     language: z.enum(["sl", "en", "de"]).optional().default("sl"),
   })
   .strict();
+
+export const directOrderSchema = z
+  .object({
+    items: z
+      .array(
+        z
+          .object({
+            productId: z.string().min(1).max(80),
+            variantId: z.string().min(1).max(80).optional(),
+            quantity: z.number().int().min(1).max(20),
+          })
+          .strict()
+      )
+      .min(1)
+      .max(20),
+    paymentMethod: z.enum(["cod", "proforma"]).default("cod"),
+    customer: z
+      .object({
+        name: z.string().trim().min(2).max(120),
+        email: normalizedEmail,
+        phone: z
+          .string()
+          .trim()
+          .min(6)
+          .max(30)
+          .regex(/^[+0-9\s/().-]+$/, "Invalid phone number"),
+      })
+      .strict(),
+    shippingAddress: z
+      .object({
+        name: z.string().trim().min(2).max(120).optional(),
+        line1: z.string().trim().min(3).max(160),
+        line2: z.string().trim().max(160).optional().default(""),
+        postalCode: z.string().trim().min(4).max(10),
+        city: z.string().trim().min(2).max(100),
+        country: z.literal("SI").default("SI"),
+      })
+      .strict(),
+    notes: z.string().trim().max(500).optional().default(""),
+    referralCode: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .regex(/^[A-Z0-9][A-Z0-9_-]{2,31}$/)
+      .optional()
+      .or(z.literal("")),
+    language: z.enum(["sl", "en", "de"]).optional().default("sl"),
+  })
+  .strict();

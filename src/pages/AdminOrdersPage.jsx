@@ -24,6 +24,8 @@ const TOKEN_STORAGE_KEY = "hempaura_admin_dashboard_token";
 const statusLabels = {
   paid: "Plačano",
   unpaid: "Neplačano",
+  cod_pending: "Prevzem (COD)",
+  proforma_pending: "Predračun",
   no_payment_required: "Brez plačila",
   unfulfilled: "Neobdelano",
   processing: "V pripravi",
@@ -40,6 +42,8 @@ const statusStyles = {
   label_created: "bg-emerald-100 text-emerald-800",
   sent: "bg-emerald-100 text-emerald-800",
   processing: "bg-amber-100 text-amber-800",
+  cod_pending: "bg-amber-100 text-amber-800",
+  proforma_pending: "bg-blue-100 text-blue-800",
   unfulfilled: "bg-stone-100 text-stone-700",
   failed: "bg-red-100 text-red-800",
   cancelled: "bg-red-100 text-red-800",
@@ -222,6 +226,19 @@ export default function AdminOrdersPage() {
     setError("");
     try {
       await updateAdminOrderStatus(token, orderNumber, fulfillmentStatus);
+      await loadOrders(token);
+    } catch (actionError) {
+      setError(actionError.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function changePaymentStatus(orderNumber, paymentStatus) {
+    setActiveAction(`${orderNumber}:paymentStatus`);
+    setError("");
+    try {
+      await updateAdminOrderStatus(token, orderNumber, undefined, paymentStatus);
       await loadOrders(token);
     } catch (actionError) {
       setError(actionError.message);
@@ -425,15 +442,33 @@ export default function AdminOrdersPage() {
                         </div>
                         {shipment?.error_message && <p className="mt-2 text-xs leading-5 text-clay">{shipment.error_message}</p>}
                         <div className="mt-5 grid gap-2">
-                          <button
-                            type="button"
-                            onClick={() => createLabel(order)}
-                            disabled={order.payment_status !== "paid" || actionLoading}
-                            className="inline-flex min-h-11 items-center justify-center gap-2 bg-forest px-4 text-xs font-bold text-white disabled:opacity-45"
-                          >
-                            {activeAction === `${order.public_order_number}:label` ? <LoaderCircle className="animate-spin" size={16} /> : <Download size={16} />}
-                            {shipment?.status === "failed" ? "Ponovi GLS nalepko" : shipment?.status === "label_created" ? "Prenesi GLS nalepko" : "Ustvari GLS nalepko"}
-                          </button>
+                          {(() => {
+                            const canCreateLabel =
+                              order.payment_status === "paid" ||
+                              order.provider === "cod" ||
+                              order.payment_status === "cod_pending";
+                            return (
+                              <button
+                                type="button"
+                                onClick={() => createLabel(order)}
+                                disabled={!canCreateLabel || actionLoading}
+                                className="inline-flex min-h-11 items-center justify-center gap-2 bg-forest px-4 text-xs font-bold text-white disabled:opacity-45"
+                              >
+                                {activeAction === `${order.public_order_number}:label` ? <LoaderCircle className="animate-spin" size={16} /> : <Download size={16} />}
+                                {shipment?.status === "failed" ? "Ponovi GLS nalepko" : shipment?.status === "label_created" ? "Prenesi GLS nalepko" : "Ustvari GLS nalepko"}
+                              </button>
+                            );
+                          })()}
+                          {order.payment_status === "cod_pending" && (
+                            <button
+                              type="button"
+                              onClick={() => changePaymentStatus(order.public_order_number, "paid")}
+                              disabled={actionLoading}
+                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-emerald-600/30 bg-emerald-50 px-4 text-xs font-bold text-emerald-800 disabled:opacity-45 hover:bg-emerald-100"
+                            >
+                              <CheckCircle2 size={16} /> Označi: plačilo prevzeto (COD)
+                            </button>
+                          )}
                           {order.fulfillment_status !== "processing" && order.fulfillment_status !== "fulfilled" && (
                             <button
                               type="button"

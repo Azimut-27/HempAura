@@ -1,0 +1,64 @@
+﻿ForgeAI,Phase,Feature / Task,Priority,Gmail,Prompts GPT,Prompts Codex,Start,End,Status,Dependencies,Notes
+IOS public mainet submission,,,,,,,,,,,
+Android testing 20 people,,,,,,,,,,,
+10 content creators,,"Lidija,stella,JJ,",,,,,,,,,
+10 users,,"Bala,uhernik,Gliha,JJ, Skedo, Laura",,,,,,,,,
+NOtifications,,,,,,,,,,,
+Cancel sub remove,,,,,,,,,,,
+Eur eligment for perks,,,,,,,,,,,
+Screenshot photos,,,,,,,,,,,
+"marketing material(IG,X,story/feed reels,customer support)",,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+HerbaGallus,Phase,Feature / Task,Priority,Gmail,Prompts GPT,Prompts Codex,Start,End,Status,Dependencies,Notes
+Nalepka kapljice,Operations,Tisk in lepljenje etiket za 10ml stekleničke,High,,,,29.10.,02.11.,In Progress,,Preveriti čitljivost sestavin in serije
+Nalepka cvetovi,Operations,"Tisk etiket za zip vrečke Citrin 15% (3g, 5g, 10g, 25g)",High,,,,29.10.,02.11.,In Progress,,Oznaka vsebnosti CBD in lota
+Testing delivery,Operations,Testno naročilo na produkciji in GLS prevzem kurirja,High,,,,29.10.,31.10.,Ready to Test,GLS API,Natis nalepke v /admin/orders in test dostave
+Stripe preimenovanje,Store,Sprememba naziva računa iz HempAura v HerbaGallus,High,,,,29.10.,30.10.,To Do,Stripe Dashboard,dashboard.stripe.com/settings/account
+Unboxing kartica zahvale,Marketing,Tisk kartice za v paket s kodo za 10% popust (HVALA10),High,,,,30.10.,04.11.,To Do,,Priložiti v vsak odposlan paket kupcu
+Ambasadorski program,Marketing,Izbor in kontakt 5-10 mikro-vplivnežev (fitnes/spanec),High,,,,01.11.,08.11.,To Do,,Pošiljanje brezplačnih testnih paketov
+Generiranje partnerskih kod,Store,Vnos referral kod v Supabase (10% popust / 15% provizija),Medium,,,,01.11.,03.11.,To Do,Supabase,Za sledenje prodaji vplivnežev (/partner)
+B2B vzorčni paket,B2B,Priprava pultnega stojala za zeliščarne in salone,Medium,,,,04.11.,12.11.,To Do,,Ponudba z 40-50% maržo za trgovca
+Organski video marketing,Marketing,Snemanje 3 kratkih videov za TikTok / IG Reels,Medium,,,,02.11.,09.11.,To Do,,Teme: izbira CBD olja / večerni protokol za spanec
+CBD krema za sprostitev,Product,Zaključek zaloge kreme in preklop statusa v 'active',Low,,,,15.11.,30.11.,Coming Soon,Laboratorij,Trenutno prikazana z oznako Prihaja kmalu
+Avtomatizacija obnove zalog,Retention,Nastavitev e-poštnega opomnika kupcem po 25 dneh,Low,,,,10.11.,20.11.,Planned,Resend,Povečanje ponovnih nakupov (LTV)
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+StakingForge,Phase,Feature / Task,Priority,Gmail,Prompts GPT,Prompts Codex,Start,End,Status,Dependencies,Notes
+TradingAgent finish,,,,,,,,,,,
+Kingfisher integration agent,,,,,,,,,,,
+Discord launch,,,,,,,,,,,
+Marketing material,,,,,,,,,,,
+Xmoney refferal,,,,,,,,,,,
+Aster/vanta refferal link,,,,,,,,,,,
+Webpage mainnet,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+Osmus d.o.o,Phase,Feature / Task,Priority,Gmail,Prompts GPT,Prompts Codex,Start,End,Status,Dependencies,Notes

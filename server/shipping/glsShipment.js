@@ -106,6 +106,16 @@ export function buildGlsParcel(order) {
   if (!order?.public_order_number) {
     throw new Error("A valid paid order is required.");
   }
+  const services = [];
+  const isCod =
+    order.provider === "cod" || order.payment_status === "cod_pending";
+  if (isCod) {
+    services.push({
+      Code: "COD",
+      CODAmount: Number(((order.total_cents || 0) / 100).toFixed(2)),
+      CODReference: order.public_order_number,
+    });
+  }
   return {
     ClientNumber: serverConfig.gls.clientNumber,
     ClientReference: order.public_order_number,
@@ -113,7 +123,7 @@ export function buildGlsParcel(order) {
     Content: parcelContent(order),
     PickupAddress: getPickupAddress(),
     DeliveryAddress: getDeliveryAddress(order),
-    ServiceList: [],
+    ServiceList: services,
   };
 }
 

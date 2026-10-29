@@ -8,17 +8,30 @@ import { getCheckoutStatus } from "../services/api.js";
 export default function CheckoutSuccessPage() {
   const [params] = useSearchParams();
   const sessionId = params.get("session_id");
-  const [state, setState] = useState({
-    status: "loading",
-    message: "Preverjanje plačila ...",
+  const orderNumberParam = params.get("order_number");
+  const methodParam = params.get("method") || "cod";
+  const [state, setState] = useState(() => {
+    if (orderNumberParam) {
+      return {
+        status: "confirmed",
+        orderNumber: orderNumberParam,
+        method: methodParam,
+        message: "Vaše naročilo je bilo uspešno oddano in sprejeto v obdelavo.",
+      };
+    }
+    return {
+      status: "loading",
+      message: "Preverjanje plačila ...",
+    };
   });
   const [checkCount, setCheckCount] = useState(0);
 
   useEffect(() => {
+    if (orderNumberParam) return;
     if (!sessionId) {
       setState({
         status: "unconfirmed",
-        message: "Ni varnega identifikatorja seje. Plačila ne moremo potrditi.",
+        message: "Ni varnega identifikatorja seje ali naročila.",
       });
       return;
     }
@@ -130,7 +143,11 @@ export default function CheckoutSuccessPage() {
 
           <h1 className="mt-2 font-display text-3xl sm:text-4xl font-semibold text-forest">
             {state.status === "confirmed"
-              ? "Plačilo je potrjeno!"
+              ? state.method === "cod"
+                ? "Naročilo je uspešno oddano!"
+                : state.method === "proforma"
+                  ? "Predračun je pripravljen!"
+                  : "Plačilo je potrjeno!"
               : state.status === "processing"
                 ? "Plačilo se obdeluje"
                 : "Potrditev še ni na voljo"}
@@ -138,7 +155,11 @@ export default function CheckoutSuccessPage() {
 
           <p className="mt-4 leading-7 text-forest/75 text-sm sm:text-base">
             {state.status === "confirmed"
-              ? "Vaše naročilo je bilo uspešno oddano in sprejeto v pripravo. Potrditev in podrobnosti smo poslali na vaš e-poštni naslov."
+              ? state.method === "cod"
+                ? "Hvala za vaše zaupanje. Naročilo je sprejeto v pripravo, znesek pa boste poravnali dostavljavcu GLS ob prevzemu paketa."
+                : state.method === "proforma"
+                  ? "Hvala za vaše naročilo. Podatke za UPN plačilo smo vam poslali na vaš e-poštni naslov."
+                  : "Vaše naročilo je bilo uspešno oddano in sprejeto v pripravo. Potrditev in podrobnosti smo poslali na vaš e-poštni naslov."
               : state.message}
           </p>
 
@@ -150,9 +171,23 @@ export default function CheckoutSuccessPage() {
           )}
 
           {state.status === "confirmed" && (
-            <div className="mt-6 flex items-center justify-center gap-2 rounded-xl bg-cream/70 p-3.5 text-xs text-forest/80 border border-forest/5">
-              <PackageCheck size={18} className="text-forest flex-shrink-0" />
-              <span>Dostava z GLS Slovenija: Paket bo pripravljen in odposlan v 1–3 delovnih dneh.</span>
+            <div className="mt-6 space-y-3 rounded-2xl bg-cream/80 p-4 text-left text-xs sm:text-sm text-forest/85 border border-forest/10">
+              <div className="flex items-start gap-2.5">
+                <PackageCheck size={18} className="text-forest shrink-0 mt-0.5" />
+                <span><strong>Dostava z GLS Slovenija:</strong> Paket bo pripravljen in odposlan v 1–3 delovnih dneh.</span>
+              </div>
+              {state.method === "cod" && (
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 size={18} className="text-forest shrink-0 mt-0.5" />
+                  <span><strong>Plačilo ob prevzemu:</strong> Znesek naročila poravnate dostavljavcu GLS ob izročitvi (z gotovino ali kartico).</span>
+                </div>
+              )}
+              {state.method === "proforma" && (
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 size={18} className="text-forest shrink-0 mt-0.5" />
+                  <span><strong>Podatki za plačilo:</strong> V kratkem boste na e-pošto prejeli podatke za bančno nakazilo (UPN nalog).</span>
+                </div>
+              )}
             </div>
           )}
 

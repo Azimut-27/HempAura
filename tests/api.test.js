@@ -338,4 +338,106 @@ describe("public API validation", () => {
     expect(response.statusCode).toBe(200);
     expect(JSON.parse(response.body).duplicate).toBe(true);
   });
+  it("create-order endpoint rejects missing house number in street address", async () => {
+    vi.stubEnv("VITE_PAYMENTS_ENABLED", "true");
+    const { default: handler } = await import("../api/checkout/create-order.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "http://localhost:5173" },
+        body: {
+          items: [{ productId: "hempaura-cbd-kapljice-5", quantity: 1 }],
+          paymentMethod: "cod",
+          customer: {
+            name: "Ana Novak",
+            email: "ana@example.com",
+            phone: "041 123 456",
+          },
+          shippingAddress: {
+            line1: "Slovenska cesta", // missing house number
+            postalCode: "1000",
+            city: "Ljubljana",
+            country: "SI",
+          },
+        },
+        socket: { remoteAddress: "127.0.0.1" },
+      },
+      response
+    );
+    expect(response.statusCode).toBe(400);
+    expect(JSON.parse(response.body).message).toContain("hišno številko");
+  });
+
+  it("create-order endpoint creates a COD order with items and calculates shipping", async () => {
+    vi.stubEnv("VITE_PAYMENTS_ENABLED", "true");
+    const createdOrder = {
+      id: "ord-test-cod-uuid",
+      public_order_number: "HA-20261029-COD123",
+    };
+    const createOrderWithItems = vi.fn().mockResolvedValue(createdOrder);
+    const sendEmail = vi.fn().mockResolvedValue({ id: "email-cod-123" });
+
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        createOrderWithItems,
+        claimOrderEmailDelivery: vi.fn().mockResolvedValue({ id: "deliv-1" }),
+        updateOrderEmailDelivery: vi.fn().mockResolvedValue({}),
+        getActiveReferralPartnerByCode: vi.fn().mockResolvedValue(null),
+      },
+    }));
+    vi.doMock("../server/services/email.js", () => ({
+      sendEmail,
+      isEmailConfigured: () => true,
+    }));
+
+    const { default: handler } = await import("../api/checkout/create-order.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "http://localhost:5173" },
+        body: {
+          items: [{ productId: "hempaura-cbd-kapljice-5", quantity: 1 }],
+          paymentMethod: "cod",
+          customer: {
+            name: "Ana Novak",
+            email: "ana@example.com",
+            phone: "041 123 456",
+          },
+          shippingAddress: {
+            line1: "Slovenska cesta 15",
+            postalCode: "1000",
+            city: "Ljubljana",
+            country: "SI",
+          },
+        },
+        socket: { remoteAddress: "127.0.0.1" },
+      },
+      response
+    );
+
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.body);
+    expect(body.success).toBe(true);
+    expect(body.paymentMethod).toBe("cod");
+    // 3100 product + 390 shipping = 3490
+    expect(body.totalCents).toBe(3490);
+    expect(createOrderWithItems).toHaveBeenCalledWith(
+      expect.objectContaining({
+        provider: "cod",
+        payment_status: "cod_pending",
+        subtotal_cents: 3100,
+        shipping_cents: 390,
+        total_cents: 3490,
+      }),
+      expect.arrayContaining([
+        expect.objectContaining({
+          product_id: "hempaura-cbd-kapljice-5",
+          quantity: 1,
+          unit_price_cents: 3100,
+        }),
+      ])
+    );
+  });
 });
