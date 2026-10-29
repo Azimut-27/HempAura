@@ -82,6 +82,20 @@ export const deleteAdminOrder = (token, orderNumber) =>
     body: JSON.stringify({ orderNumber }),
   });
 
+export const updateAdminContactStatus = (token, contactId, status) =>
+  request("/api/admin/orders", {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ contactId, status }),
+  });
+
+export const deleteAdminContact = (token, contactId) =>
+  request("/api/admin/orders", {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ contactId }),
+  });
+
 export async function downloadAdminGlsLabel(token, orderNumber, retry = false) {
   const response = await fetch("/api/shipping/gls/labels", {
     method: "POST",

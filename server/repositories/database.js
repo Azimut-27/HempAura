@@ -77,6 +77,37 @@ export const database = {
     return assertResult(result, "Get contact email status");
   },
 
+  async listAdminContactSubmissions(limit = 100) {
+    const result = await getSupabaseAdmin()
+      .from("contact_submissions")
+      .select(
+        "id,name,email,subject,message,order_number,consent,status,created_at,internal_email_status,acknowledgement_email_status"
+      )
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    return assertResult(result, "List contact submissions");
+  },
+
+  async setAdminContactSubmissionStatus(id, status) {
+    const result = await getSupabaseAdmin()
+      .from("contact_submissions")
+      .update({ status })
+      .eq("id", id)
+      .select("id,status")
+      .maybeSingle();
+    return assertResult(result, "Update contact submission status");
+  },
+
+  async deleteAdminContactSubmission(id) {
+    const result = await getSupabaseAdmin()
+      .from("contact_submissions")
+      .delete()
+      .eq("id", id)
+      .select("id")
+      .maybeSingle();
+    return assertResult(result, "Delete contact submission");
+  },
+
   async claimEmailEvent(values) {
     const result = await getSupabaseAdmin()
       .from("email_events")

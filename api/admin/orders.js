@@ -30,8 +30,14 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     try {
-      const orders = await database.listAdminOrders(75);
-      sendJson(response, 200, { orders });
+      const [orders, contacts] = await Promise.all([
+        database.listAdminOrders(75),
+        database.listAdminContactSubmissions(100).catch((err) => {
+          safeError(err, "admin-contacts-list");
+          return [];
+        }),
+      ]);
+      sendJson(response, 200, { orders, contacts: contacts || [] });
     } catch (error) {
       safeError(error, "admin-orders-list");
       sendJson(response, 500, { message: "Naročil trenutno ni mogoče naložiti." });
@@ -44,6 +50,24 @@ export default async function handler(request, response) {
       sendJson(response, 403, { message: "Zahteva ni dovoljena." });
       return;
     }
+
+    if (request.body?.contactId) {
+      const { contactId, status } = request.body;
+      const validStatuses = ["new", "read", "replied", "archived"];
+      if (!contactId || !validStatuses.includes(status)) {
+        sendJson(response, 400, { message: "Neveljaven status sporočila." });
+        return;
+      }
+      try {
+        const contact = await database.setAdminContactSubmissionStatus(contactId, status);
+        sendJson(response, 200, { contact });
+      } catch (error) {
+        safeError(error, "admin-contact-status-update");
+        sendJson(response, 500, { message: "Statusa sporočila ni bilo mogoče posodobiti." });
+      }
+      return;
+    }
+
     const parsed = updateSchema.safeParse(request.body);
     if (!parsed.success) {
       sendJson(response, 400, { message: "Neveljavna sprememba naročila." });
@@ -80,6 +104,19 @@ export default async function handler(request, response) {
       sendJson(response, 403, { message: "Zahteva ni dovoljena." });
       return;
     }
+
+    const contactId = request.body?.contactId || request.query?.contactId;
+    if (contactId) {
+      try {
+        await database.deleteAdminContactSubmission(contactId);
+        sendJson(response, 200, { success: true, contactId });
+      } catch (error) {
+        safeError(error, "admin-contact-delete");
+        sendJson(response, 500, { message: "Sporočila ni bilo mogoče izbrisati." });
+      }
+      return;
+    }
+
     const orderNumber = request.body?.orderNumber || request.query?.orderNumber;
     if (!orderNumber || !/^HA-\d{8}-[A-F0-9]{6}$/.test(String(orderNumber).trim().toUpperCase())) {
       sendJson(response, 400, { message: "Neveljavna številka naročila za izbris." });

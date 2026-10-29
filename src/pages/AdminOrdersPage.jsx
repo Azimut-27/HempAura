@@ -1,25 +1,33 @@
 import {
+  Archive,
+  ArchiveRestore,
   Ban,
+  Check,
   CheckCircle2,
   ChevronDown,
+  Clock,
   Download,
   LoaderCircle,
   LockKeyhole,
   LogOut,
   Mail,
   MapPin,
+  MessageSquare,
   PackageCheck,
   RefreshCw,
   RotateCcw,
   Search,
+  Send,
   Trash2,
   Truck,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  deleteAdminContact,
   deleteAdminOrder,
   downloadAdminGlsLabel,
   getAdminOrders,
+  updateAdminContactStatus,
   updateAdminOrderStatus,
 } from "../services/api.js";
 
@@ -71,6 +79,56 @@ function StatusBadge({ value }) {
   );
 }
 
+function normalizeContactStatus(status) {
+  if (status === "replied") return "replied";
+  if (status === "archived") return "archived";
+  if (status === "read") return "read";
+  return "new";
+}
+
+function ContactStatusBadge({ status }) {
+  const norm = normalizeContactStatus(status);
+  const styles = {
+    new: "border border-amber-300 bg-amber-100 text-amber-900",
+    read: "border border-slate-300 bg-slate-100 text-slate-700",
+    replied: "border border-emerald-300 bg-emerald-100 text-emerald-800",
+    archived: "border border-stone-300 bg-stone-100 text-stone-600",
+  };
+  const labels = {
+    new: "Neprebrano",
+    read: "Prebrano",
+    replied: "Odgovorjeno",
+    archived: "Arhivirano",
+  };
+  return (
+    <span
+      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+        styles[norm] || styles.new
+      }`}
+    >
+      {labels[norm] || "Neprebrano"}
+    </span>
+  );
+}
+
+function getSubjectBadge(subject = "") {
+  const s = String(subject || "").toLowerCase();
+  let icon = "✉️";
+  if (s.includes("b2b") || s.includes("daril")) icon = "🎁";
+  else if (s.includes("veleprodaj") || s.includes("distrib")) icon = "🏭";
+  else if (s.includes("naročil") || s.includes("dostav") || s.includes("gls")) icon = "📦";
+  else if (s.includes("reklamac") || s.includes("vračil") || s.includes("menjav")) icon = "⚠️";
+  else if (s.includes("sodelov") || s.includes("partner")) icon = "🤝";
+  else if (s.includes("vpraš") || s.includes("informac")) icon = "💬";
+
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50/80 px-2.5 py-0.5 text-xs font-semibold text-amber-900">
+      <span>{icon}</span>
+      <span>{subject || "Splošno sporočilo"}</span>
+    </span>
+  );
+}
+
 function formatMoney(cents, currency = "EUR") {
   return new Intl.NumberFormat("sl-SI", {
     style: "currency",
@@ -118,7 +176,10 @@ function AdminLogin({ onLogin, error, loading }) {
             onLogin(value.trim());
           }}
         >
-          <label className="text-xs font-bold uppercase tracking-wide text-forest" htmlFor="admin-token">
+          <label
+            className="text-xs font-bold uppercase tracking-wide text-forest"
+            htmlFor="admin-token"
+          >
             Administratorski ključ
           </label>
           <input
@@ -150,16 +211,20 @@ export default function AdminOrdersPage() {
   const [token, setToken] = useState(() => sessionStorage.getItem(TOKEN_STORAGE_KEY) || "");
   const initialToken = useRef(token);
   const [orders, setOrders] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [activeTab, setActiveTab] = useState("orders"); // "orders" | "contacts"
   const [loading, setLoading] = useState(Boolean(token));
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("open");
+  const [contactQuery, setContactQuery] = useState("");
+  const [contactFilter, setContactFilter] = useState("all");
   const [expandedOrder, setExpandedOrder] = useState("");
   const [activeAction, setActiveAction] = useState("");
 
   useEffect(() => {
     const previousTitle = document.title;
-    document.title = "Naročila | HerbaGallus Admin";
+    document.title = "Upravljanje trgovine | HerbaGallus Admin";
     const robots = document.createElement("meta");
     robots.name = "robots";
     robots.content = "noindex, nofollow, noarchive";
@@ -177,11 +242,13 @@ export default function AdminOrdersPage() {
     try {
       const payload = await getAdminOrders(adminToken);
       setOrders(payload.orders || []);
+      setContacts(payload.contacts || []);
       sessionStorage.setItem(TOKEN_STORAGE_KEY, adminToken);
       setToken(adminToken);
     } catch (loadError) {
       setError(loadError.message);
       setOrders([]);
+      setContacts([]);
     } finally {
       setLoading(false);
     }
@@ -201,9 +268,14 @@ export default function AdminOrdersPage() {
           .some((value) => String(value).toLowerCase().includes(normalized));
       const matchesFilter =
         filter === "all" ||
-        (filter === "open" && order.fulfillment_status !== "fulfilled" && order.fulfillment_status !== "cancelled") ||
+        (filter === "open" &&
+          order.fulfillment_status !== "fulfilled" &&
+          order.fulfillment_status !== "cancelled") ||
         (filter === "fulfilled" && order.fulfillment_status === "fulfilled") ||
-        (filter === "cancelled" && (order.fulfillment_status === "cancelled" || order.payment_status === "cancelled" || order.payment_status === "refunded")) ||
+        (filter === "cancelled" &&
+          (order.fulfillment_status === "cancelled" ||
+            order.payment_status === "cancelled" ||
+            order.payment_status === "refunded")) ||
         (filter === "attention" &&
           (order.payment_status !== "paid" ||
             relation(order.gls_shipments).some((shipment) => shipment.status === "failed") ||
@@ -215,7 +287,9 @@ export default function AdminOrdersPage() {
   const stats = useMemo(
     () => ({
       total: orders.length,
-      open: orders.filter((order) => !["fulfilled", "cancelled"].includes(order.fulfillment_status)).length,
+      open: orders.filter(
+        (order) => !["fulfilled", "cancelled"].includes(order.fulfillment_status)
+      ).length,
       paid: orders.filter((order) => order.payment_status === "paid").length,
       attention: orders.filter(
         (order) =>
@@ -225,6 +299,50 @@ export default function AdminOrdersPage() {
     }),
     [orders]
   );
+
+  const contactStats = useMemo(() => {
+    let newCount = 0;
+    let read = 0;
+    let replied = 0;
+    let archived = 0;
+
+    for (const c of contacts) {
+      const s = normalizeContactStatus(c.status);
+      if (s === "new") newCount += 1;
+      else if (s === "read") read += 1;
+      else if (s === "replied") replied += 1;
+      else if (s === "archived") archived += 1;
+    }
+
+    return {
+      total: contacts.length,
+      newCount,
+      read,
+      replied,
+      archived,
+    };
+  }, [contacts]);
+
+  const visibleContacts = useMemo(() => {
+    const q = contactQuery.trim().toLowerCase();
+    return contacts.filter((c) => {
+      const matchesQuery =
+        !q ||
+        [c.name, c.email, c.subject, c.message, c.order_number]
+          .filter(Boolean)
+          .some((val) => String(val).toLowerCase().includes(q));
+
+      const s = normalizeContactStatus(c.status);
+      const matchesFilter =
+        contactFilter === "all" ||
+        (contactFilter === "new" && s === "new") ||
+        (contactFilter === "read" && s === "read") ||
+        (contactFilter === "replied" && s === "replied") ||
+        (contactFilter === "archived" && s === "archived");
+
+      return matchesQuery && matchesFilter;
+    });
+  }, [contacts, contactFilter, contactQuery]);
 
   async function changeStatus(orderNumber, fulfillmentStatus) {
     setActiveAction(`${orderNumber}:status`);
@@ -269,7 +387,11 @@ export default function AdminOrdersPage() {
   }
 
   async function handleRefundOrder(orderNumber) {
-    if (!window.confirm(`Ali želite naročilo ${orderNumber} označiti kot stornirano / vrnjeno kupnino (Refund)?`)) {
+    if (
+      !window.confirm(
+        `Ali želite naročilo ${orderNumber} označiti kot stornirano / vrnjeno kupnino (Refund)?`
+      )
+    ) {
       return;
     }
     setActiveAction(`${orderNumber}:refund`);
@@ -323,303 +445,756 @@ export default function AdminOrdersPage() {
     }
   }
 
+  async function handleContactStatus(contactId, nextStatus) {
+    setActiveAction(`contact:${contactId}:status`);
+    setError("");
+    try {
+      await updateAdminContactStatus(token, contactId, nextStatus);
+      setContacts((prev) =>
+        prev.map((c) => (c.id === contactId ? { ...c, status: nextStatus } : c))
+      );
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function handleDeleteContact(contactId) {
+    if (!window.confirm("POZOR: Ali res želite trajno izbrisati to sporočilo?")) {
+      return;
+    }
+    setActiveAction(`contact:${contactId}:delete`);
+    setError("");
+    try {
+      await deleteAdminContact(token, contactId);
+      setContacts((prev) => prev.filter((c) => c.id !== contactId));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
   function logout() {
     sessionStorage.removeItem(TOKEN_STORAGE_KEY);
     setToken("");
     setOrders([]);
+    setContacts([]);
     setError("");
   }
 
-  if (!token || (!orders.length && error && !loading)) {
+  if (!token || (!orders.length && !contacts.length && error && !loading)) {
     return <AdminLogin onLogin={loadOrders} error={error} loading={loading} />;
   }
 
   return (
     <main className="min-h-screen bg-cream text-ink">
       <header className="border-b border-forest/10 bg-white">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-5 sm:px-8">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">Zasebna nadzorna plošča</p>
-            <h1 className="mt-1 font-display text-3xl font-semibold text-forest">HerbaGallus naročila</h1>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">
+              Zasebna nadzorna plošča
+            </p>
+            <h1 className="mt-1 font-display text-2xl font-semibold text-forest sm:text-3xl">
+              HerbaGallus • Upravljanje trgovine
+            </h1>
           </div>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => loadOrders(token)}
               disabled={loading}
-              className="grid size-11 place-items-center border border-forest/15 text-forest hover:bg-sage disabled:opacity-50"
-              aria-label="Osveži naročila"
+              className="grid size-10 place-items-center border border-forest/15 text-forest hover:bg-sage disabled:opacity-50 sm:size-11"
+              aria-label="Osveži podatke"
             >
               <RefreshCw className={loading ? "animate-spin" : ""} size={18} />
             </button>
             <button
               type="button"
               onClick={logout}
-              className="inline-flex min-h-11 items-center gap-2 border border-forest/15 px-4 text-sm font-bold text-forest hover:bg-sage"
+              className="inline-flex min-h-10 items-center gap-2 border border-forest/15 px-3 text-xs font-bold text-forest hover:bg-sage sm:min-h-11 sm:px-4 sm:text-sm"
             >
-              <LogOut size={17} aria-hidden="true" />
+              <LogOut size={16} aria-hidden="true" />
               <span className="hidden sm:inline">Odjava</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Top Dual Navigation Tabs (matching Plečnikov čaj reference) */}
+        <div className="border-t border-forest/10 bg-[#faf8f5]/60">
+          <div className="mx-auto flex max-w-[1500px] gap-6 px-5 sm:gap-10 sm:px-8">
+            <button
+              type="button"
+              onClick={() => setActiveTab("orders")}
+              className={`inline-flex items-center gap-2.5 border-b-2 py-3.5 text-xs font-bold uppercase tracking-wider transition-all sm:text-sm ${
+                activeTab === "orders"
+                  ? "border-forest text-forest"
+                  : "border-transparent text-forest/50 hover:text-forest"
+              }`}
+            >
+              <span>NAROČILA KUPCEV</span>
+              <span className="rounded-full bg-amber-500 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
+                {stats.open} ODPRTIH
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("contacts")}
+              className={`inline-flex items-center gap-2.5 border-b-2 py-3.5 text-xs font-bold uppercase tracking-wider transition-all sm:text-sm ${
+                activeTab === "contacts"
+                  ? "border-forest text-forest"
+                  : "border-transparent text-forest/50 hover:text-forest"
+              }`}
+            >
+              <MessageSquare size={16} aria-hidden="true" />
+              <span>POVPRAŠEVANJA & SPOROČILA</span>
+              {contactStats.newCount > 0 ? (
+                <span className="animate-pulse rounded-full bg-red-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
+                  {contactStats.newCount} NOVO
+                </span>
+              ) : (
+                <span className="rounded-full bg-forest/15 px-2.5 py-0.5 text-[11px] font-bold text-forest/70">
+                  0 NOVIH
+                </span>
+              )}
             </button>
           </div>
         </div>
       </header>
 
       <div className="mx-auto max-w-[1500px] px-5 py-7 sm:px-8 sm:py-10">
-        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Povzetek naročil">
-          {[
-            ["Vseh prikazanih", stats.total],
-            ["Odprtih", stats.open],
-            ["Plačanih", stats.paid],
-            ["Potrebuje pozornost", stats.attention],
-          ].map(([label, value]) => (
-            <div key={label} className="border border-forest/10 bg-white p-5">
-              <p className="text-xs font-bold uppercase tracking-wide text-forest/55">{label}</p>
-              <p className="mt-2 font-display text-4xl font-semibold text-forest">{value}</p>
-            </div>
-          ))}
-        </section>
-
-        <section className="mt-6 border border-forest/10 bg-white p-4 sm:p-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <label className="flex min-h-11 w-full items-center gap-3 border border-forest/15 bg-porcelain px-4 lg:max-w-md">
-              <Search size={17} className="text-forest/55" aria-hidden="true" />
-              <input
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Poišči številko, ime ali e-pošto"
-                className="w-full bg-transparent text-sm outline-none placeholder:text-forest/40"
-              />
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {[
-                ["open", "Odprta"],
-                ["attention", "Pozornost"],
-                ["fulfilled", "Odposlana"],
-                ["all", "Vsa"],
-              ].map(([value, label]) => (
-                <button
-                  type="button"
-                  key={value}
-                  onClick={() => setFilter(value)}
-                  className={`min-h-10 px-4 text-xs font-bold ${
-                    filter === value ? "bg-forest text-white" : "bg-sage/60 text-forest hover:bg-sage"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {error && (
-          <div className="mt-5 border border-clay/30 bg-clay/10 p-4 text-sm font-semibold text-clay" role="alert">
+          <div
+            className="mb-6 border border-clay/30 bg-clay/10 p-4 text-sm font-semibold text-clay"
+            role="alert"
+          >
             {error}
           </div>
         )}
 
-        <section className="mt-5 space-y-3" aria-label="Naročila">
-          {visibleOrders.map((order) => {
-            const items = relation(order.order_items);
-            const shipment = relation(order.gls_shipments)[0];
-            const emails = relation(order.order_email_deliveries);
-            const deliveryAddress = order.shipping_address_json || order.billing_address_json;
-            const expanded = expandedOrder === order.id;
-            const actionLoading = activeAction.startsWith(order.public_order_number);
+        {/* TAB 1: NAROČILA KUPCEV */}
+        {activeTab === "orders" && (
+          <div>
+            <section
+              className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4"
+              aria-label="Povzetek naročil"
+            >
+              <div className="border border-forest/10 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-forest/55">
+                  Vseh naročil
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {stats.total}
+                </p>
+              </div>
+              <div className="border border-forest/10 border-l-4 border-l-amber-500 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-amber-700">
+                  Odprtih naročil
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {stats.open}
+                </p>
+              </div>
+              <div className="border border-forest/10 border-l-4 border-l-emerald-500 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">
+                  Plačanih naročil
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {stats.paid}
+                </p>
+              </div>
+              <div className="border border-forest/10 border-l-4 border-l-[#8e6128] bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-[#8e6128]">
+                  Potrebuje pozornost
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {stats.attention}
+                </p>
+              </div>
+            </section>
 
-            return (
-              <article key={order.id} className="border border-forest/10 bg-white">
-                <button
-                  type="button"
-                  onClick={() => setExpandedOrder(expanded ? "" : order.id)}
-                  className="grid w-full gap-4 p-5 text-left sm:grid-cols-[1.2fr_1fr_1fr_auto] sm:items-center sm:p-6"
-                  aria-expanded={expanded}
-                >
-                  <div>
-                    <p className="font-display text-xl font-semibold text-forest">{order.public_order_number}</p>
-                    <p className="mt-1 text-xs text-forest/55">{formatDate(order.created_at)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-forest">{order.customer_name || "Brez imena"}</p>
-                    <p className="mt-1 truncate text-xs text-forest/55">{order.customer_email || "Brez e-pošte"}</p>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <StatusBadge value={order.payment_status} />
-                    <StatusBadge value={order.fulfillment_status} />
-                  </div>
-                  <div className="flex items-center justify-between gap-4 sm:justify-end">
-                    <p className="text-base font-bold text-forest">{formatMoney(order.total_cents, order.currency)}</p>
-                    <ChevronDown
-                      size={18}
-                      className={`text-forest/55 transition-transform ${expanded ? "rotate-180" : ""}`}
-                    />
-                  </div>
-                </button>
+            <section className="mt-6 border border-forest/10 bg-white p-4 sm:p-5">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                <label className="flex min-h-11 w-full items-center gap-3 border border-forest/15 bg-porcelain px-4 lg:max-w-md">
+                  <Search size={17} className="text-forest/55" aria-hidden="true" />
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="Poišči številko, ime ali e-pošto"
+                    className="w-full bg-transparent text-sm outline-none placeholder:text-forest/40"
+                  />
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    ["open", "Odprta"],
+                    ["attention", "Pozornost"],
+                    ["fulfilled", "Odposlana"],
+                    ["all", "Vsa"],
+                  ].map(([value, label]) => (
+                    <button
+                      type="button"
+                      key={value}
+                      onClick={() => setFilter(value)}
+                      className={`min-h-10 px-4 text-xs font-bold transition-colors ${
+                        filter === value
+                          ? "bg-forest text-white"
+                          : "bg-sage/60 text-forest hover:bg-sage"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
 
-                {expanded && (
-                  <div className="border-t border-forest/10 bg-porcelain/60 p-5 sm:p-6">
-                    <div className="flex items-center justify-between pb-3 mb-5 border-b border-forest/10 flex-wrap gap-2">
-                      <span className="text-xs font-bold uppercase tracking-wider text-forest/50">
-                        Podrobnosti naročila
-                      </span>
-                      <div className="flex items-center gap-2">
-                        {order.payment_status === "paid" && order.payment_status !== "refunded" && (
-                          <button
-                            type="button"
-                            onClick={() => handleRefundOrder(order.public_order_number)}
-                            disabled={actionLoading}
-                            className="inline-flex h-7 items-center gap-1 rounded border border-purple-300 bg-purple-50 px-2.5 text-[11px] font-bold text-purple-800 hover:bg-purple-100 transition-colors disabled:opacity-40"
-                            title="Označi vračilo kupnine (Refund)"
-                          >
-                            <RotateCcw size={12} /> Vračilo
-                          </button>
-                        )}
-                        {order.fulfillment_status !== "cancelled" && (
-                          <button
-                            type="button"
-                            onClick={() => handleCancelOrder(order.public_order_number)}
-                            disabled={actionLoading}
-                            className="inline-flex h-7 items-center gap-1 rounded border border-amber-300 bg-amber-50 px-2.5 text-[11px] font-bold text-amber-800 hover:bg-amber-100 transition-colors disabled:opacity-40"
-                            title="Prekliči naročilo"
-                          >
-                            <Ban size={12} /> Prekliči
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteOrder(order.public_order_number)}
-                          disabled={actionLoading}
-                          className="inline-flex h-7 items-center gap-1 rounded border border-rose-300 bg-rose-50 px-2.5 text-[11px] font-bold text-rose-800 hover:bg-rose-100 transition-colors disabled:opacity-40"
-                          title="Trajno izbriši testno naročilo"
-                        >
-                          <Trash2 size={12} /> Izbriši
-                        </button>
-                      </div>
-                    </div>
+            <section className="mt-5 space-y-3" aria-label="Naročila">
+              {visibleOrders.map((order) => {
+                const items = relation(order.order_items);
+                const shipment = relation(order.gls_shipments)[0];
+                const emails = relation(order.order_email_deliveries);
+                const deliveryAddress = order.shipping_address_json || order.billing_address_json;
+                const expanded = expandedOrder === order.id;
+                const actionLoading = activeAction.startsWith(order.public_order_number);
 
-                    <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr_1fr]">
+                return (
+                  <article key={order.id} className="border border-forest/10 bg-white">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedOrder(expanded ? "" : order.id)}
+                      className="grid w-full gap-4 p-5 text-left sm:grid-cols-[1.2fr_1fr_1fr_auto] sm:items-center sm:p-6"
+                      aria-expanded={expanded}
+                    >
                       <div>
-                        <h2 className="text-xs font-bold uppercase tracking-wide text-forest/55">Izdelki</h2>
-                        <div className="mt-3 space-y-2">
-                          {items.map((item) => (
-                            <div key={item.id} className="flex justify-between gap-4 border-b border-forest/10 pb-2 text-sm">
-                              <span>{item.quantity} × {item.name_snapshot}</span>
-                              <span className="shrink-0 font-semibold">{formatMoney(item.line_total_cents, order.currency)}</span>
-                            </div>
-                          ))}
-                        </div>
-                        <dl className="mt-4 space-y-2 text-sm">
-                          <div className="flex justify-between"><dt>Vmesni znesek</dt><dd>{formatMoney(order.subtotal_cents, order.currency)}</dd></div>
-                          {order.discount_cents > 0 && <div className="flex justify-between text-emerald-700"><dt>Popust {order.promotion_code ? `(${order.promotion_code})` : ""}</dt><dd>-{formatMoney(order.discount_cents, order.currency)}</dd></div>}
-                          <div className="flex justify-between"><dt>Dostava</dt><dd>{formatMoney(order.shipping_cents, order.currency)}</dd></div>
-                          <div className="flex justify-between border-t border-forest/10 pt-2 font-bold"><dt>Skupaj</dt><dd>{formatMoney(order.total_cents, order.currency)}</dd></div>
-                        </dl>
+                        <p className="font-display text-xl font-semibold text-forest">
+                          {order.public_order_number}
+                        </p>
+                        <p className="mt-1 text-xs text-forest/55">
+                          {formatDate(order.created_at)}
+                        </p>
                       </div>
-
                       <div>
-                        <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-forest/55"><MapPin size={15} /> Dostava</h2>
-                        <p className="mt-3 text-sm leading-6 text-forest/75">{formatAddress(deliveryAddress)}</p>
-                        <h2 className="mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-forest/55"><Mail size={15} /> E-pošta</h2>
-                        <div className="mt-3 space-y-2">
-                          {emails.length ? emails.map((email) => (
-                            <div key={email.id} className="flex items-center justify-between gap-3 text-xs">
-                              <span>{email.kind === "customer_confirmation" ? "Potrdilo kupcu" : "Obvestilo trgovini"}</span>
-                              <StatusBadge value={email.status} />
-                            </div>
-                          )) : <p className="text-sm text-forest/55">Ni podatkov o pošiljanju.</p>}
-                        </div>
+                        <p className="text-sm font-bold text-forest">
+                          {order.customer_name || "Brez imena"}
+                        </p>
+                        <p className="mt-1 truncate text-xs text-forest/55">
+                          {order.customer_email || "Brez e-pošte"}
+                        </p>
                       </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <StatusBadge value={order.payment_status} />
+                        <StatusBadge value={order.fulfillment_status} />
+                      </div>
+                      <div className="flex items-center justify-between gap-4 sm:justify-end">
+                        <p className="text-base font-bold text-forest">
+                          {formatMoney(order.total_cents, order.currency)}
+                        </p>
+                        <ChevronDown
+                          size={18}
+                          className={`text-forest/55 transition-transform ${
+                            expanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
+                    </button>
 
-                      <div>
-                        <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-forest/55"><Truck size={15} /> GLS dostava</h2>
-                        <div className="mt-3 flex flex-wrap items-center gap-2">
-                          {shipment ? <StatusBadge value={shipment.status} /> : <span className="text-sm text-forest/55">Nalepka še ni ustvarjena</span>}
-                          {shipment?.parcel_number && <span className="text-xs font-semibold text-forest/65">#{shipment.parcel_number}</span>}
-                        </div>
-                        {shipment?.error_message && <p className="mt-2 text-xs leading-5 text-clay">{shipment.error_message}</p>}
-                        <div className="mt-5 grid gap-2">
-                          {(() => {
-                            const canCreateLabel =
-                              order.payment_status === "paid" ||
-                              order.provider === "cod" ||
-                              order.payment_status === "cod_pending";
-                            return (
+                    {expanded && (
+                      <div className="border-t border-forest/10 bg-porcelain/60 p-5 sm:p-6">
+                        <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-forest/10 pb-3">
+                          <span className="text-xs font-bold uppercase tracking-wider text-forest/50">
+                            Podrobnosti naročila
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {order.payment_status === "paid" &&
+                              order.payment_status !== "refunded" && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleRefundOrder(order.public_order_number)}
+                                  disabled={actionLoading}
+                                  className="inline-flex h-7 items-center gap-1 rounded border border-purple-300 bg-purple-50 px-2.5 text-[11px] font-bold text-purple-800 transition-colors hover:bg-purple-100 disabled:opacity-40"
+                                  title="Označi vračilo kupnine (Refund)"
+                                >
+                                  <RotateCcw size={12} /> Vračilo
+                                </button>
+                              )}
+                            {order.fulfillment_status !== "cancelled" && (
                               <button
                                 type="button"
-                                onClick={() => createLabel(order)}
-                                disabled={!canCreateLabel || actionLoading || order.fulfillment_status === "cancelled"}
-                                className="inline-flex min-h-11 items-center justify-center gap-2 bg-forest px-4 text-xs font-bold text-white disabled:opacity-45 hover:bg-forest/90 transition-colors"
+                                onClick={() => handleCancelOrder(order.public_order_number)}
+                                disabled={actionLoading}
+                                className="inline-flex h-7 items-center gap-1 rounded border border-amber-300 bg-amber-50 px-2.5 text-[11px] font-bold text-amber-800 transition-colors hover:bg-amber-100 disabled:opacity-40"
+                                title="Prekliči naročilo"
                               >
-                                {activeAction === `${order.public_order_number}:label` ? <LoaderCircle className="animate-spin" size={16} /> : <Download size={16} />}
-                                {shipment?.status === "failed" ? "Ponovi GLS nalepko" : shipment?.status === "label_created" ? "Prenesi GLS nalepko" : "Ustvari GLS nalepko"}
+                                <Ban size={12} /> Prekliči
                               </button>
-                            );
-                          })()}
-
-                          {order.payment_status === "cod_pending" && order.fulfillment_status !== "cancelled" && (
+                            )}
                             <button
                               type="button"
-                              onClick={() => changePaymentStatus(order.public_order_number, "paid")}
+                              onClick={() => handleDeleteOrder(order.public_order_number)}
                               disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-emerald-600/30 bg-emerald-50 px-4 text-xs font-bold text-emerald-800 disabled:opacity-45 hover:bg-emerald-100 transition-colors"
+                              className="inline-flex h-7 items-center gap-1 rounded border border-rose-300 bg-rose-50 px-2.5 text-[11px] font-bold text-rose-800 transition-colors hover:bg-rose-100 disabled:opacity-40"
+                              title="Trajno izbriši testno naročilo"
                             >
-                              <CheckCircle2 size={16} /> Označi: plačilo prevzeto (COD)
+                              <Trash2 size={12} /> Izbriši
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr_1fr]">
+                          <div>
+                            <h2 className="text-xs font-bold uppercase tracking-wide text-forest/55">
+                              Izdelki
+                            </h2>
+                            <div className="mt-3 space-y-2">
+                              {items.map((item) => (
+                                <div
+                                  key={item.id}
+                                  className="flex justify-between gap-4 border-b border-forest/10 pb-2 text-sm"
+                                >
+                                  <span>
+                                    {item.quantity} × {item.name_snapshot}
+                                  </span>
+                                  <span className="shrink-0 font-semibold">
+                                    {formatMoney(item.line_total_cents, order.currency)}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                            <dl className="mt-4 space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <dt>Vmesni znesek</dt>
+                                <dd>{formatMoney(order.subtotal_cents, order.currency)}</dd>
+                              </div>
+                              {order.discount_cents > 0 && (
+                                <div className="flex justify-between text-emerald-700">
+                                  <dt>
+                                    Popust {order.promotion_code ? `(${order.promotion_code})` : ""}
+                                  </dt>
+                                  <dd>-{formatMoney(order.discount_cents, order.currency)}</dd>
+                                </div>
+                              )}
+                              <div className="flex justify-between">
+                                <dt>Dostava</dt>
+                                <dd>{formatMoney(order.shipping_cents, order.currency)}</dd>
+                              </div>
+                              <div className="flex justify-between border-t border-forest/10 pt-2 font-bold">
+                                <dt>Skupaj</dt>
+                                <dd>{formatMoney(order.total_cents, order.currency)}</dd>
+                              </div>
+                            </dl>
+                          </div>
+
+                          <div>
+                            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-forest/55">
+                              <MapPin size={15} /> Dostava
+                            </h2>
+                            <p className="mt-3 text-sm leading-6 text-forest/75">
+                              {formatAddress(deliveryAddress)}
+                            </p>
+                            <h2 className="mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-forest/55">
+                              <Mail size={15} /> E-pošta
+                            </h2>
+                            <div className="mt-3 space-y-2">
+                              {emails.length ? (
+                                emails.map((email) => (
+                                  <div
+                                    key={email.id}
+                                    className="flex items-center justify-between gap-3 text-xs"
+                                  >
+                                    <span>
+                                      {email.kind === "customer_confirmation"
+                                        ? "Potrdilo kupcu"
+                                        : "Obvestilo trgovini"}
+                                    </span>
+                                    <StatusBadge value={email.status} />
+                                  </div>
+                                ))
+                              ) : (
+                                <p className="text-sm text-forest/55">
+                                  Ni podatkov o pošiljanju.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-forest/55">
+                              <Truck size={15} /> GLS dostava
+                            </h2>
+                            <div className="mt-3 flex flex-wrap items-center gap-2">
+                              {shipment ? (
+                                <StatusBadge value={shipment.status} />
+                              ) : (
+                                <span className="text-sm text-forest/55">
+                                  Nalepka še ni ustvarjena
+                                </span>
+                              )}
+                              {shipment?.parcel_number && (
+                                <span className="text-xs font-semibold text-forest/65">
+                                  #{shipment.parcel_number}
+                                </span>
+                              )}
+                            </div>
+                            {shipment?.error_message && (
+                              <p className="mt-2 text-xs leading-5 text-clay">
+                                {shipment.error_message}
+                              </p>
+                            )}
+                            <div className="mt-5 grid gap-2">
+                              {(() => {
+                                const canCreateLabel =
+                                  order.payment_status === "paid" ||
+                                  order.provider === "cod" ||
+                                  order.payment_status === "cod_pending";
+                                return (
+                                  <button
+                                    type="button"
+                                    onClick={() => createLabel(order)}
+                                    disabled={
+                                      !canCreateLabel ||
+                                      actionLoading ||
+                                      order.fulfillment_status === "cancelled"
+                                    }
+                                    className="inline-flex min-h-11 items-center justify-center gap-2 bg-forest px-4 text-xs font-bold text-white transition-colors hover:bg-forest/90 disabled:opacity-45"
+                                  >
+                                    {activeAction === `${order.public_order_number}:label` ? (
+                                      <LoaderCircle className="animate-spin" size={16} />
+                                    ) : (
+                                      <Download size={16} />
+                                    )}
+                                    {shipment?.status === "failed"
+                                      ? "Ponovi GLS nalepko"
+                                      : shipment?.status === "label_created"
+                                        ? "Prenesi GLS nalepko"
+                                        : "Ustvari GLS nalepko"}
+                                  </button>
+                                );
+                              })()}
+
+                              {order.payment_status === "cod_pending" &&
+                                order.fulfillment_status !== "cancelled" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      changePaymentStatus(order.public_order_number, "paid")
+                                    }
+                                    disabled={actionLoading}
+                                    className="inline-flex min-h-11 items-center justify-center gap-2 border border-emerald-600/30 bg-emerald-50 px-4 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100 disabled:opacity-45"
+                                  >
+                                    <CheckCircle2 size={16} /> Označi: plačilo prevzeto (COD)
+                                  </button>
+                                )}
+
+                              {order.payment_status === "proforma_pending" &&
+                                order.fulfillment_status !== "cancelled" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      changePaymentStatus(order.public_order_number, "paid")
+                                    }
+                                    disabled={actionLoading}
+                                    className="inline-flex min-h-11 items-center justify-center gap-2 border border-blue-600/30 bg-blue-50 px-4 text-xs font-bold text-blue-800 transition-colors hover:bg-blue-100 disabled:opacity-45"
+                                  >
+                                    <CheckCircle2 size={16} /> Označi: nakazilo prejeto (TRR)
+                                  </button>
+                                )}
+
+                              {order.fulfillment_status !== "processing" &&
+                                order.fulfillment_status !== "fulfilled" &&
+                                order.fulfillment_status !== "cancelled" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      changeStatus(order.public_order_number, "processing")
+                                    }
+                                    disabled={actionLoading}
+                                    className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest transition-colors hover:bg-stone-50 disabled:opacity-45"
+                                  >
+                                    <PackageCheck size={16} /> Označi: v pripravi
+                                  </button>
+                                )}
+
+                              {order.fulfillment_status !== "fulfilled" &&
+                                order.fulfillment_status !== "cancelled" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      changeStatus(order.public_order_number, "fulfilled")
+                                    }
+                                    disabled={actionLoading}
+                                    className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest transition-colors hover:bg-stone-50 disabled:opacity-45"
+                                  >
+                                    <CheckCircle2 size={16} /> Označi: odposlano
+                                  </button>
+                                )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+
+              {!loading && !visibleOrders.length && (
+                <div className="grid min-h-52 place-items-center border border-forest/10 bg-white p-8 text-center">
+                  <div>
+                    <p className="font-display text-2xl font-semibold text-forest">
+                      Ni najdenih naročil
+                    </p>
+                    <p className="mt-2 text-sm text-forest/55">
+                      Spremeni iskanje ali izbrani filter.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </section>
+          </div>
+        )}
+
+        {/* TAB 2: POVPRAŠEVANJA & SPOROČILA (matching Plečnikov čaj screenshot) */}
+        {activeTab === "contacts" && (
+          <div>
+            <section
+              className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4"
+              aria-label="Povzetek sporočil"
+            >
+              <div className="border border-forest/10 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-forest/55">
+                  Vseh sporočil
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {contactStats.total}
+                </p>
+              </div>
+              <div className="border border-forest/10 border-l-4 border-l-amber-500 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-amber-700">
+                  Neprebranih
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {contactStats.newCount}
+                </p>
+              </div>
+              <div className="border border-forest/10 border-l-4 border-l-emerald-500 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">
+                  Odgovorjenih
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {contactStats.replied}
+                </p>
+              </div>
+              <div className="border border-forest/10 border-l-4 border-l-stone-400 bg-white p-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-stone-600">
+                  Arhiviranih
+                </p>
+                <p className="mt-2 font-display text-4xl font-semibold text-forest">
+                  {contactStats.archived}
+                </p>
+              </div>
+            </section>
+
+            <section className="mt-6 border border-forest/10 bg-white p-4 sm:p-5">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                <label className="flex min-h-11 w-full items-center gap-3 rounded-lg border border-forest/15 bg-porcelain px-4 lg:max-w-md">
+                  <Search size={17} className="text-forest/55" aria-hidden="true" />
+                  <input
+                    type="search"
+                    value={contactQuery}
+                    onChange={(event) => setContactQuery(event.target.value)}
+                    placeholder="Išči po imenu, e-pošti ali vsebini sporočila..."
+                    className="w-full bg-transparent text-sm outline-none placeholder:text-forest/40"
+                  />
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    ["all", "VSA SPOROČILA"],
+                    ["new", "NEPREBRANA"],
+                    ["read", "PREBRANA"],
+                    ["replied", "ODGOVORJENA"],
+                    ["archived", "ARHIVIRANA"],
+                  ].map(([val, label]) => (
+                    <button
+                      type="button"
+                      key={val}
+                      onClick={() => setContactFilter(val)}
+                      className={`min-h-10 rounded-md px-3.5 text-xs font-bold transition-colors ${
+                        contactFilter === val
+                          ? "bg-[#231215] text-white"
+                          : "bg-[#f4efe8] text-forest/70 hover:bg-sage hover:text-forest"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="mt-5 space-y-4" aria-label="Povpraševanja kupcev">
+              {visibleContacts.map((contact) => {
+                const isActionLoading = activeAction.startsWith(`contact:${contact.id}`);
+                const normStatus = normalizeContactStatus(contact.status);
+
+                return (
+                  <article
+                    key={contact.id}
+                    className="rounded-xl border border-stone-200/90 bg-white p-5 shadow-xs transition-shadow hover:shadow-sm"
+                  >
+                    {/* Header row: Customer name, Subject badge, Status badge, and Date */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-3">
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        <h2 className="font-display text-lg font-bold text-forest">
+                          {contact.name || "Neznano ime"}
+                        </h2>
+                        {getSubjectBadge(contact.subject)}
+                        <ContactStatusBadge status={contact.status} />
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-stone-500">
+                        <Clock size={13} className="text-stone-400" aria-hidden="true" />
+                        <span>{formatDate(contact.created_at)}</span>
+                      </div>
+                    </div>
+
+                    {/* Content row: Left message bubble, Right contact box + actions */}
+                    <div className="mt-4 grid items-start gap-4 lg:grid-cols-[1fr_340px]">
+                      {/* Left message container */}
+                      <div className="rounded-lg border border-[#ede7de] bg-[#faf8f5] p-4 text-sm leading-relaxed text-[#3b342f]">
+                        {contact.order_number && (
+                          <div className="mb-3 inline-flex items-center gap-1.5 rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-900">
+                            <PackageCheck size={13} className="text-amber-700" />
+                            <span>Povezano naročilo:</span>
+                            <span className="font-mono">{contact.order_number}</span>
+                          </div>
+                        )}
+                        <p className="whitespace-pre-wrap">{contact.message}</p>
+                      </div>
+
+                      {/* Right column */}
+                      <div className="space-y-3">
+                        {/* Contact details box */}
+                        <div className="space-y-2 rounded-lg border border-stone-200/80 bg-white p-3.5 text-xs text-stone-700 shadow-2xs">
+                          <div className="flex items-center gap-2">
+                            <Mail size={14} className="shrink-0 text-stone-400" />
+                            <a
+                              href={`mailto:${contact.email}`}
+                              className="truncate font-medium text-forest hover:underline"
+                              title={contact.email}
+                            >
+                              {contact.email}
+                            </a>
+                          </div>
+                          {contact.order_number && (
+                            <div className="flex items-center gap-2 text-stone-500">
+                              <PackageCheck size={14} className="shrink-0 text-stone-400" />
+                              <span className="truncate">Št. naročila: {contact.order_number}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          <a
+                            href={`mailto:${contact.email}?subject=Re: ${encodeURIComponent(
+                              contact.subject || "Povpraševanje HerbaGallus"
+                            )}`}
+                            className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-[#231215] px-3.5 py-1.5 text-xs font-bold text-white shadow-2xs transition-colors hover:bg-forest"
+                          >
+                            <Send size={12} aria-hidden="true" />
+                            <span>ODGOVORI</span>
+                          </a>
+
+                          {normStatus !== "replied" && (
+                            <button
+                              type="button"
+                              onClick={() => handleContactStatus(contact.id, "replied")}
+                              disabled={isActionLoading}
+                              className="inline-flex min-h-9 items-center gap-1 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 transition-colors hover:bg-emerald-100 disabled:opacity-50"
+                            >
+                              <Check size={13} />
+                              <span>Odgovorjeno</span>
                             </button>
                           )}
 
-                          {order.payment_status === "proforma_pending" && order.fulfillment_status !== "cancelled" && (
+                          {normStatus === "new" ? (
                             <button
                               type="button"
-                              onClick={() => changePaymentStatus(order.public_order_number, "paid")}
-                              disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-blue-600/30 bg-blue-50 px-4 text-xs font-bold text-blue-800 disabled:opacity-45 hover:bg-blue-100 transition-colors"
+                              onClick={() => handleContactStatus(contact.id, "read")}
+                              disabled={isActionLoading}
+                              className="inline-flex min-h-9 items-center gap-1 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-50 disabled:opacity-50"
                             >
-                              <CheckCircle2 size={16} /> Označi: nakazilo prejeto (TRR)
+                              Prebrano
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleContactStatus(contact.id, "new")}
+                              disabled={isActionLoading}
+                              className="inline-flex min-h-9 items-center gap-1 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-50 disabled:opacity-50"
+                            >
+                              Neprebrano
                             </button>
                           )}
 
-                          {order.fulfillment_status !== "processing" && order.fulfillment_status !== "fulfilled" && order.fulfillment_status !== "cancelled" && (
+                          {normStatus !== "archived" ? (
                             <button
                               type="button"
-                              onClick={() => changeStatus(order.public_order_number, "processing")}
-                              disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest disabled:opacity-45 hover:bg-stone-50 transition-colors"
+                              onClick={() => handleContactStatus(contact.id, "archived")}
+                              disabled={isActionLoading}
+                              className="inline-flex min-h-9 items-center gap-1 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-50 disabled:opacity-50"
+                              title="Arhiviraj sporočilo"
                             >
-                              <PackageCheck size={16} /> Označi: v pripravi
+                              <Archive size={12} />
+                              <span className="hidden sm:inline">Arhiviraj</span>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => handleContactStatus(contact.id, "read")}
+                              disabled={isActionLoading}
+                              className="inline-flex min-h-9 items-center gap-1 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-50 disabled:opacity-50"
+                              title="Obnovi sporočilo iz arhiva"
+                            >
+                              <ArchiveRestore size={12} />
+                              <span className="hidden sm:inline">Obnovi</span>
                             </button>
                           )}
 
-                          {order.fulfillment_status !== "fulfilled" && order.fulfillment_status !== "cancelled" && (
-                            <button
-                              type="button"
-                              onClick={() => changeStatus(order.public_order_number, "fulfilled")}
-                              disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest disabled:opacity-45 hover:bg-stone-50 transition-colors"
-                            >
-                              <CheckCircle2 size={16} /> Označi: odposlano
-                            </button>
-                          )}
-
-
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteContact(contact.id)}
+                            disabled={isActionLoading}
+                            className="ml-auto inline-flex min-h-9 items-center justify-center rounded-md border border-rose-200 bg-rose-50/60 p-2 text-rose-700 transition-colors hover:bg-rose-100 disabled:opacity-50"
+                            title="Trajno izbriši sporočilo"
+                          >
+                            <Trash2 size={13} />
+                          </button>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </article>
-            );
-          })}
+                  </article>
+                );
+              })}
 
-          {!loading && !visibleOrders.length && (
-            <div className="grid min-h-52 place-items-center border border-forest/10 bg-white p-8 text-center">
-              <div>
-                <p className="font-display text-2xl font-semibold text-forest">Ni najdenih naročil</p>
-                <p className="mt-2 text-sm text-forest/55">Spremeni iskanje ali izbrani filter.</p>
-              </div>
-            </div>
-          )}
-        </section>
+              {!loading && !visibleContacts.length && (
+                <div className="grid min-h-52 place-items-center rounded-xl border border-forest/10 bg-white p-8 text-center">
+                  <div>
+                    <p className="font-display text-2xl font-semibold text-forest">
+                      Ni najdenih sporočil
+                    </p>
+                    <p className="mt-2 text-sm text-forest/55">
+                      {contactFilter === "all" && !contactQuery
+                        ? "Trenutno ni nobenih prejetih sporočil ali povpraševanj."
+                        : "Spremeni iskanje ali izbrani filter za prikaz sporočil."}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </section>
+          </div>
+        )}
       </div>
     </main>
   );
