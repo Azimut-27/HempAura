@@ -71,9 +71,13 @@ export const serverConfig = {
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
   resendApiKey: process.env.RESEND_API_KEY || "",
-  resendFromEmail:
-    stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL") ||
-    "HerbaGallus <onboarding@resend.dev>",
+  resendFromEmail: (() => {
+    const configured = stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL");
+    if (!configured || /@resend\.dev>?$/i.test(configured.trim())) {
+      return "HerbaGallus <narocila@herbagallus.com>";
+    }
+    return configured;
+  })(),
   resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET || "",
   contactToEmail: stringEnv("CONTACT_TO_EMAIL") || "stakingforge@gmail.com",
   supportEmail:

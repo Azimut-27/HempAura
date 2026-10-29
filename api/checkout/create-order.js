@@ -58,6 +58,7 @@ async function deliverOrderEmail({
       to: recipient,
       subject,
       html,
+      replyTo: serverConfig.supportEmail || undefined,
     });
     if (delivery?.id) {
       try {
