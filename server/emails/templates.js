@@ -196,15 +196,21 @@ export function CodNewOrderNotificationEmail({
   paymentMethod,
   deliveryAddress,
   notes,
+  customerEmailNotice,
 }) {
   const methodLabel =
     paymentMethod === "proforma"
       ? "Plačilo po predračunu"
       : "Plačilo ob prevzemu (COD — kurir GLS)";
 
+  const noticeBlock = customerEmailNotice
+    ? `<div style="background:#fee2e2;border:2px solid #ef4444;color:#991b1b;padding:14px;margin-bottom:18px;border-radius:6px;font-size:14px;line-height:1.5"><strong>${escapeHtml(customerEmailNotice)}</strong><br><span style="font-size:12px;color:#7f1d1d">Za samodejno pošiljanje vsem kupcem je treba verificirati domeno v Resend (resend.com/domains).</span></div>`
+    : "";
+
   return layout(
     `Novo naročilo: ${orderNumber}`,
     [
+      noticeBlock,
       p(`Novo naročilo: ${orderNumber}`),
       p(`Način plačila: ${methodLabel}`),
       p(`Kupec: ${customerName} (${customerEmail}, tel: ${phone || "ni navedeno"})`),

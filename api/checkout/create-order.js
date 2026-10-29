@@ -26,6 +26,9 @@ import {
 import { calculateShipping } from "../../server/services/shipping.js";
 import { splitGlsStreetAddress } from "../../server/shipping/glsShipment.js";
 
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 async function deliverOrderEmail({
   order,
   kind,
@@ -36,14 +39,15 @@ async function deliverOrderEmail({
   if (!recipient) return { skipped: true };
 
   let delivery = null;
-  if (order?.id && String(order.id).includes("-")) {
+  const isUuid = typeof order?.id === "string" && UUID_REGEX.test(order.id);
+
+  if (isUuid) {
     try {
       delivery = await database.claimOrderEmailDelivery(
         order.id,
         kind,
         recipient
       );
-      if (!delivery) return { skipped: true };
     } catch (error) {
       safeError(error, `claimOrderEmailDelivery-${kind}`);
     }
@@ -54,7 +58,6 @@ async function deliverOrderEmail({
       to: recipient,
       subject,
       html,
-      idempotencyKey: `hempaura-${kind}-${order?.id || order?.public_order_number || Date.now()}`,
     });
     if (delivery?.id) {
       try {
@@ -276,9 +279,11 @@ export default async function handler(request, response) {
     const formattedTotal = `${(totalCents / 100).toFixed(2).replace(".", ",")} €`;
 
     if (isEmailConfigured()) {
-      // Send confirmation to customer
+      let customerEmailNotice = null;
+
+      // 1. Send confirmation to customer
       try {
-        await deliverOrderEmail({
+        const customerResult = await deliverOrderEmail({
           order: order || { id: providerSessionId, public_order_number: orderNumber },
           kind: "customer_confirmation",
           recipient: customer.email,
@@ -295,16 +300,20 @@ export default async function handler(request, response) {
             supportEmail: serverConfig.supportEmail,
           }),
         });
+        if (customerResult.error) {
+          customerEmailNotice = `OPOZORILO: Potrditveno e-sporočilo za kupca (${customer.email}) ni bilo dostavljeno: ${customerResult.error}`;
+        }
       } catch (emailErr) {
         safeError(emailErr, "customer-order-email");
+        customerEmailNotice = `OPOZORILO: Napaka pri pošiljanju potrdila kupcu (${customer.email}): ${emailErr.message}`;
       }
 
-      // Send alert to store owner
+      // 2. Send alert to store owner (uses kind: "owner_notification" to match database constraint)
       try {
         const ownerEmail = serverConfig.contactToEmail || serverConfig.supportEmail;
         await deliverOrderEmail({
           order: order || { id: providerSessionId, public_order_number: orderNumber },
-          kind: "admin_notification",
+          kind: "owner_notification",
           recipient: ownerEmail,
           subject: `Novo naročilo ${orderNumber} (${
             provider === "cod" ? "Prevzem" : "Predračun"
@@ -320,6 +329,7 @@ export default async function handler(request, response) {
             paymentMethod: provider,
             deliveryAddress: formattedAddress,
             notes,
+            customerEmailNotice,
           }),
         });
       } catch (adminEmailErr) {
