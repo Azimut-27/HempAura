@@ -42,6 +42,16 @@ export const database = {
     return assertResult(result, "Update administrator order payment status");
   },
 
+  async deleteAdminOrder(orderNumber) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .delete()
+      .eq("public_order_number", orderNumber)
+      .select("id,public_order_number")
+      .maybeSingle();
+    return assertResult(result, "Delete administrator order");
+  },
+
   async createContactSubmission(values) {
     const result = await getSupabaseAdmin()
       .from("contact_submissions")

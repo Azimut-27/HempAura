@@ -12,7 +12,7 @@ const updateSchema = z
   .object({
     orderNumber: z.string().trim().toUpperCase().regex(/^HA-\d{8}-[A-F0-9]{6}$/),
     fulfillmentStatus: z.enum(["unfulfilled", "processing", "fulfilled", "cancelled"]).optional(),
-    paymentStatus: z.enum(["paid", "unpaid", "cod_pending", "proforma_pending", "cancelled"]).optional(),
+    paymentStatus: z.enum(["paid", "unpaid", "cod_pending", "proforma_pending", "cancelled", "refunded"]).optional(),
   })
   .strict();
 
@@ -75,6 +75,30 @@ export default async function handler(request, response) {
     return;
   }
 
-  response.setHeader("Allow", "GET, PATCH");
+  if (request.method === "DELETE") {
+    if (!validateSameOrigin(request)) {
+      sendJson(response, 403, { message: "Zahteva ni dovoljena." });
+      return;
+    }
+    const orderNumber = request.body?.orderNumber || request.query?.orderNumber;
+    if (!orderNumber || !/^HA-\d{8}-[A-F0-9]{6}$/.test(String(orderNumber).trim().toUpperCase())) {
+      sendJson(response, 400, { message: "Neveljavna številka naročila za izbris." });
+      return;
+    }
+    try {
+      const deleted = await database.deleteAdminOrder(String(orderNumber).trim().toUpperCase());
+      if (!deleted) {
+        sendJson(response, 404, { message: "Naročilo ni bilo najdeno." });
+        return;
+      }
+      sendJson(response, 200, { success: true, orderNumber });
+    } catch (error) {
+      safeError(error, "admin-order-delete");
+      sendJson(response, 500, { message: "Naročila ni bilo mogoče izbrisati." });
+    }
+    return;
+  }
+
+  response.setHeader("Allow", "GET, PATCH, DELETE");
   sendJson(response, 405, { message: "Metoda ni dovoljena." });
 }

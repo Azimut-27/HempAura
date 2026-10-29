@@ -451,44 +451,91 @@ export default function AdminOrdersPage() {
                               <button
                                 type="button"
                                 onClick={() => createLabel(order)}
-                                disabled={!canCreateLabel || actionLoading}
-                                className="inline-flex min-h-11 items-center justify-center gap-2 bg-forest px-4 text-xs font-bold text-white disabled:opacity-45"
+                                disabled={!canCreateLabel || actionLoading || order.fulfillment_status === "cancelled"}
+                                className="inline-flex min-h-11 items-center justify-center gap-2 bg-forest px-4 text-xs font-bold text-white disabled:opacity-45 hover:bg-forest/90 transition-colors"
                               >
                                 {activeAction === `${order.public_order_number}:label` ? <LoaderCircle className="animate-spin" size={16} /> : <Download size={16} />}
                                 {shipment?.status === "failed" ? "Ponovi GLS nalepko" : shipment?.status === "label_created" ? "Prenesi GLS nalepko" : "Ustvari GLS nalepko"}
                               </button>
                             );
                           })()}
-                          {order.payment_status === "cod_pending" && (
+
+                          {order.payment_status === "cod_pending" && order.fulfillment_status !== "cancelled" && (
                             <button
                               type="button"
                               onClick={() => changePaymentStatus(order.public_order_number, "paid")}
                               disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-emerald-600/30 bg-emerald-50 px-4 text-xs font-bold text-emerald-800 disabled:opacity-45 hover:bg-emerald-100"
+                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-emerald-600/30 bg-emerald-50 px-4 text-xs font-bold text-emerald-800 disabled:opacity-45 hover:bg-emerald-100 transition-colors"
                             >
                               <CheckCircle2 size={16} /> Označi: plačilo prevzeto (COD)
                             </button>
                           )}
-                          {order.fulfillment_status !== "processing" && order.fulfillment_status !== "fulfilled" && (
+
+                          {order.payment_status === "proforma_pending" && order.fulfillment_status !== "cancelled" && (
+                            <button
+                              type="button"
+                              onClick={() => changePaymentStatus(order.public_order_number, "paid")}
+                              disabled={actionLoading}
+                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-blue-600/30 bg-blue-50 px-4 text-xs font-bold text-blue-800 disabled:opacity-45 hover:bg-blue-100 transition-colors"
+                            >
+                              <CheckCircle2 size={16} /> Označi: nakazilo prejeto (TRR)
+                            </button>
+                          )}
+
+                          {order.fulfillment_status !== "processing" && order.fulfillment_status !== "fulfilled" && order.fulfillment_status !== "cancelled" && (
                             <button
                               type="button"
                               onClick={() => changeStatus(order.public_order_number, "processing")}
                               disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest disabled:opacity-45"
+                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest disabled:opacity-45 hover:bg-stone-50 transition-colors"
                             >
                               <PackageCheck size={16} /> Označi: v pripravi
                             </button>
                           )}
-                          {order.fulfillment_status !== "fulfilled" && (
+
+                          {order.fulfillment_status !== "fulfilled" && order.fulfillment_status !== "cancelled" && (
                             <button
                               type="button"
                               onClick={() => changeStatus(order.public_order_number, "fulfilled")}
                               disabled={actionLoading}
-                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest disabled:opacity-45"
+                              className="inline-flex min-h-11 items-center justify-center gap-2 border border-forest/20 px-4 text-xs font-bold text-forest disabled:opacity-45 hover:bg-stone-50 transition-colors"
                             >
                               <CheckCircle2 size={16} /> Označi: odposlano
                             </button>
                           )}
+
+                          <div className="mt-3 pt-3 border-t border-forest/10 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {order.payment_status === "paid" && order.payment_status !== "refunded" && (
+                              <button
+                                type="button"
+                                onClick={() => handleRefundOrder(order.public_order_number)}
+                                disabled={actionLoading}
+                                className="inline-flex min-h-9 items-center justify-center gap-1.5 border border-purple-300 bg-purple-50 px-3 text-xs font-bold text-purple-800 disabled:opacity-45 hover:bg-purple-100 transition-colors"
+                              >
+                                <RotateCcw size={14} /> Vračilo (Refund)
+                              </button>
+                            )}
+
+                            {order.fulfillment_status !== "cancelled" && (
+                              <button
+                                type="button"
+                                onClick={() => handleCancelOrder(order.public_order_number)}
+                                disabled={actionLoading}
+                                className="inline-flex min-h-9 items-center justify-center gap-1.5 border border-amber-300 bg-amber-50 px-3 text-xs font-bold text-amber-800 disabled:opacity-45 hover:bg-amber-100 transition-colors"
+                              >
+                                <Ban size={14} /> Prekliči naročilo
+                              </button>
+                            )}
+
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteOrder(order.public_order_number)}
+                              disabled={actionLoading}
+                              className="inline-flex min-h-9 items-center justify-center gap-1.5 border border-rose-300 bg-rose-50 px-3 text-xs font-bold text-rose-800 disabled:opacity-45 hover:bg-rose-100 transition-colors col-span-full"
+                            >
+                              <Trash2 size={14} /> Izbriši naročilo (test / brisanje)
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
