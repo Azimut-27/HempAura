@@ -1,4 +1,9 @@
+import { serverConfig } from "../config/serverConfig.js";
 import { getSupabaseAdmin } from "../lib/supabase.js";
+import {
+  getBuiltInDiscountCode,
+  normalizeReferralCode,
+} from "../referrals/referralProgram.js";
 
 function assertResult(result, label) {
   if (result.error) throw new Error(`${label}: ${result.error.message}`);
@@ -288,15 +293,25 @@ export const database = {
   },
 
   async getActiveReferralPartnerByCode(publicCode) {
-    const result = await getSupabaseAdmin()
-      .from("referral_partners")
-      .select(
-        "id,public_code,stripe_promotion_code_id,customer_discount_percent,commission_rate_bps"
-      )
-      .eq("public_code", publicCode)
-      .eq("status", "active")
-      .maybeSingle();
-    return assertResult(result, "Get referral partner");
+    const normalized = normalizeReferralCode(publicCode);
+    if (!normalized) return null;
+
+    if (serverConfig.supabaseUrl && serverConfig.supabaseServiceRoleKey) {
+      try {
+        const result = await getSupabaseAdmin()
+          .from("referral_partners")
+          .select(
+            "id,public_code,stripe_promotion_code_id,customer_discount_percent,commission_rate_bps"
+          )
+          .eq("public_code", normalized)
+          .eq("status", "active")
+          .maybeSingle();
+        if (result?.data) return result.data;
+      } catch {
+        // Fall back to built-in promotional codes
+      }
+    }
+    return getBuiltInDiscountCode(normalized);
   },
 
   async recordReferralConversion(values) {

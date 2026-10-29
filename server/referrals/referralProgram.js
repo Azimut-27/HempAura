@@ -67,3 +67,41 @@ export function extractPromotionCodeReference(session) {
 
   return { id: "", code: "" };
 }
+
+export const PROMOTIONAL_DISCOUNT_CODES = {
+  // -30% popust
+  HERBA30: { percent: 30, description: "30% promocijski popust" },
+  POPUST30: { percent: 30, description: "30% popust na celoten nakup" },
+  PROMO30: { percent: 30, description: "30% promo koda" },
+  HG30: { percent: 30, description: "30% HerbaGallus popust" },
+
+  // -50% popust
+  HERBA50: { percent: 50, description: "50% promocijski popust" },
+  POPUST50: { percent: 50, description: "50% popust na celoten nakup" },
+  PROMO50: { percent: 50, description: "50% promo koda" },
+  HG50: { percent: 50, description: "50% HerbaGallus popust" },
+  VIP50: { percent: 50, description: "50% VIP popust" },
+
+  // -90% popust
+  HERBA90: { percent: 90, description: "90% promocijski popust" },
+  POPUST90: { percent: 90, description: "90% popust na celoten nakup" },
+  PROMO90: { percent: 90, description: "90% promo koda" },
+  HG90: { percent: 90, description: "90% HerbaGallus popust" },
+  VIP90: { percent: 90, description: "90% VIP popust" },
+};
+
+export function getBuiltInDiscountCode(code) {
+  const normalized = normalizeReferralCode(code);
+  if (!normalized) return null;
+  const match = PROMOTIONAL_DISCOUNT_CODES[normalized];
+  if (!match) return null;
+
+  return {
+    id: `promo-static-${normalized.toLowerCase()}`,
+    public_code: normalized,
+    stripe_promotion_code_id: null,
+    customer_discount_percent: match.percent,
+    commission_rate_bps: 0,
+    description: match.description,
+  };
+}

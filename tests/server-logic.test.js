@@ -6,6 +6,7 @@ import {
   calculateCommissionCents,
   calculateReferralDiscountCents,
   extractPromotionCodeReference,
+  getBuiltInDiscountCode,
   normalizeReferralCode,
 } from "../server/referrals/referralProgram.js";
 import { calculateShipping } from "../server/services/shipping.js";
@@ -98,5 +99,28 @@ describe("server catalogue and checkout validation", () => {
         },
       })
     ).toEqual({ id: "promo_test", code: "ANA10" });
+  });
+
+  it("recognizes built-in promotional codes for 30%, 50%, and 90% discounts", () => {
+    const promo30 = getBuiltInDiscountCode("herba30");
+    expect(promo30).toMatchObject({
+      public_code: "HERBA30",
+      customer_discount_percent: 30,
+    });
+    expect(calculateReferralDiscountCents(10000, promo30.customer_discount_percent)).toBe(3000);
+
+    const promo50 = getBuiltInDiscountCode("popust50");
+    expect(promo50).toMatchObject({
+      public_code: "POPUST50",
+      customer_discount_percent: 50,
+    });
+    expect(calculateReferralDiscountCents(10000, promo50.customer_discount_percent)).toBe(5000);
+
+    const promo90 = getBuiltInDiscountCode("herba90");
+    expect(promo90).toMatchObject({
+      public_code: "HERBA90",
+      customer_discount_percent: 90,
+    });
+    expect(calculateReferralDiscountCents(10000, promo90.customer_discount_percent)).toBe(9000);
   });
 });

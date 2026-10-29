@@ -75,9 +75,6 @@ export default async function handler(request, response) {
     const referralPartner = referralCode
       ? await database.getActiveReferralPartnerByCode(referralCode)
       : null;
-    if (referralPartner && !referralPartner.stripe_promotion_code_id) {
-      throw new Error("Referral partner is missing a Stripe promotion code.");
-    }
     const provider = getPaymentProvider();
     const session = await provider.createCheckoutSession({
       orderReference: generateOrderNumber(),
@@ -86,12 +83,13 @@ export default async function handler(request, response) {
       shippingCents,
       currency: "EUR",
       locale: parsed.data.language,
-      referral: referralPartner
-        ? {
-            code: referralPartner.public_code,
-            stripePromotionCodeId: referralPartner.stripe_promotion_code_id,
-          }
-        : null,
+      referral:
+        referralPartner && referralPartner.stripe_promotion_code_id
+          ? {
+              code: referralPartner.public_code,
+              stripePromotionCodeId: referralPartner.stripe_promotion_code_id,
+            }
+          : null,
     });
     sendJson(response, 200, { id: session.id, url: session.url });
   } catch (error) {
