@@ -183,9 +183,53 @@ export default function CheckoutSuccessPage() {
                 </div>
               )}
               {state.method === "proforma" && (
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 size={18} className="text-forest shrink-0 mt-0.5" />
-                  <span><strong>Podatki za plačilo:</strong> V kratkem boste na e-pošto prejeli podatke za bančno nakazilo (UPN nalog).</span>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 size={18} className="text-forest shrink-0 mt-0.5" />
+                    <span><strong>Podatki za plačilo:</strong> Spodaj so podatki za bančno nakazilo (UPN nalog), ki smo vam jih poslali tudi na e-pošto.</span>
+                  </div>
+
+                  <div className="mt-3 rounded-xl border border-forest/20 bg-white p-4 text-left shadow-sm">
+                    <div className="flex items-center justify-between border-b border-forest/10 pb-2 mb-3">
+                      <span className="font-bold text-xs uppercase tracking-wider text-forest bg-forest/10 px-2.5 py-1 rounded">
+                        UPN podatki za nakazilo
+                      </span>
+                      <span className="text-xs text-forest/60">Spletna ali mobilna banka</span>
+                    </div>
+                    <div className="space-y-2 text-xs sm:text-sm font-sans">
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-dashed border-forest/10">
+                        <span className="text-forest/60">Prejemnik:</span>
+                        <span className="font-bold text-forest text-right">HERBA GALLUS STANISLAV BREGAR S.P.</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-dashed border-forest/10">
+                        <span className="text-forest/60">Naslov:</span>
+                        <span className="text-forest text-right">Prvomajska cesta 11, 8310 Šentjernej</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-dashed border-forest/10">
+                        <span className="text-forest/60">IBAN (TRR):</span>
+                        <span className="font-mono font-bold text-forest text-right tracking-wide text-sm sm:text-base">SI56 0297 9025 9724 693</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-dashed border-forest/10">
+                        <span className="text-forest/60">Banka:</span>
+                        <span className="text-forest text-right">NLB d.d. (BIC: LJBASI2X)</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-dashed border-forest/10">
+                        <span className="text-forest/60">Koda namena:</span>
+                        <span className="font-mono font-semibold text-forest text-right">OTHR</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1 border-b border-dashed border-forest/10">
+                        <span className="text-forest/60">Namen plačila:</span>
+                        <span className="font-semibold text-forest text-right">Plačilo naročila {state.orderNumber}</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between py-1">
+                        <span className="text-forest/60">Referenca / Sklic:</span>
+                        <span className="font-mono font-bold text-forest text-right">SI00 {state.orderNumber}</span>
+                      </div>
+                    </div>
+                    <div className="mt-3 text-[11px] text-forest/80 bg-amber-50 border border-amber-200/60 rounded-lg p-2.5 leading-relaxed">
+                      💡 <strong>Pomembno:</strong> Paket bo pripravljen in odposlan z dostavno službo GLS takoj, ko prejmemo nakazilo na naš bančni račun.
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

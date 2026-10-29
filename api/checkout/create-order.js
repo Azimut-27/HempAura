@@ -288,7 +288,10 @@ export default async function handler(request, response) {
           order: order || { id: providerSessionId, public_order_number: orderNumber },
           kind: "customer_confirmation",
           recipient: customer.email,
-          subject: `Potrdilo naročila ${orderNumber} | HerbaGallus`,
+          subject:
+            provider === "proforma"
+              ? `Predračun in podatki za UPN plačilo: ${orderNumber} | HerbaGallus`
+              : `Potrdilo naročila ${orderNumber} | HerbaGallus`,
           html: CodOrderConfirmationEmail({
             name: customer.name,
             orderNumber,

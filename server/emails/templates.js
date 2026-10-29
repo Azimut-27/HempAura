@@ -158,18 +158,71 @@ export function CodOrderConfirmationEmail({
   phone,
   supportEmail,
 }) {
-  const methodLabel =
-    paymentMethod === "proforma"
-      ? "Plačilo po predračunu (UPN nalog)"
-      : "Plačilo ob prevzemu kurirju GLS (z gotovino ali kartico)";
+  const isProforma = paymentMethod === "proforma";
+  const methodLabel = isProforma
+    ? "Plačilo po predračunu (UPN nalog / bančno nakazilo)"
+    : "Plačilo ob prevzemu kurirju GLS (z gotovino ali kartico)";
 
-  const instructions =
-    paymentMethod === "proforma"
-      ? p("V kratkem vam bomo posredovali podatke za nakazilo prek spletne banke.")
-      : p("Znesek naročila boste poravnali dostavljavcu GLS ob izročitvi paketa. GLS kurir vas bo pred dostavo obvestil prek SMS sporočila.");
+  const proformaPaymentBlock = isProforma
+    ? `
+<div style="background:#ffffff;border:2px solid #17382c;border-radius:10px;padding:22px;margin:24px 0;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+  <div style="background:#17382c;color:#fffaf1;padding:8px 12px;border-radius:6px;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;text-align:center">
+    Podatki za UPN plačilo (bančno nakazilo)
+  </div>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;color:#1c211d">
+    <tr>
+      <td style="padding:7px 0;color:#666;width:35%">Prejemnik:</td>
+      <td style="padding:7px 0;font-weight:bold">HERBA GALLUS STANISLAV BREGAR S.P.</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Naslov:</td>
+      <td style="padding:7px 0">Prvomajska cesta 11, 8310 Šentjernej</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">IBAN (TRR):</td>
+      <td style="padding:7px 0;font-family:monospace;font-size:16px;font-weight:bold;color:#17382c;letter-spacing:1px">SI56 0297 9025 9724 693</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Banka:</td>
+      <td style="padding:7px 0">Nova Ljubljanska banka d.d. (NLB) &bull; BIC: LJBASI2X</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Znesek za plačilo:</td>
+      <td style="padding:7px 0;font-size:18px;font-weight:bold;color:#17382c">${escapeHtml(total)}</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Koda namena:</td>
+      <td style="padding:7px 0;font-family:monospace;font-weight:bold">OTHR</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Namen plačila:</td>
+      <td style="padding:7px 0;font-weight:bold">Plačilo naročila ${escapeHtml(orderNumber)}</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Referenca / Sklic:</td>
+      <td style="padding:7px 0;font-family:monospace;font-weight:bold;color:#17382c">SI00 ${escapeHtml(orderNumber)}</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 0;color:#666">Rok plačila:</td>
+      <td style="padding:7px 0;color:#854d0e;font-weight:bold">3 delovni dni</td>
+    </tr>
+  </table>
+  <div style="background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:12px;margin-top:16px;font-size:13px;color:#713f12;line-height:1.5">
+    💡 <strong>Navodilo:</strong> Odprite svojo mobilno ali spletno banko (npr. NLB Klik, mBank@net, Revolut itd.) ter vnesite zgornje podatke za nakazilo. Vaš paket bomo pripravili in odposlali z GLS takoj po prejetem plačilu na naš račun.
+  </div>
+</div>`
+    : "";
+
+  const instructions = isProforma
+    ? ""
+    : p("Znesek naročila boste poravnali dostavljavcu GLS ob izročitvi paketa (z gotovino ali kartico). GLS kurir vas bo pred dostavo obvestil prek SMS sporočila.");
+
+  const pageTitle = isProforma
+    ? `Predračun za naročilo ${orderNumber}`
+    : "Naročilo je sprejeto";
 
   return layout(
-    "Naročilo je sprejeto",
+    pageTitle,
     [
       p(`Pozdravljen/-a${name ? ` ${name}` : ""}, hvala za vaše naročilo v HerbaGallus.`),
       p(`Številka naročila: ${orderNumber}`),
@@ -180,6 +233,7 @@ export function CodOrderConfirmationEmail({
       p(`Naslov za dostavo: ${deliveryAddress}`),
       phone ? p(`Kontaktna telefonska številka za GLS obveščanje: ${phone}`) : "",
       instructions,
+      proformaPaymentBlock,
       p(`Za pomoč ali vprašanja nam pišite na ${supportEmail}.`),
     ].join("")
   );
