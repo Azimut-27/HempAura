@@ -459,6 +459,45 @@ export default function AdminOrdersPage() {
 
                 {expanded && (
                   <div className="border-t border-forest/10 bg-porcelain/60 p-5 sm:p-6">
+                    <div className="flex items-center justify-between pb-3 mb-5 border-b border-forest/10 flex-wrap gap-2">
+                      <span className="text-xs font-bold uppercase tracking-wider text-forest/50">
+                        Podrobnosti naročila
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {order.payment_status === "paid" && order.payment_status !== "refunded" && (
+                          <button
+                            type="button"
+                            onClick={() => handleRefundOrder(order.public_order_number)}
+                            disabled={actionLoading}
+                            className="inline-flex h-7 items-center gap-1 rounded border border-purple-300 bg-purple-50 px-2.5 text-[11px] font-bold text-purple-800 hover:bg-purple-100 transition-colors disabled:opacity-40"
+                            title="Označi vračilo kupnine (Refund)"
+                          >
+                            <RotateCcw size={12} /> Vračilo
+                          </button>
+                        )}
+                        {order.fulfillment_status !== "cancelled" && (
+                          <button
+                            type="button"
+                            onClick={() => handleCancelOrder(order.public_order_number)}
+                            disabled={actionLoading}
+                            className="inline-flex h-7 items-center gap-1 rounded border border-amber-300 bg-amber-50 px-2.5 text-[11px] font-bold text-amber-800 hover:bg-amber-100 transition-colors disabled:opacity-40"
+                            title="Prekliči naročilo"
+                          >
+                            <Ban size={12} /> Prekliči
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteOrder(order.public_order_number)}
+                          disabled={actionLoading}
+                          className="inline-flex h-7 items-center gap-1 rounded border border-rose-300 bg-rose-50 px-2.5 text-[11px] font-bold text-rose-800 hover:bg-rose-100 transition-colors disabled:opacity-40"
+                          title="Trajno izbriši testno naročilo"
+                        >
+                          <Trash2 size={12} /> Izbriši
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr_1fr]">
                       <div>
                         <h2 className="text-xs font-bold uppercase tracking-wide text-forest/55">Izdelki</h2>
@@ -562,38 +601,7 @@ export default function AdminOrdersPage() {
                             </button>
                           )}
 
-                          <div className="mt-3 pt-3 border-t border-forest/10 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {order.payment_status === "paid" && order.payment_status !== "refunded" && (
-                              <button
-                                type="button"
-                                onClick={() => handleRefundOrder(order.public_order_number)}
-                                disabled={actionLoading}
-                                className="inline-flex min-h-9 items-center justify-center gap-1.5 border border-purple-300 bg-purple-50 px-3 text-xs font-bold text-purple-800 disabled:opacity-45 hover:bg-purple-100 transition-colors"
-                              >
-                                <RotateCcw size={14} /> Vračilo (Refund)
-                              </button>
-                            )}
 
-                            {order.fulfillment_status !== "cancelled" && (
-                              <button
-                                type="button"
-                                onClick={() => handleCancelOrder(order.public_order_number)}
-                                disabled={actionLoading}
-                                className="inline-flex min-h-9 items-center justify-center gap-1.5 border border-amber-300 bg-amber-50 px-3 text-xs font-bold text-amber-800 disabled:opacity-45 hover:bg-amber-100 transition-colors"
-                              >
-                                <Ban size={14} /> Prekliči naročilo
-                              </button>
-                            )}
-
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteOrder(order.public_order_number)}
-                              disabled={actionLoading}
-                              className="inline-flex min-h-9 items-center justify-center gap-1.5 border border-rose-300 bg-rose-50 px-3 text-xs font-bold text-rose-800 disabled:opacity-45 hover:bg-rose-100 transition-colors col-span-full"
-                            >
-                              <Trash2 size={14} /> Izbriši naročilo (test / brisanje)
-                            </button>
-                          </div>
                         </div>
                       </div>
                     </div>
