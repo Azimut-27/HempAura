@@ -69,6 +69,24 @@ export function extractPromotionCodeReference(session) {
 }
 
 export const PROMOTIONAL_DISCOUNT_CODES = {
+  // -10% popust (unboxing & osnovni ambasadorji)
+  HVALA10: { percent: 10, description: "10% popust zahvale" },
+  AMBASADOR10: { percent: 10, description: "10% ambasadorski popust" },
+  POPUST10: { percent: 10, description: "10% popust na celoten nakup" },
+  HERBA10: { percent: 10, description: "10% HerbaGallus popust" },
+
+  // -15% popust (stalne stranke & unboxing koda)
+  HVALA15: { percent: 15, description: "15% popust zahvale za naslednji nakup" },
+  AMBASADOR15: { percent: 15, description: "15% ambasadorski popust" },
+  POPUST15: { percent: 15, description: "15% popust na celoten nakup" },
+  HERBA15: { percent: 15, description: "15% HerbaGallus popust" },
+
+  // -20% popust (zgodnje ptice & partnerji)
+  START20: { percent: 20, description: "20% popust ob prvem nakupu" },
+  AMBASADOR20: { percent: 20, description: "20% partnerski popust" },
+  POPUST20: { percent: 20, description: "20% popust na celoten nakup" },
+  HERBA20: { percent: 20, description: "20% HerbaGallus popust" },
+
   // -30% popust
   HERBA30: { percent: 30, description: "30% promocijski popust" },
   POPUST30: { percent: 30, description: "30% popust na celoten nakup" },
