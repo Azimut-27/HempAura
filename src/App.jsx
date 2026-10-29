@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./components/AppLayout.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 const HomePage = lazy(() => import("./pages/HomePage.jsx"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage.jsx"));
@@ -32,7 +33,8 @@ function PageLoader() {
 
 export default function App() {
   return (
-    <Suspense fallback={<PageLoader />}>
+    <ErrorBoundary>
+      <Suspense fallback={<PageLoader />}>
       <Routes>
         <Route path="admin" element={<Navigate to="/admin/orders" replace />} />
         <Route path="admin/orders" element={<AdminOrdersPage />} />
@@ -64,6 +66,7 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   );
 }

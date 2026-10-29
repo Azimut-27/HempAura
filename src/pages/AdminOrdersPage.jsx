@@ -1,4 +1,5 @@
 import {
+  Ban,
   CheckCircle2,
   ChevronDown,
   Download,
@@ -9,11 +10,14 @@ import {
   MapPin,
   PackageCheck,
   RefreshCw,
+  RotateCcw,
   Search,
+  Trash2,
   Truck,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  deleteAdminOrder,
   downloadAdminGlsLabel,
   getAdminOrders,
   updateAdminOrderStatus,
@@ -199,6 +203,7 @@ export default function AdminOrdersPage() {
         filter === "all" ||
         (filter === "open" && order.fulfillment_status !== "fulfilled" && order.fulfillment_status !== "cancelled") ||
         (filter === "fulfilled" && order.fulfillment_status === "fulfilled") ||
+        (filter === "cancelled" && (order.fulfillment_status === "cancelled" || order.payment_status === "cancelled" || order.payment_status === "refunded")) ||
         (filter === "attention" &&
           (order.payment_status !== "paid" ||
             relation(order.gls_shipments).some((shipment) => shipment.status === "failed") ||
@@ -239,6 +244,59 @@ export default function AdminOrdersPage() {
     setError("");
     try {
       await updateAdminOrderStatus(token, orderNumber, undefined, paymentStatus);
+      await loadOrders(token);
+    } catch (actionError) {
+      setError(actionError.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function handleCancelOrder(orderNumber) {
+    if (!window.confirm(`Ali ste prepričani, da želite preklicati naročilo ${orderNumber}?`)) {
+      return;
+    }
+    setActiveAction(`${orderNumber}:cancel`);
+    setError("");
+    try {
+      await updateAdminOrderStatus(token, orderNumber, "cancelled", "cancelled");
+      await loadOrders(token);
+    } catch (actionError) {
+      setError(actionError.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function handleRefundOrder(orderNumber) {
+    if (!window.confirm(`Ali želite naročilo ${orderNumber} označiti kot stornirano / vrnjeno kupnino (Refund)?`)) {
+      return;
+    }
+    setActiveAction(`${orderNumber}:refund`);
+    setError("");
+    try {
+      await updateAdminOrderStatus(token, orderNumber, "cancelled", "refunded");
+      await loadOrders(token);
+    } catch (actionError) {
+      setError(actionError.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function handleDeleteOrder(orderNumber) {
+    if (
+      !window.confirm(
+        `POZOR: Ali res želite trajno izbrisati naročilo ${orderNumber} iz baze podatkov?\n\nTo se uporablja za testna naročila. Tega dejanja ni mogoče razveljaviti.`
+      )
+    ) {
+      return;
+    }
+    setActiveAction(`${orderNumber}:delete`);
+    setError("");
+    try {
+      await deleteAdminOrder(token, orderNumber);
+      setExpandedOrder("");
       await loadOrders(token);
     } catch (actionError) {
       setError(actionError.message);
