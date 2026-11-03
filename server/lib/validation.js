@@ -78,7 +78,7 @@ export const directOrderSchema = z
       )
       .min(1)
       .max(20),
-    paymentMethod: z.enum(["cod", "proforma"]).default("cod"),
+    paymentMethod: z.enum(["cod", "proforma", "card", "xmoney"]).default("cod"),
     customer: z
       .object({
         name: z.string().trim().min(2).max(120),

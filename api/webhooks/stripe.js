@@ -4,7 +4,7 @@ import {
 } from "../../server/emails/templates.js";
 import { serverConfig } from "../../server/config/serverConfig.js";
 import { getServerProduct } from "../../server/data/serverProducts.js";
-import { safeError, sendJson } from "../../server/lib/http.js";
+import { readRawBody, safeError, sendJson } from "../../server/lib/http.js";
 import { getPaymentProvider } from "../../server/payments/index.js";
 import { database } from "../../server/repositories/database.js";
 import {
@@ -87,6 +87,125 @@ export default async function handler(request, response) {
     response.setHeader("Allow", "POST");
     sendJson(response, 405, { message: "Metoda ni dovoljena." });
     return;
+  }
+
+  const rawBody = await readRawBody(request);
+  const rawText = rawBody.toString("utf8");
+
+  // Check if request is an xMoney webhook notification
+  let opensslResult = null;
+  if (rawText.includes("opensslResult=")) {
+    const parsed = new URLSearchParams(rawText);
+    opensslResult = parsed.get("opensslResult");
+  } else if (rawText.startsWith("{")) {
+    try {
+      const parsed = JSON.parse(rawText);
+      opensslResult = parsed.opensslResult;
+    } catch {}
+  }
+
+  if (opensslResult) {
+    try {
+      const xMoneyModule = await import("@xmoney/api-sdk");
+      const XMoneyClass = xMoneyModule.default?.default || xMoneyModule.default || xMoneyModule;
+      const xmoneyClient = new XMoneyClass({ secretKey: serverConfig.xmoneySecretKey });
+      const decrypted = xmoneyClient.decryptOrderResponse(opensslResult);
+
+      const orderNumber = decrypted.externalOrderId || decrypted.orderId;
+      const isSuccess = decrypted.transactionStatus === "complete-ok" || decrypted.status === "complete-ok";
+      const paymentStatus = isSuccess ? "paid" : "failed";
+
+      let order = null;
+      try {
+        order = await database.getOrderForGls(orderNumber);
+      } catch (err) {
+        safeError(err, "xmoney-find-order");
+      }
+
+      if (order) {
+        try {
+          await database.updateOrderPaymentStatus(
+            order.provider_session_id || `xmoney_${orderNumber}`,
+            paymentStatus,
+            String(decrypted.transactionId || "")
+          );
+        } catch (dbErr) {
+          safeError(dbErr, "xmoney-update-payment-status");
+        }
+
+        if (isSuccess && isEmailConfigured()) {
+          const items = Array.isArray(order.order_items) ? order.order_items : (order.order_items ? [order.order_items] : []);
+          const formattedTotal = new Intl.NumberFormat("sl-SI", {
+            style: "currency",
+            currency: "EUR",
+          }).format(order.total_cents / 100);
+
+          const formattedAddress = order.shipping_address_json
+            ? `${order.shipping_address_json.line1}, ${order.shipping_address_json.postal_code} ${order.shipping_address_json.city}`
+            : "Slovenija";
+
+          const formattedShipping =
+            order.shipping_cents === 0
+              ? "Brezplačna dostava (GLS)"
+              : `${(order.shipping_cents / 100).toFixed(2).replace(".", ",")} € (GLS)`;
+
+          await Promise.allSettled([
+            deliverOrderEmail({
+              order,
+              kind: "customer_confirmation",
+              recipient: order.customer_email,
+              subject: `Potrdilo plačila in naročila ${order.public_order_number} | HerbaGallus`,
+              html: OrderConfirmationEmail({
+                name: order.customer_name,
+                orderNumber: order.public_order_number,
+                items: items.map((i) => ({
+                  name: i.name_snapshot,
+                  quantity: i.quantity,
+                  price: (i.unit_price_cents / 100).toFixed(2).replace(".", ","),
+                  total: ((i.unit_price_cents * i.quantity) / 100).toFixed(2).replace(".", ","),
+                })),
+                shipping: formattedShipping,
+                total: formattedTotal,
+                currency: "EUR",
+                paymentMethod: "card",
+                deliveryAddress: formattedAddress,
+                supportEmail: serverConfig.supportEmail,
+              }),
+            }),
+            deliverOrderEmail({
+              order,
+              kind: "owner_notification",
+              recipient: serverConfig.contactToEmail || serverConfig.supportEmail,
+              subject: `Novo plačano naročilo (xMoney) ${order.public_order_number} | ${formattedTotal}`,
+              html: NewOrderNotificationEmail({
+                orderNumber: order.public_order_number,
+                customerName: order.customer_name,
+                customerEmail: order.customer_email,
+                items: items.map((i) => ({
+                  name: i.name_snapshot,
+                  quantity: i.quantity,
+                  price: (i.unit_price_cents / 100).toFixed(2).replace(".", ","),
+                  total: ((i.unit_price_cents * i.quantity) / 100).toFixed(2).replace(".", ","),
+                })),
+                shipping: formattedShipping,
+                total: formattedTotal,
+                currency: "EUR",
+                paymentMethod: "card",
+                deliveryAddress: formattedAddress,
+                supportEmail: serverConfig.supportEmail,
+              }),
+            }),
+          ]);
+        }
+      }
+
+      sendJson(response, 200, { success: true, processed: true });
+      return;
+    } catch (xmError) {
+      safeError(xmError, "xmoney-webhook");
+      sendJson(response, 400, { message: "Neveljaven xMoney zahtevek." });
+      return;
+    }
   }
 
   let event;

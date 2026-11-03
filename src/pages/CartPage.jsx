@@ -1,5 +1,6 @@
 import {
   Banknote,
+  CreditCard,
   CheckCircle2,
   FileText,
   LoaderCircle,
@@ -194,6 +195,26 @@ export default function CartPage() {
 
       const result = await createDirectOrder(orderPayload);
       clearCart();
+
+      if (result.xmoney) {
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = result.xmoney.postUrl;
+        const inputJson = document.createElement("input");
+        inputJson.type = "hidden";
+        inputJson.name = "jsonRequest";
+        inputJson.value = result.xmoney.jsonRequest;
+        form.appendChild(inputJson);
+        const inputChecksum = document.createElement("input");
+        inputChecksum.type = "hidden";
+        inputChecksum.name = "checksum";
+        inputChecksum.value = result.xmoney.checksum;
+        form.appendChild(inputChecksum);
+        document.body.appendChild(form);
+        form.submit();
+        return;
+      }
+
       navigate(
         `/checkout/success?order_number=${encodeURIComponent(
           result.orderNumber
@@ -600,6 +621,38 @@ export default function CartPage() {
                         </p>
                       </div>
                     </label>
+
+                    {/* Možnost 3: Plačilna kartica (Visa, Mastercard) */}
+                    <label
+                      className={`relative flex cursor-pointer items-start gap-3.5 rounded-2xl border p-4 transition-all ${
+                        formData.paymentMethod === "card"
+                          ? "border-gold bg-gold/5 ring-2 ring-gold/20"
+                          : "border-forest/15 hover:border-forest/30"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="card"
+                        checked={formData.paymentMethod === "card"}
+                        onChange={() => handleFieldChange("paymentMethod", "card")}
+                        className="mt-1 text-gold focus:ring-gold"
+                      />
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-bold text-forest text-sm sm:text-base flex items-center gap-1.5">
+                            <CreditCard size={18} className="text-gold" />
+                            Plačilna kartica (Visa, Mastercard)
+                          </span>
+                          <span className="rounded-full bg-emerald-100 text-emerald-800 px-2.5 py-0.5 text-[11px] font-bold">
+                            xMoney Varno plačilo
+                          </span>
+                        </div>
+                        <p className="mt-1.5 text-xs text-forest/75 leading-relaxed">
+                          Takojšnje in šifrirano plačilo z debetno ali kreditno kartico prek varnega xMoney plačilnega prehoda.
+                        </p>
+                      </div>
+                    </label>
                   </div>
                 </div>
 
@@ -732,7 +785,9 @@ export default function CartPage() {
                         <span>
                           {formData.paymentMethod === "cod"
                             ? `Oddaj naročilo s plačilom ob prevzemu (${formatPrice(estimatedTotalCents)})`
-                            : `Potrdi naročilo po predračunu (${formatPrice(estimatedTotalCents)})`}
+                            : formData.paymentMethod === "card"
+                              ? `Nadaljuj na varno plačilo s kartico (${formatPrice(estimatedTotalCents)})`
+                              : `Potrdi naročilo po predračunu (${formatPrice(estimatedTotalCents)})`}
                         </span>
                       </>
                     )}

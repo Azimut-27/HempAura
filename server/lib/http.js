@@ -44,9 +44,20 @@ export function safeError(error, context) {
 }
 
 export async function readRawBody(request) {
+  if (request.rawBody) return request.rawBody;
+  if (!request || typeof request[Symbol.asyncIterator] !== "function") {
+    if (request?.body) {
+      const b = typeof request.body === "string" ? Buffer.from(request.body) : Buffer.from(JSON.stringify(request.body));
+      request.rawBody = b;
+      return b;
+    }
+    return Buffer.alloc(0);
+  }
   const chunks = [];
   for await (const chunk of request) chunks.push(Buffer.from(chunk));
-  return Buffer.concat(chunks);
+  const buf = Buffer.concat(chunks);
+  request.rawBody = buf;
+  return buf;
 }
 
 export function escapeHtml(value = "") {

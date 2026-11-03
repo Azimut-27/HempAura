@@ -189,9 +189,10 @@ export default async function handler(request, response) {
 
     const totalCents = Math.max(0, subtotalCents - discountCents + shippingCents);
     const orderNumber = generateOrderNumber();
-    const provider = paymentMethod || "cod";
+    const isCard = paymentMethod === "card" || paymentMethod === "xmoney";
+    const provider = isCard ? "xmoney" : paymentMethod || "cod";
     const providerSessionId = `${provider}_${orderNumber}`;
-    const paymentStatus = provider === "cod" ? "cod_pending" : "proforma_pending";
+    const paymentStatus = isCard ? "unpaid" : provider === "cod" ? "cod_pending" : "proforma_pending";
 
     const orderItems = items.map((item) => ({
       product_id: item.productId,
@@ -279,7 +280,47 @@ export default async function handler(request, response) {
         : `${(shippingCents / 100).toFixed(2).replace(".", ",")} € (GLS)`;
     const formattedTotal = `${(totalCents / 100).toFixed(2).replace(".", ",")} €`;
 
-    if (isEmailConfigured()) {
+    let xmoneyData = null;
+    if (isCard) {
+      try {
+        const xMoneyModule = await import("@xmoney/api-sdk");
+        const XMoneyClass = xMoneyModule.default?.default || xMoneyModule.default || xMoneyModule;
+        const xmoneyClient = new XMoneyClass({ secretKey: serverConfig.xmoneySecretKey });
+        const nameParts = (customer.name || "").trim().split(" ");
+        const firstName = nameParts[0] || "Kupec";
+        const lastName = nameParts.slice(1).join(" ") || "HerbaGallus";
+        const xmoneyOrder = xmoneyClient.initializeCheckout({
+          publicKey: serverConfig.xmoneyPublicKey,
+          customer: {
+            identifier: customer.email,
+            firstName,
+            lastName,
+            country: "SI",
+            city: shippingAddress.city || "Ljubljana",
+            email: customer.email,
+          },
+          order: {
+            orderId: orderNumber,
+            description: `HerbaGallus narocilo ${orderNumber}`,
+            type: "purchase",
+            amount: Number((totalCents / 100).toFixed(2)),
+            currency: "EUR",
+          },
+          cardTransactionMode: "authAndCapture",
+          backUrl: `${serverConfig.siteUrl}/checkout/success?order_number=${encodeURIComponent(orderNumber)}&method=card`,
+        });
+        xmoneyData = {
+          postUrl: serverConfig.xmoneyPostUrl,
+          jsonRequest: xmoneyOrder.payload,
+          checksum: xmoneyOrder.checksum,
+        };
+      } catch (xmErr) {
+        safeError(xmErr, "xmoney-init-checkout");
+        throw new Error("Priprava placila s kartico ni uspela. Poskusite znova.");
+      }
+    }
+
+    if (!isCard && isEmailConfigured()) {
       let customerEmailNotice = null;
 
       // 1. Send confirmation to customer
@@ -346,6 +387,7 @@ export default async function handler(request, response) {
       orderNumber,
       paymentMethod: provider,
       totalCents,
+      xmoney: xmoneyData,
     });
   } catch (error) {
     safeError(error, "direct-order-create");

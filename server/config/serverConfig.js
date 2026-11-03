@@ -70,6 +70,9 @@ export const serverConfig = {
   paymentProvider: process.env.PAYMENT_PROVIDER || "stripe",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
+  xmoneyPublicKey: process.env.XMONEY_PUBLIC_KEY || "pk_test_14167",
+  xmoneySecretKey: process.env.XMONEY_SECRET_KEY || "sk_test_77f30098cd304c6d8caefccd55c87755",
+  xmoneyPostUrl: process.env.XMONEY_POST_URL || "https://secure-stage.xmoney.com",
   resendApiKey: process.env.RESEND_API_KEY || "",
   resendFromEmail: (() => {
     const configured = stringEnv("RESEND_FROM_EMAIL", "CONTACT_FROM_EMAIL");

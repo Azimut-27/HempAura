@@ -440,4 +440,55 @@ describe("public API validation", () => {
       ])
     );
   });
+
+  it("create-order endpoint initializes xMoney checkout for card payments", async () => {
+    vi.stubEnv("VITE_PAYMENTS_ENABLED", "true");
+    const createOrderWithItems = vi.fn().mockResolvedValue({
+      id: "ord_xmoney_test",
+      public_order_number: "HA-TEST-CARD",
+    });
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        createOrderWithItems,
+        recordReferralConversion: vi.fn(),
+        claimOrderEmailDelivery: vi.fn(),
+        updateOrderEmailDelivery: vi.fn(),
+      },
+    }));
+
+    const { default: handler } = await import("../api/checkout/create-order.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "http://localhost:5173" },
+        body: {
+          items: [{ productId: "hempaura-cbd-kapljice-5", quantity: 1 }],
+          paymentMethod: "card",
+          customer: {
+            name: "Luka Kovač",
+            email: "luka@example.com",
+            phone: "041 999 888",
+          },
+          shippingAddress: {
+            line1: "Dunajska cesta 100",
+            postalCode: "1000",
+            city: "Ljubljana",
+            country: "SI",
+          },
+        },
+        socket: { remoteAddress: "127.0.0.1" },
+      },
+      response
+    );
+
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.body);
+    expect(body.success).toBe(true);
+    expect(body.paymentMethod).toBe("xmoney");
+    expect(body.xmoney).toBeDefined();
+    expect(body.xmoney.postUrl).toBe("https://secure-stage.xmoney.com");
+    expect(typeof body.xmoney.jsonRequest).toBe("string");
+    expect(typeof body.xmoney.checksum).toBe("string");
+  });
 });
