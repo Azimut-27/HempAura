@@ -253,6 +253,36 @@ export const database = {
     return assertResult(result, "Update order address details");
   },
 
+  async getOrderByPublicNumber(orderNumber) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .select(
+        "id,public_order_number,provider,provider_session_id,customer_email,customer_name,currency,subtotal_cents,discount_cents,shipping_cents,tax_cents,total_cents,payment_status,fulfillment_status,promotion_code,shipping_address_json,billing_address_json,order_items(id,product_id,sku_snapshot,name_snapshot,quantity,unit_price_cents,line_total_cents)"
+      )
+      .eq("public_order_number", orderNumber)
+      .maybeSingle();
+    return assertResult(result, "Get order by public number");
+  },
+
+  async updateOrderPaymentStatusByOrderNumber(
+    orderNumber,
+    paymentStatus,
+    providerPaymentId,
+    values = {}
+  ) {
+    const result = await getSupabaseAdmin()
+      .from("orders")
+      .update({
+        payment_status: paymentStatus,
+        provider_payment_id: providerPaymentId,
+        ...values,
+      })
+      .eq("public_order_number", orderNumber)
+      .select("*")
+      .maybeSingle();
+    return assertResult(result, "Update order payment status by order number");
+  },
+
   async getPaidOrderForGls(orderNumber) {
     const result = await getSupabaseAdmin()
       .from("orders")

@@ -11,6 +11,7 @@ import {
   isEmailConfigured,
   sendEmail,
 } from "../../server/services/email.js";
+import { sendPaidOrderConfirmationEmails } from "../../server/services/orderConfirmation.js";
 
 export const config = {
   api: {
@@ -93,15 +94,17 @@ export default async function handler(request, response) {
   const rawText = rawBody.toString("utf8");
 
   // Check if request is an xMoney webhook notification
-  let opensslResult = null;
-  if (rawText.includes("opensslResult=")) {
-    const parsed = new URLSearchParams(rawText);
-    opensslResult = parsed.get("opensslResult");
-  } else if (rawText.startsWith("{")) {
-    try {
-      const parsed = JSON.parse(rawText);
-      opensslResult = parsed.opensslResult;
-    } catch {}
+  let opensslResult = request.body?.opensslResult || null;
+  if (!opensslResult) {
+    if (rawText.includes("opensslResult=")) {
+      const parsed = new URLSearchParams(rawText);
+      opensslResult = parsed.get("opensslResult");
+    } else if (rawText.startsWith("{")) {
+      try {
+        const parsed = JSON.parse(rawText);
+        opensslResult = parsed.opensslResult;
+      } catch {}
+    }
   }
 
   if (opensslResult) {
@@ -117,15 +120,15 @@ export default async function handler(request, response) {
 
       let order = null;
       try {
-        order = await database.getOrderForGls(orderNumber);
+        order = await database.getOrderByPublicNumber(orderNumber);
       } catch (err) {
         safeError(err, "xmoney-find-order");
       }
 
       if (order) {
         try {
-          await database.updateOrderPaymentStatus(
-            order.provider_session_id || `xmoney_${orderNumber}`,
+          await database.updateOrderPaymentStatusByOrderNumber(
+            orderNumber,
             paymentStatus,
             String(decrypted.transactionId || "")
           );
@@ -133,69 +136,8 @@ export default async function handler(request, response) {
           safeError(dbErr, "xmoney-update-payment-status");
         }
 
-        if (isSuccess && isEmailConfigured()) {
-          const items = Array.isArray(order.order_items) ? order.order_items : (order.order_items ? [order.order_items] : []);
-          const formattedTotal = new Intl.NumberFormat("sl-SI", {
-            style: "currency",
-            currency: "EUR",
-          }).format(order.total_cents / 100);
-
-          const formattedAddress = order.shipping_address_json
-            ? `${order.shipping_address_json.line1}, ${order.shipping_address_json.postal_code} ${order.shipping_address_json.city}`
-            : "Slovenija";
-
-          const formattedShipping =
-            order.shipping_cents === 0
-              ? "Brezplačna dostava (GLS)"
-              : `${(order.shipping_cents / 100).toFixed(2).replace(".", ",")} € (GLS)`;
-
-          await Promise.allSettled([
-            deliverOrderEmail({
-              order,
-              kind: "customer_confirmation",
-              recipient: order.customer_email,
-              subject: `Potrdilo plačila in naročila ${order.public_order_number} | HerbaGallus`,
-              html: OrderConfirmationEmail({
-                name: order.customer_name,
-                orderNumber: order.public_order_number,
-                items: items.map((i) => ({
-                  name: i.name_snapshot,
-                  quantity: i.quantity,
-                  price: (i.unit_price_cents / 100).toFixed(2).replace(".", ","),
-                  total: ((i.unit_price_cents * i.quantity) / 100).toFixed(2).replace(".", ","),
-                })),
-                shipping: formattedShipping,
-                total: formattedTotal,
-                currency: "EUR",
-                paymentMethod: "card",
-                deliveryAddress: formattedAddress,
-                supportEmail: serverConfig.supportEmail,
-              }),
-            }),
-            deliverOrderEmail({
-              order,
-              kind: "owner_notification",
-              recipient: serverConfig.contactToEmail || serverConfig.supportEmail,
-              subject: `Novo plačano naročilo (xMoney) ${order.public_order_number} | ${formattedTotal}`,
-              html: NewOrderNotificationEmail({
-                orderNumber: order.public_order_number,
-                customerName: order.customer_name,
-                customerEmail: order.customer_email,
-                items: items.map((i) => ({
-                  name: i.name_snapshot,
-                  quantity: i.quantity,
-                  price: (i.unit_price_cents / 100).toFixed(2).replace(".", ","),
-                  total: ((i.unit_price_cents * i.quantity) / 100).toFixed(2).replace(".", ","),
-                })),
-                shipping: formattedShipping,
-                total: formattedTotal,
-                currency: "EUR",
-                paymentMethod: "card",
-                deliveryAddress: formattedAddress,
-                supportEmail: serverConfig.supportEmail,
-              }),
-            }),
-          ]);
+        if (isSuccess) {
+          await sendPaidOrderConfirmationEmails(order);
         }
       }
 

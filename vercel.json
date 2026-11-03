@@ -1,5 +1,6 @@
 {
   "routes": [
+    { "src": "/api/webhooks/xmoney", "dest": "/api/webhooks/stripe.js" },
     { "handle": "filesystem" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/.*", "dest": "/index.html" }

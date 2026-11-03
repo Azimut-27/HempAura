@@ -27,6 +27,10 @@ export default function CheckoutSuccessPage() {
   const [checkCount, setCheckCount] = useState(0);
 
   useEffect(() => {
+    if (orderNumberParam && methodParam === "card") {
+      getCheckoutStatus(null, orderNumberParam).catch(() => {});
+      return;
+    }
     if (orderNumberParam) return;
     if (!sessionId) {
       setState({

@@ -491,4 +491,34 @@ describe("public API validation", () => {
     expect(typeof body.xmoney.jsonRequest).toBe("string");
     expect(typeof body.xmoney.checksum).toBe("string");
   });
+
+  it("status endpoint returns confirmed for paid order number", async () => {
+    vi.stubEnv("SUPABASE_URL", "https://test.supabase.co");
+    vi.stubEnv("SUPABASE_SECRET_KEY", "test-secret");
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        getOrderByPublicNumber: vi.fn().mockResolvedValue({
+          id: "ord_paid_123",
+          public_order_number: "HA-PAID-001",
+          payment_status: "paid",
+          total_cents: 2280,
+        }),
+      },
+    }));
+
+    const { default: statusHandler } = await import("../api/checkout/status.js");
+    const response = mockResponse();
+    await statusHandler(
+      {
+        method: "GET",
+        query: { order_number: "HA-PAID-001" },
+      },
+      response
+    );
+
+    expect(response.statusCode).toBe(200);
+    const body = JSON.parse(response.body);
+    expect(body.status).toBe("confirmed");
+    expect(body.orderNumber).toBe("HA-PAID-001");
+  });
 });
