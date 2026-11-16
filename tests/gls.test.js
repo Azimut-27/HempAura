@@ -158,59 +158,28 @@ describe("GLS Slovenia client", () => {
     });
   });
 
-  it("retries with alternative password hash algorithm when GLS returns -1 Unauthorized", async () => {
-    const pdf = Buffer.from("%PDF-fallback-success");
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: vi.fn().mockResolvedValue({
-          Labels: null,
-          PrintLabelsErrorList: [
-            { ErrorCode: -1, ErrorDescription: "Unauthorized." },
-          ],
-          PrintLabelsInfoList: [],
-        }),
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        json: vi.fn().mockResolvedValue({
-          Labels: Array.from(pdf),
-          PrintLabelsErrorList: [],
-          PrintLabelsInfoList: [
-            {
-              ClientReference: "HA-20261116-FALLBACK",
-              ParcelId: 888,
-              ParcelNumber: 999999,
-            },
-          ],
-        }),
-      });
+  it("formats unauthorized error when GLS returns -1 Unauthorized", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue({
+        Labels: null,
+        PrintLabelsErrorList: [
+          { ErrorCode: -1, ErrorDescription: "Unauthorized." },
+        ],
+        PrintLabelsInfoList: [],
+      }),
+    });
 
-    const client = new GlsClient(
-      { ...clientConfig, passwordHashAlgorithm: "sha512" },
-      fetchMock
-    );
-    const result = await client.printLabels([
-      { ClientNumber: 490007000, ClientReference: "HA-20261116-FALLBACK" },
-    ]);
-
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-    // First call used sha512
-    const firstReq = JSON.parse(fetchMock.mock.calls[0][1].body);
-    expect(firstReq.Password).toEqual(
-      getGlsPasswordHashWithAlgorithm("password", "sha512")
-    );
-    // Second call used sha256 fallback
-    const secondReq = JSON.parse(fetchMock.mock.calls[1][1].body);
-    expect(secondReq.Password).toEqual(
-      getGlsPasswordHashWithAlgorithm("password", "sha256")
-    );
-
-    expect(result.label.equals(pdf)).toBe(true);
-    expect(result.labelInfo[0].parcelNumber).toBe("999999");
+    const client = new GlsClient(clientConfig, fetchMock);
+    await expect(
+      client.printLabels([
+        { ClientNumber: 490007000, ClientReference: "HA-20261116-UNAUTH" },
+      ])
+    ).rejects.toMatchObject({
+      name: "GlsApiError",
+      message: "-1: Unauthorized.",
+    });
   });
 
   it("rejects non-Slovenian GLS endpoint hosts", () => {
