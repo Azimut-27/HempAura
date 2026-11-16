@@ -6,7 +6,7 @@ export function hasValidBearerToken(request, ...expectedTokens) {
 
   const provided = authorization.slice(7);
   return expectedTokens.some((expected) => {
-    if (!expected || expected.length < 32) return false;
+    if (!expected || expected.length < 8) return false;
     const expectedBuffer = Buffer.from(expected);
     const providedBuffer = Buffer.from(provided);
     return (

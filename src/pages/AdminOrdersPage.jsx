@@ -167,7 +167,7 @@ function AdminLogin({ onLogin, error, loading }) {
           HerbaGallus upravljanje
         </h1>
         <p className="mt-3 text-sm leading-6 text-forest/65">
-          Vnesi administratorski ključ za pregled naročil, e-pošte in GLS nalepk.
+          Vnesi administratorsko geslo za pregled naročil, e-pošte in GLS nalepk.
         </p>
         <form
           className="mt-7"
@@ -190,12 +190,12 @@ function AdminLogin({ onLogin, error, loading }) {
             autoComplete="current-password"
             className="mt-2 min-h-12 w-full border border-forest/20 bg-porcelain px-4 text-sm outline-none focus:border-gold"
             required
-            minLength={32}
+            minLength={6}
           />
           {error && <p className="mt-3 text-sm font-semibold text-clay">{error}</p>}
           <button
             type="submit"
-            disabled={loading || value.trim().length < 32}
+            disabled={loading || value.trim().length < 6}
             className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-forest px-5 text-sm font-bold text-white disabled:opacity-50"
           >
             {loading && <LoaderCircle className="animate-spin" size={17} aria-hidden="true" />}

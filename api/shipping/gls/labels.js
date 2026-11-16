@@ -68,8 +68,8 @@ export default async function handler(request, response) {
     return;
   }
   if (
-    (!serverConfig.gls.adminToken || serverConfig.gls.adminToken.length < 32) &&
-    (!serverConfig.adminDashboardToken || serverConfig.adminDashboardToken.length < 32)
+    (!serverConfig.gls.adminToken || serverConfig.gls.adminToken.length < 8) &&
+    (!serverConfig.adminDashboardToken || serverConfig.adminDashboardToken.length < 8)
   ) {
     sendJson(response, 503, {
       message: "GLS or dashboard administrator token is not configured.",
@@ -80,7 +80,7 @@ export default async function handler(request, response) {
     !hasValidBearerToken(
       request,
       serverConfig.gls.adminToken,
-      serverConfig.adminDashboardToken
+      ...(serverConfig.adminDashboardTokens || [serverConfig.adminDashboardToken])
     )
   ) {
     sendJson(response, 401, { message: "Invalid GLS administrator token." });

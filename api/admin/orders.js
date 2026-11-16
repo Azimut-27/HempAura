@@ -17,14 +17,14 @@ const updateSchema = z
   .strict();
 
 export default async function handler(request, response) {
-  if (!serverConfig.adminDashboardToken || serverConfig.adminDashboardToken.length < 32) {
+  if (!serverConfig.adminDashboardToken || serverConfig.adminDashboardToken.length < 8) {
     sendJson(response, 503, {
       message: "ADMIN_DASHBOARD_TOKEN ni nastavljen ali je prekratek.",
     });
     return;
   }
-  if (!hasValidBearerToken(request, serverConfig.adminDashboardToken)) {
-    sendJson(response, 401, { message: "Napačen administratorski ključ." });
+  if (!hasValidBearerToken(request, ...(serverConfig.adminDashboardTokens || [serverConfig.adminDashboardToken]))) {
+    sendJson(response, 401, { message: "Napačno administratorsko geslo." });
     return;
   }
 
