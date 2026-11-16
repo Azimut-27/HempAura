@@ -121,11 +121,7 @@ export class GlsClient {
     this.fetch = fetchImplementation;
   }
 
-  async printLabels(parcelList) {
-    if (!Array.isArray(parcelList) || parcelList.length === 0) {
-      throw new GlsApiError("At least one GLS parcel is required.");
-    }
-
+  async _sendPrintLabelsRequest(parcelList, algorithm) {
     const controller = new AbortController();
     const timeout = setTimeout(
       () => controller.abort(),
@@ -144,7 +140,7 @@ export class GlsClient {
           Username: this.config.username,
           Password: getGlsPasswordHashWithAlgorithm(
             this.config.password,
-            this.config.passwordHashAlgorithm
+            algorithm
           ),
           WebshopEngine: this.config.webshopEngine,
           ParcelList: parcelList,
@@ -175,7 +171,43 @@ export class GlsClient {
       });
     }
 
-    const errors = normalizeErrors(payload?.PrintLabelsErrorList);
+    return { response, payload };
+  }
+
+  async printLabels(parcelList) {
+    if (!Array.isArray(parcelList) || parcelList.length === 0) {
+      throw new GlsApiError("At least one GLS parcel is required.");
+    }
+
+    const primaryAlgorithm = this.config.passwordHashAlgorithm || "sha512";
+    let { response, payload } = await this._sendPrintLabelsRequest(
+      parcelList,
+      primaryAlgorithm
+    );
+
+    let errors = normalizeErrors(payload?.PrintLabelsErrorList);
+    const isUnauthorized = errors.some((error) => error.code === -1);
+    if (isUnauthorized) {
+      const fallbackAlgorithm =
+        primaryAlgorithm === "sha512" ? "sha256" : "sha512";
+      try {
+        const fallbackResult = await this._sendPrintLabelsRequest(
+          parcelList,
+          fallbackAlgorithm
+        );
+        const fallbackErrors = normalizeErrors(
+          fallbackResult.payload?.PrintLabelsErrorList
+        );
+        if (fallbackResult.response.ok && fallbackErrors.length === 0) {
+          response = fallbackResult.response;
+          payload = fallbackResult.payload;
+          errors = fallbackErrors;
+        }
+      } catch {
+        // Retain primary failure
+      }
+    }
+
     if (!response.ok || errors.length > 0) {
       const details = errors
         .map((error) => `${error.code ?? "?"}: ${error.description}`)
