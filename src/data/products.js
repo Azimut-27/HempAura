@@ -110,9 +110,9 @@ export const products = [
     type: "flower",
     status: "active",
     shortDescription:
-      "Konopljina dišava – ročno obrani in skrbno obrezani cvetovi industrijske konoplje sorte White Heaven s 6–9 % CBD in polno naravno aromo.",
+      "Ročno obrani in skrbno obrezani vršički industrijske konoplje sorte White Heaven z bogato vsebnostjo 6–9 % naravnega CBD in polno naravno aromo.",
     description:
-      "White Heaven je konopljina dišava iz ročno obranih in skrbno obrezanih cvetov industrijske konoplje (Cannabis sativa L.) slovenskega porekla. Vzgojeni so na prostem (outdoor · 100 % naravno) in počasi zoreni za polnejšo aromo. Vršički vsebujejo 6–9 % naravno prisotnega kanabidiola (CBD) ter pester nabor naravnih terpenov, ob zakonsko skladni vsebnosti THC pod 0,3 %.",
+      "White Heaven so ročno obrani in skrbno obrezani vršički industrijske konoplje (Cannabis sativa L.) slovenskega porekla. Vzgojeni so na prostem (outdoor · 100 % naravno) in počasi zoreni za polnejšo aromo. Vršički vsebujejo 6–9 % naravno prisotnega kanabidiola (CBD) ter pester nabor naravnih terpenov, ob zakonsko skladni vsebnosti THC pod 0,3 %.",
     quote:
       "»Ročno obrani in skrbno obrezani cvetovi industrijske konoplje. Počasi zoreni za polnejšo aromo. Slovensko poreklo.«",
     spectrum: "Cel cvet",
@@ -135,7 +135,7 @@ export const products = [
     ],
     specs: [
       { icon: "Leaf", label: "Poreklo & Vzgoja", value: "Outdoor · 100 % naravno (Slovenija)" },
-      { icon: "Sparkles", label: "Sorta & Namen", value: "White Heaven · konopljina dišava" },
+      { icon: "Sparkles", label: "Sorta & Profil", value: "White Heaven · naravna aroma" },
     ],
     usageText:
       "Namen: za aromatiziranje prostorov. Izdelek ni namenjen zaužitju, kajenju ali inhaliranju.",
