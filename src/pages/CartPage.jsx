@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   FileText,
   LoaderCircle,
+  Lock,
   PackageCheck,
   ShieldCheck,
   ShoppingBag,
@@ -622,37 +623,35 @@ export default function CartPage() {
                       </div>
                     </label>
 
-                    {/* Možnost 3: Plačilna kartica (Visa, Mastercard) */}
-                    <label
-                      className={`relative flex cursor-pointer items-start gap-3.5 rounded-2xl border p-4 transition-all ${
-                        formData.paymentMethod === "card"
-                          ? "border-gold bg-gold/5 ring-2 ring-gold/20"
-                          : "border-forest/15 hover:border-forest/30"
-                      }`}
+                    {/* Možnost 3: Plačilna kartica (Visa, Mastercard) - Trenutno zaklenjeno do odobritve */}
+                    <div
+                      aria-disabled="true"
+                      className="relative flex items-start gap-3.5 rounded-2xl border border-forest/10 bg-stone-100/70 p-4 transition-all opacity-75 cursor-not-allowed select-none"
                     >
                       <input
                         type="radio"
                         name="paymentMethod"
                         value="card"
-                        checked={formData.paymentMethod === "card"}
-                        onChange={() => handleFieldChange("paymentMethod", "card")}
-                        className="mt-1 text-gold focus:ring-gold"
+                        disabled
+                        checked={false}
+                        className="mt-1 text-stone-400 focus:ring-0 cursor-not-allowed"
                       />
                       <div className="flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-bold text-forest text-sm sm:text-base flex items-center gap-1.5">
-                            <CreditCard size={18} className="text-gold" />
+                          <span className="font-bold text-forest/70 text-sm sm:text-base flex items-center gap-1.5">
+                            <CreditCard size={18} className="text-forest/40" />
                             Plačilna kartica (Visa, Mastercard)
                           </span>
-                          <span className="rounded-full bg-emerald-100 text-emerald-800 px-2.5 py-0.5 text-[11px] font-bold">
-                            xMoney Varno plačilo
+                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-800 px-2.5 py-0.5 text-[11px] font-bold">
+                            <Lock size={11} className="text-amber-700" />
+                            Kmalu na voljo
                           </span>
                         </div>
-                        <p className="mt-1.5 text-xs text-forest/75 leading-relaxed">
-                          Takojšnje in šifrirano plačilo z debetno ali kreditno kartico prek varnega xMoney plačilnega prehoda.
+                        <p className="mt-1.5 text-xs text-forest/65 leading-relaxed">
+                          Plačilo s karticami je trenutno v postopku bančne aktivacije. Do vklopa vas prosimo za izbiro plačila ob prevzemu (GLS) ali po predračunu (UPN).
                         </p>
                       </div>
-                    </label>
+                    </div>
                   </div>
                 </div>
 
