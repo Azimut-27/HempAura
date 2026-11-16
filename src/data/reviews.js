@@ -14,10 +14,10 @@ export const reviews = [
     rating: 5,
     date: "Pred 1 mesecem",
     quote:
-      "Cvetovi Citrin so me popolnoma očarali – čudovita sveža citrusna aroma, gosta struktura in ročno obrezano brez odvečnih vejic. Res se opazi razlika pristne slovenske outdoor vzgoje v naravi.",
+      "Vršički White Heaven so me popolnoma očarali – čudovita sveža naravna aroma, gosta struktura in ročno obrezano brez odvečnih vejic. Res se opazi razlika pristne slovenske outdoor vzgoje v naravi.",
     author: "Klara M.",
     role: "Arhitektka · Preverjena kupka",
-    product: "CBD cvetovi Citrin 15 %",
+    product: "CBD vršički White Heaven 6–9 %",
   },
   {
     id: 3,
@@ -37,6 +37,6 @@ export const reviews = [
       "Rada podpirava domače slovenske pridelovalce in lokalna zgodba iz Šentjerneja naju je takoj pritegnila. Kakovost izdelkov je brezhibna, naravna in zaupanja vredna. Naročava že tretjič.",
     author: "Simon & Maja T.",
     role: "Zvesta kupca · Preverjen nakup",
-    product: "CBD cvetovi Citrin 15 %",
+    product: "CBD vršički White Heaven 6–9 %",
   },
 ];

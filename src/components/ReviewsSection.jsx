@@ -235,7 +235,7 @@ export default function ReviewsSection() {
                       className="w-full rounded-xl border border-forest/15 bg-cream/30 px-3.5 py-2.5 text-sm text-forest focus:border-forest focus:outline-none"
                     >
                       <option value="HerbaGallus CBD kapljice 5 %">HerbaGallus CBD kapljice 5 %</option>
-                      <option value="CBD cvetovi Citrin 15 %">HerbaGallus CBD cvetovi Citrin 15 %</option>
+                      <option value="CBD vršički White Heaven 6–9 %">HerbaGallus CBD vršički White Heaven 6–9 %</option>
                       <option value="Splošna izkušnja in dostava">Splošna izkušnja in dostava</option>
                     </select>
                   </div>
