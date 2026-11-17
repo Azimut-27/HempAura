@@ -232,7 +232,11 @@ export default function ProductDetailPage() {
                               : "border-forest/15 bg-white text-forest hover:border-forest/40 hover:bg-cream/50"
                           }`}
                         >
-                          {variant.bestValue ? (
+                          {variant.stock === 0 ? (
+                            <span className="absolute -top-2.5 rounded-full bg-stone-500 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm">
+                              {t("Ni na zalogi")}
+                            </span>
+                          ) : variant.bestValue ? (
                             <span className="absolute -top-2.5 rounded-full bg-emerald-700 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-white shadow-sm">
                               {t("Najboljša vrednost")}
                             </span>

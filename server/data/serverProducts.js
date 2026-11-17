@@ -76,7 +76,7 @@ export const serverProducts = [
     active: true,
     priceCents: 5590,
     currency: "EUR",
-    stock: 20,
+    stock: 0,
     processorPriceId: null,
     shippingWeightGrams: 40,
     taxCode: "txcd_99999999",

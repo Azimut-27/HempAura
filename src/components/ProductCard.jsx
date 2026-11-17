@@ -165,7 +165,9 @@ export default function ProductCard({ product }) {
                       className={`rounded-xl border py-1.5 text-center text-xs font-bold transition-all ${
                         isSelected
                           ? "border-forest bg-forest text-porcelain shadow-sm"
-                          : "border-forest/12 bg-cream/60 text-forest/75 hover:border-forest/35 hover:bg-cream"
+                          : variant.stock === 0
+                            ? "border-forest/10 bg-cream/20 text-forest/40 hover:border-forest/25"
+                            : "border-forest/12 bg-cream/60 text-forest/75 hover:border-forest/35 hover:bg-cream"
                       }`}
                     >
                       {variant.label}

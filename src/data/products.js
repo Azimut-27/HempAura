@@ -208,7 +208,7 @@ export const products = [
         freeShipping: true,
         bestValue: true,
         sku: "HA-CBD-WH-69-25G",
-        stock: 20,
+        stock: 0,
         cbdAmountMg: 1875,
         cbdAmountLabel: "6–9 % CBD",
         shippingWeightGrams: 40,
