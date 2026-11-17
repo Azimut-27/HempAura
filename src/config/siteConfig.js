@@ -1,6 +1,6 @@
 const legalEntityName =
   import.meta.env.VITE_LEGAL_ENTITY_NAME ||
-  "HERBA GALLUS PROMOCIJA IN TRŽENJE STANISLAV BREGAR S.P.";
+  "Herba Gallus";
 const businessAddress =
   import.meta.env.VITE_BUSINESS_ADDRESS ||
   "Prvomajska cesta 11, 8310 Šentjernej";

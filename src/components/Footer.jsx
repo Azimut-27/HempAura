@@ -66,21 +66,9 @@ export default function Footer() {
             Informacije na tej strani niso zdravstveni nasvet. Uporabljaj izdelke
             skladno s potrjeno deklaracijo in navodili na embalaži.
           </p>
-          {siteConfig.legalBusinessName ? (
-            <p className="mt-3">
-              Ponudnik: {siteConfig.legalBusinessName}
-              {siteConfig.businessAddress ? ` · ${siteConfig.businessAddress}` : ""}
-              {siteConfig.registrationNumber
-                ? ` · matična št. ${siteConfig.registrationNumber}`
-                : ""}
-              {siteConfig.taxNumber ? ` · davčna št. ${siteConfig.taxNumber}` : ""}
-            </p>
-          ) : (
-            <p className="mt-3 font-bold text-gold">
-              Prodaja ni pripravljena: registrirani ponudnik in obvezni poslovni podatki
-              še niso vneseni.
-            </p>
-          )}
+          <p className="mt-3">
+            Ponudnik: Herba Gallus · Prvomajska cesta 11, 8310 Šentjernej
+          </p>
           <p className="mt-3">© {new Date().getFullYear()} HerbaGallus. Vse pravice pridržane.</p>
         </div>
       </div>
