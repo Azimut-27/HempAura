@@ -1,8 +1,10 @@
-import { ArrowRight, FileSearch, Leaf, PackageCheck, ShieldCheck } from "lucide-react";
+import { ArrowRight, Crown, FileSearch, Leaf, PackageCheck, ShieldCheck } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import ContactCta from "../components/ContactCta.jsx";
 import FaqList from "../components/FaqList.jsx";
 import NewsletterForm from "../components/NewsletterForm.jsx";
+import PartnerApplicationModal from "../components/PartnerApplicationModal.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import ReviewsSection from "../components/ReviewsSection.jsx";
 import Seo from "../components/Seo.jsx";
@@ -21,6 +23,7 @@ const trustItems = [
 
 export default function HomePage() {
   const { t } = useLanguage();
+  const [partnerModalOpen, setPartnerModalOpen] = useState(false);
 
   return (
     <>
@@ -201,7 +204,54 @@ export default function HomePage() {
           <NewsletterForm />
         </div>
       </section>
+      <section className="bg-porcelain py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-[#142d23] via-[#10241c] to-[#0b1813] px-6 py-10 text-porcelain shadow-[0_24px_70px_rgba(23,56,44,0.18)] sm:px-10 sm:py-12 lg:flex lg:items-center lg:justify-between lg:gap-10">
+            <div
+              className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gold/15 blur-3xl"
+              aria-hidden="true"
+            />
+            <div className="relative max-w-2xl">
+              <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-gold">
+                <Crown size={15} aria-hidden="true" />
+                <span>{t("Partnerski program")}</span>
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-semibold text-white sm:text-4xl">
+                {t("Postani HerbaGallus ambasador")}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-porcelain/78 sm:text-base">
+                {t(
+                  "Ustvarjaš vsebine na družbenih omrežjih? Pridobi svojo unikatno kodo za popust za sledilce in zasluži pregledno provizijo od vsakega nakupa."
+                )}
+              </p>
+            </div>
+            <div className="relative mt-7 flex flex-wrap items-center gap-3.5 lg:mt-0 lg:shrink-0">
+              <button
+                type="button"
+                onClick={() => setPartnerModalOpen(true)}
+                className="inline-flex min-h-13 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#f0dda8] via-[#d7b46a] to-[#b99552] px-7 text-sm font-extrabold text-[#0f231a] shadow-[0_10px_28px_rgba(185,149,82,0.28)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(185,149,82,0.4)]"
+              >
+                <Crown size={16} aria-hidden="true" />
+                <span>{t("Prijavi se zdaj")}</span>
+              </button>
+              <Link
+                to="/partners"
+                className="inline-flex min-h-13 items-center justify-center gap-1.5 rounded-full border border-white/20 px-6 text-sm font-bold text-porcelain transition-colors hover:border-gold/50 hover:bg-white/5"
+              >
+                <span>{t("Več o programu")}</span>
+                <ArrowRight size={15} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <ContactCta />
+
+      <PartnerApplicationModal
+        open={partnerModalOpen}
+        onClose={() => setPartnerModalOpen(false)}
+      />
     </>
   );
 }

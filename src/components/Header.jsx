@@ -9,6 +9,7 @@ const navItems = [
   { label: "Izdelki", to: "/products" },
   { label: "Kakovost", to: "/quality" },
   { label: "O znamki", to: "/#about" },
+  { label: "Partnerji", to: "/partners" },
   { label: "FAQ", to: "/faq" },
   { label: "Kontakt", to: "/contact" },
 ];
