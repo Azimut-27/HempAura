@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HerbaGallus — Instagram Profilne Slike</title>
+  <title>HerbaGallus — Prilagoditev profilne slike za Instagram</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       background: #0f1c16;
       color: #fffaf1;
-      padding: 30px 16px 60px;
+      padding: 24px 16px 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -21,8 +21,8 @@
     }
     .header {
       text-align: center;
-      max-width: 600px;
-      margin-bottom: 30px;
+      max-width: 650px;
+      margin-bottom: 24px;
     }
     .badge {
       display: inline-block;
@@ -32,69 +32,104 @@
       text-transform: uppercase;
       color: #d4af37;
       background: rgba(212, 175, 55, 0.15);
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 50px;
       margin-bottom: 12px;
     }
     h1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 28px;
+      font-size: 26px;
       line-height: 1.25;
       margin-bottom: 8px;
     }
     p.lead {
-      font-size: 14px;
+      font-size: 13.5px;
       color: #a8b8ae;
       line-height: 1.5;
     }
+    
     .grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 25px;
-      max-width: 900px;
+      gap: 24px;
+      max-width: 1050px;
       width: 100%;
     }
+
     .card {
       background: #172b22;
       border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 18px;
+      padding: 22px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 320px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.45);
       text-align: center;
+      position: relative;
     }
-    .avatar-preview-wrap {
+    .card.featured {
+      border: 2px solid #d4af37;
+      background: #193327;
+    }
+    .featured-tag {
+      position: absolute;
+      top: -10px;
+      background: linear-gradient(135deg, #f0dda8, #d4af37);
+      color: #0f1c16;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 20px;
+    }
+
+    /* Instagram Profile Preview Ring */
+    .ig-ring-wrap {
       width: 180px;
       height: 180px;
       border-radius: 50%;
-      overflow: hidden;
+      padding: 4px;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      margin-bottom: 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-      border: 3px solid #d4af37;
-      margin-bottom: 18px;
-      background: #000;
     }
-    .avatar-preview-wrap img {
+    .ig-inner-circle {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #ffffff;
+      border: 3px solid #172b22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ig-inner-circle canvas,
+    .ig-inner-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
     }
+
     .card h3 {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: #fff;
       margin-bottom: 6px;
     }
-    .card p {
-      font-size: 12.5px;
+    .card p.desc {
+      font-size: 12px;
       color: #b0bfb6;
       line-height: 1.4;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       flex: 1;
     }
+
     .dl-btn {
       width: 100%;
       background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
@@ -102,7 +137,7 @@
       font-weight: 800;
       font-size: 13.5px;
       border: none;
-      padding: 12px 20px;
+      padding: 12px 18px;
       border-radius: 10px;
       cursor: pointer;
       display: flex;
@@ -110,83 +145,179 @@
       justify-content: center;
       gap: 8px;
       box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
-      transition: transform 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
       text-decoration: none;
     }
     .dl-btn:hover {
       transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.45);
     }
-    .tips-card {
-      margin-top: 40px;
+
+    .guide-box {
+      margin-top: 36px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 20px 24px;
-      max-width: 660px;
-      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 22px 24px;
+      max-width: 680px;
+      width: 100%;
+      font-size: 13.5px;
       line-height: 1.6;
       color: #d1dcce;
     }
-    .tips-card strong {
+    .guide-box h4 {
       color: #f0dda8;
+      font-size: 15px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .guide-box ol {
+      margin-left: 20px;
+      margin-top: 6px;
+    }
+    .guide-box li {
+      margin-bottom: 6px;
     }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <span class="badge">Instagram Branding</span>
-    <h1>Izberite vašo profilno sliko</h1>
-    <p class="lead">Za top-tier izgled na Instagramu uporabljamo izključno povečano ikono brez drobnega besedila, ki se popolnoma prilagodi krogu na telefonu.</p>
+    <span class="badge">Instagram 1:1 Kvadratni format</span>
+    <h1>Vaša slika, prilagojena za Instagram</h1>
+    <p class="lead">Originalna slika je bila ležeča (pravokotna), zato jo je Instagram na telefonu nepravilno porezal. Tukaj je prilagojena v točen <strong>kvadrat 1080 × 1080 px</strong>, kjer celoten logo z napisom brezhibno sede v krog!</p>
   </div>
 
   <div class="grid">
-    <!-- Option 1: Emerald Prestige -->
-    <div class="card">
-      <div class="avatar-preview-wrap">
-        <img id="img-emerald" src="/brand/ig-avatar-emerald.svg" alt="Emerald Avatar">
+
+    <!-- Card 1: Prilagojen original (Cvet + Napis) -->
+    <div class="card featured">
+      <span class="featured-tag">Vaša izbira</span>
+      <div class="ig-ring-wrap">
+        <div class="ig-inner-circle" style="background: #ffffff;">
+          <canvas id="canvas-original" width="1080" height="1080"></canvas>
+        </div>
       </div>
-      <h3>1. Emerald Prestige (Temna) ⭐</h3>
-      <p>Globoka smaragdno zelena podlaga z zlato-kremnim emblemon. Izjemno prestižna, v feedu in med Instagram zgodbami (Stories) takoj izstopa.</p>
-      <button class="dl-btn" onclick="downloadPng('/brand/ig-avatar-emerald.svg', 'herbagallus-ig-avatar-emerald.png')">
-        ⬇️ Prenesi PNG (1080×1080)
+      <h3>1. Prilagojen original (Cvet + Napis)</h3>
+      <p class="desc">Točno vaša fotografija, centrirana v 1:1 kvadrat s čistim belim robom. Celoten logotip in napis »HerbaGallus« sta 100 % znotraj kroga brez rezanja.</p>
+      <button class="dl-btn" onclick="downloadCanvas('canvas-original', 'herbagallus-ig-original-1080.png')">
+        ⬇️ Prenesi PNG (1080 × 1080)
       </button>
     </div>
 
-    <!-- Option 2: Pure Botanicals -->
+    <!-- Card 2: Samo povečan cvet z ikono -->
     <div class="card">
-      <div class="avatar-preview-wrap" style="border-color: #1f4a3b;">
-        <img id="img-cream" src="/brand/ig-avatar-cream.svg" alt="Cream Avatar">
+      <div class="ig-ring-wrap">
+        <div class="ig-inner-circle" style="background: #ffffff;">
+          <canvas id="canvas-icon-zoom" width="1080" height="1080"></canvas>
+        </div>
       </div>
-      <h3>2. Pure Botanicals (Svetla)</h3>
-      <p>Topla naravna kremasta podlaga s temno zelenim emblemon in zlatim grebenom. Sveža, organska in minimalistična lekarniška estetika.</p>
-      <button class="dl-btn" onclick="downloadPng('/brand/ig-avatar-cream.svg', 'herbagallus-ig-avatar-cream.png')">
-        ⬇️ Prenesi PNG (1080×1080)
+      <h3>2. Povečan emblem (Brez napisa)</h3>
+      <p class="desc">Cvet s petelinom je povečan čez krog. Izjemno čitljivo in prepoznavno v komentarjih in Instagram sporočilih na majhnih zaslonih.</p>
+      <button class="dl-btn" onclick="downloadCanvas('canvas-icon-zoom', 'herbagallus-ig-icon-zoom.png')">
+        ⬇️ Prenesi PNG (1080 × 1080)
       </button>
     </div>
+
+    <!-- Card 3: Emerald Prestige -->
+    <div class="card">
+      <div class="ig-ring-wrap">
+        <div class="ig-inner-circle" style="background: #142e23;">
+          <img src="/brand/ig-avatar-emerald.svg" alt="Emerald avatar" id="img-emerald">
+        </div>
+      </div>
+      <h3>3. Prestižna smaragdna (Temna)</h3>
+      <p class="desc">Globoka gozdno zelena podlaga z zlato-kremnim emblemon. Luksuzen videz, ki takoj izstopa v Instagram Stories krožcih.</p>
+      <button class="dl-btn" onclick="downloadSvgAsPng('/brand/ig-avatar-emerald.svg', 'herbagallus-ig-emerald.png')">
+        ⬇️ Prenesi PNG (1080 × 1080)
+      </button>
+    </div>
+
   </div>
 
-  <div class="tips-card">
-    <p>💡 <strong>Kako naložiti na Instagramu:</strong></p>
-    <p>1. Kliknite zgornji gumb in sliko shranite na telefon.</p>
-    <p>2. V Instagramu kliknite <strong>Edit profile</strong> > <strong>Change profile photo</strong>.</p>
-    <p>3. Izberite preneseni PNG — ikona je že idealno centrirana in velikostno prilagojena za Instagram krog!</p>
+  <div class="guide-box">
+    <h4>📱 Kako naložiti na telefon v 10 sekundah:</h4>
+    <ol>
+      <li>Kliknite zgornji gumb <strong>⬇️ Prenesi PNG (1080 × 1080)</strong> pod želeno sliko (priporočam <strong>1. Prilagojen original</strong>).</li>
+      <li>Slika se shrani v galerijo vašega telefona.</li>
+      <li>Odprite Instagram > kliknite <strong>Edit profile</strong> > <strong>Change profile photo</strong> > izberite to sliko.</li>
+      <li>Ker je slika že v popolnem kvadratu 1080 × 1080, se bo takoj poravnala v krog brez ročnega povečevanja ali rezanja!</li>
+    </ol>
   </div>
 
-  <canvas id="exportCanvas" width="1080" height="1080" style="display: none;"></canvas>
+  <canvas id="exportHelperCanvas" width="1080" height="1080" style="display: none;"></canvas>
 
   <script>
-    function downloadPng(svgUrl, filename) {
+    const userImg = new Image();
+    userImg.crossOrigin = "anonymous";
+    userImg.src = "/brand/user-logo-original.jpg";
+
+    userImg.onload = function() {
+      renderOriginalAdjusted();
+      renderIconZoom();
+    };
+
+    // 1. Render original adjusted into 1080x1080 circle safe zone
+    function renderOriginalAdjusted() {
+      const c = document.getElementById('canvas-original');
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, 1080, 1080);
+
+      // In userImg (1024x764):
+      // Logo content is roughly in middle: width 480, height 380, centered around (512, 390)
+      // We want to scale so the whole logo content fits inside the circle (diameter 1080)
+      // An image width of 1024 scaled to ~960px fits comfortably inside the circle!
+      const targetW = 980;
+      const targetH = userImg.height * (targetW / userImg.width);
+      const x = (1080 - targetW) / 2;
+      const y = (1080 - targetH) / 2 + 5; // slight optical adjustment
+
+      ctx.drawImage(userImg, x, y, targetW, targetH);
+    }
+
+    // 2. Render Icon Zoom (Leaf & Rooster zoomed into circle)
+    function renderIconZoom() {
+      const c = document.getElementById('canvas-icon-zoom');
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, 1080, 1080);
+
+      // Crop just the leaf emblem from userImg:
+      // Leaf is roughly in the center upper half:
+      // In 1024x764: leaf center is around x=512, y=320, width ~320, height ~280
+      const sourceW = 380;
+      const sourceH = 340;
+      const sourceX = 512 - (sourceW / 2);
+      const sourceY = 270 - (sourceH / 2);
+
+      const targetSize = 720;
+      const targetX = (1080 - targetSize) / 2;
+      const targetY = (1080 - targetSize) / 2 - 10;
+
+      ctx.drawImage(userImg, sourceX, sourceY, sourceW, sourceH, targetX, targetY, targetSize, targetSize);
+    }
+
+    function downloadCanvas(canvasId, filename) {
+      const c = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = c.toDataURL('image/png');
+      link.click();
+    }
+
+    function downloadSvgAsPng(svgUrl, filename) {
       const img = new Image();
       img.onload = function() {
-        const canvas = document.getElementById('exportCanvas');
-        const ctx = canvas.getContext('2d');
+        const helper = document.getElementById('exportHelperCanvas');
+        const ctx = helper.getContext('2d');
         ctx.clearRect(0, 0, 1080, 1080);
         ctx.drawImage(img, 0, 0, 1080, 1080);
-        
         const a = document.createElement('a');
         a.download = filename;
-        a.href = canvas.toDataURL('image/png');
+        a.href = helper.toDataURL('image/png');
         a.click();
       };
       img.src = svgUrl;
