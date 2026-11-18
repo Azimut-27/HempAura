@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <radialGradient id="creamBg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f5efe4"/>
+    </radialGradient>
+    <linearGradient id="goldGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#a67c2e"/>
+    </linearGradient>
+    <filter id="shadowCream" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#17382c" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Clean Warm Cream Background -->
+  <rect width="1080" height="1080" fill="url(#creamBg)"/>
+  
+  <!-- Subtle Forest Ring -->
+  <circle cx="540" cy="540" r="490" fill="none" stroke="#17382c" stroke-width="3" opacity="0.15"/>
+
+  <!-- Centered Emblem (Scaled ~10x) -->
+  <g transform="translate(540, 565) scale(8.8)" filter="url(#shadowCream)">
+    <!-- 7-pointed cannabis leaf in deep forest green -->
+    <g fill="#17382c">
+      <path d="M0,-46 C6,-25 14,-12 21,0 C11,10 4,16 0,32 C-4,16 -11,10 -21,0 C-14,-12 -6,-25 0,-46 Z"/>
+      <path d="M-12,-37 C-3,-15 9,2 17,9 C-3,22 -11,22 -21,13 Z" opacity="0.96"/>
+      <path d="M12,-37 C3,-15 -9,2 -17,9 C3,22 11,22 21,13 Z" opacity="0.96"/>
+      <path d="M-20,-21 C-7,0 3,10 10,16 C-7,26 -16,24 -25,18 Z" opacity="0.9"/>
+      <path d="M20,-21 C7,0 -3,10 -10,16 C7,26 16,24 25,18 Z" opacity="0.9"/>
+      <path d="M-24,-4 C-10,8 -2,15 4,19 C-10,25 -19,20 -27,13 Z" opacity="0.82"/>
+      <path d="M24,-4 C10,8 2,15 -4,19 C10,25 19,20 27,13 Z" opacity="0.82"/>
+      <!-- Rooster Silhouette cutout inside leaf -->
+      <path d="M-3,8 C-3,2 -5,-2 -7,-4 C-4,-7 0,-9 3,-4 C5,-2 7,4 4,8 Z" fill="#fffdf9"/>
+      <!-- Rooster crest in gold -->
+      <path d="M0,-8 L2,-12 L4,-8 Z" fill="url(#goldGrad2)"/>
+    </g>
+  </g>
+</svg>

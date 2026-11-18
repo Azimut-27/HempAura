@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HerbaGallus — Instagram Profilne Slike</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0f1c16;
+      color: #fffaf1;
+      padding: 30px 16px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.15);
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    p.lead {
+      font-size: 14px;
+      color: #a8b8ae;
+      line-height: 1.5;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      max-width: 900px;
+      width: 100%;
+    }
+    .card {
+      background: #172b22;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+    .avatar-preview-wrap {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 3px solid #d4af37;
+      margin-bottom: 18px;
+      background: #000;
+    }
+    .avatar-preview-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .card p {
+      font-size: 12.5px;
+      color: #b0bfb6;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .dl-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #0d1e16;
+      font-weight: 800;
+      font-size: 13.5px;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+      transition: transform 0.15s ease;
+      text-decoration: none;
+    }
+    .dl-btn:hover {
+      transform: translateY(-2px);
+    }
+    .tips-card {
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px 24px;
+      max-width: 660px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #d1dcce;
+    }
+    .tips-card strong {
+      color: #f0dda8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span class="badge">Instagram Branding</span>
+    <h1>Izberite vašo profilno sliko</h1>
+    <p class="lead">Za top-tier izgled na Instagramu uporabljamo izključno povečano ikono brez drobnega besedila, ki se popolnoma prilagodi krogu na telefonu.</p>
+  </div>
+
+  <div class="grid">
+    <!-- Option 1: Emerald Prestige -->
+    <div class="card">
+      <div class="avatar-preview-wrap">
+        <img id="img-emerald" src="/brand/ig-avatar-emerald.svg" alt="Emerald Avatar">
+      </div>
+      <h3>1. Emerald Prestige (Temna) ⭐</h3>
+      <p>Globoka smaragdno zelena podlaga z zlato-kremnim emblemon. Izjemno prestižna, v feedu in med Instagram zgodbami (Stories) takoj izstopa.</p>
+      <button class="dl-btn" onclick="downloadPng('/brand/ig-avatar-emerald.svg', 'herbagallus-ig-avatar-emerald.png')">
+        ⬇️ Prenesi PNG (1080×1080)
+      </button>
+    </div>
+
+    <!-- Option 2: Pure Botanicals -->
+    <div class="card">
+      <div class="avatar-preview-wrap" style="border-color: #1f4a3b;">
+        <img id="img-cream" src="/brand/ig-avatar-cream.svg" alt="Cream Avatar">
+      </div>
+      <h3>2. Pure Botanicals (Svetla)</h3>
+      <p>Topla naravna kremasta podlaga s temno zelenim emblemon in zlatim grebenom. Sveža, organska in minimalistična lekarniška estetika.</p>
+      <button class="dl-btn" onclick="downloadPng('/brand/ig-avatar-cream.svg', 'herbagallus-ig-avatar-cream.png')">
+        ⬇️ Prenesi PNG (1080×1080)
+      </button>
+    </div>
+  </div>
+
+  <div class="tips-card">
+    <p>💡 <strong>Kako naložiti na Instagramu:</strong></p>
+    <p>1. Kliknite zgornji gumb in sliko shranite na telefon.</p>
+    <p>2. V Instagramu kliknite <strong>Edit profile</strong> > <strong>Change profile photo</strong>.</p>
+    <p>3. Izberite preneseni PNG — ikona je že idealno centrirana in velikostno prilagojena za Instagram krog!</p>
+  </div>
+
+  <canvas id="exportCanvas" width="1080" height="1080" style="display: none;"></canvas>
+
+  <script>
+    function downloadPng(svgUrl, filename) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.getElementById('exportCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, 1080, 1080);
+        ctx.drawImage(img, 0, 0, 1080, 1080);
+        
+        const a = document.createElement('a');
+        a.download = filename;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      };
+      img.src = svgUrl;
+    }
+  </script>
+</body>
+</html>
