@@ -75,8 +75,11 @@ export const PROMOTIONAL_DISCOUNT_CODES = {
   POPUST10: { percent: 10, description: "10% popust na celoten nakup" },
   HERBA10: { percent: 10, description: "10% HerbaGallus popust" },
 
-  // -15% popust (stalne stranke & unboxing koda)
+  // -15% popust (stalne stranke, letaki & unboxing koda)
   HVALA15: { percent: 15, description: "15% popust zahvale za naslednji nakup" },
+  DOMA15: { percent: 15, description: "15% popust soseske z letaka" },
+  LETAK15: { percent: 15, description: "15% popust z letaka" },
+  LJUBLJANA15: { percent: 15, description: "15% popust za Ljubljano" },
   AMBASADOR15: { percent: 15, description: "15% ambasadorski popust" },
   POPUST15: { percent: 15, description: "15% popust na celoten nakup" },
   HERBA15: { percent: 15, description: "15% HerbaGallus popust" },

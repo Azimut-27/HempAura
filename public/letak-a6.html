@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HerbaGallus Letak A6 — Pripravljeno za tisk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & Base Print Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    @page {
+      size: 105mm 148mm;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #e5e5e0;
+      color: #17382c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 30px 10px;
+    }
+
+    /* Screen Preview Container */
+    .no-print-bar {
+      background: #17382c;
+      color: #fffaf1;
+      padding: 16px 28px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+      font-size: 14px;
+    }
+
+    .print-btn {
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #10241b;
+      font-weight: 800;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(185,149,82,0.35);
+      transition: transform 0.15s ease;
+    }
+    .print-btn:hover {
+      transform: scale(1.04);
+    }
+
+    /* A6 Flyer Page: 105mm x 148mm */
+    .flyer-page {
+      width: 105mm;
+      height: 148mm;
+      position: relative;
+      background: #fffaf2;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========================================================
+       PAGE 1: SPREDNJA STRAN (FRONT)
+       ======================================================== */
+    .front-page {
+      background: #fffdf9;
+      padding: 7mm 7mm 6mm;
+      justify-content: space-between;
+    }
+
+    /* Decorative corner borders */
+    .front-page::before {
+      content: "";
+      position: absolute;
+      inset: 3.5mm;
+      border: 1px solid rgba(185, 149, 82, 0.35);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+      border-bottom: 1px solid rgba(23, 56, 44, 0.1);
+      padding-bottom: 2mm;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-logo-img {
+      height: 20px;
+      width: auto;
+      object-contain: fit;
+    }
+
+    .brand-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #17382c;
+    }
+
+    .badge-origin {
+      font-size: 7.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #8e6128;
+      background: rgba(185, 149, 82, 0.14);
+      padding: 3px 6px;
+      border-radius: 20px;
+    }
+
+    .headline-wrap {
+      position: relative;
+      z-index: 2;
+      margin-top: 2.5mm;
+      text-align: center;
+    }
+
+    .headline-pre {
+      font-size: 7px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: #b99552;
+      margin-bottom: 1.5mm;
+    }
+
+    .headline-main {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 16.5px;
+      font-weight: 700;
+      line-height: 1.18;
+      color: #17382c;
+    }
+
+    .headline-main em {
+      font-style: italic;
+      color: #8e6128;
+    }
+
+    /* Product Showcase Card */
+    .product-showcase {
+      position: relative;
+      z-index: 2;
+      margin: 2mm 0;
+      background: linear-gradient(180deg, #f7f3ec 0%, #ebe4d8 100%);
+      border-radius: 8px;
+      border: 1px solid rgba(23, 56, 44, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 2.5mm 3mm;
+      gap: 3mm;
+      overflow: hidden;
+    }
+
+    .product-img-wrap {
+      width: 32mm;
+      height: 32mm;
+      flex-shrink: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-tag {
+      font-size: 6.8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #17382c;
+      background: #fff;
+      padding: 2px 5px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 1.5mm;
+    }
+
+    .product-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #17382c;
+      line-height: 1.2;
+    }
+
+    .product-specs {
+      font-size: 8px;
+      color: #55625a;
+      line-height: 1.35;
+      margin-top: 1.5mm;
+    }
+
+    .product-specs strong {
+      color: #17382c;
+    }
+
+    /* Neighbor Discount Offer Callout */
+    .discount-callout {
+      position: relative;
+      z-index: 2;
+      background: #17382c;
+      color: #fffaf1;
+      border-radius: 8px;
+      padding: 3mm 3.5mm;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 6px 14px rgba(23, 56, 44, 0.25);
+    }
+
+    .discount-text-left {
+      font-size: 8px;
+      line-height: 1.3;
+    }
+
+    .discount-label {
+      font-size: 6.8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #f0dda8;
+    }
+
+    .discount-heading {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 1px;
+    }
+
+    .discount-code-pill {
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #10241b;
+      padding: 2mm 3.5mm;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .discount-code-pill span {
+      display: block;
+      font-size: 6.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      opacity: 0.85;
+    }
+
+    .discount-code-pill strong {
+      display: block;
+      font-family: monospace;
+      font-size: 12.5px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .front-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 7.5px;
+      color: #6a746e;
+      border-top: 1px solid rgba(23, 56, 44, 0.1);
+      padding-top: 2mm;
+      position: relative;
+      z-index: 2;
+    }
+
+    .front-footer strong {
+      color: #17382c;
+      font-size: 8.5px;
+    }
+
+    /* ========================================================
+       PAGE 2: ZADNJA STRAN (BACK)
+       ======================================================== */
+    .back-page {
+      background: #fffdf9;
+      padding: 6.5mm 7mm 5mm;
+      justify-content: space-between;
+    }
+
+    .back-page::before {
+      content: "";
+      position: absolute;
+      inset: 3.5mm;
+      border: 1px solid rgba(185, 149, 82, 0.35);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .back-header {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .back-eyebrow {
+      font-size: 7px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #8e6128;
+    }
+
+    .back-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: #17382c;
+      margin-top: 1mm;
+    }
+
+    /* Benefits List */
+    .benefits-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.2mm;
+      position: relative;
+      z-index: 2;
+      margin: 1.5mm 0;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5mm;
+      background: #f8f5ee;
+      padding: 2mm 2.5mm;
+      border-radius: 6px;
+      border-left: 2.5px solid #b99552;
+    }
+
+    .benefit-icon {
+      font-size: 12px;
+      line-height: 1;
+      padding-top: 1px;
+    }
+
+    .benefit-content h4 {
+      font-size: 8.5px;
+      font-weight: 800;
+      color: #17382c;
+    }
+
+    .benefit-content p {
+      font-size: 7.2px;
+      color: #55625a;
+      line-height: 1.35;
+      margin-top: 0.5mm;
+    }
+
+    /* Order / QR Box */
+    .qr-order-card {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, #17382c 0%, #0d211a 100%);
+      color: #fffaf1;
+      border-radius: 8px;
+      padding: 3mm;
+      display: flex;
+      align-items: center;
+      gap: 3.5mm;
+      box-shadow: 0 6px 14px rgba(23, 56, 44, 0.25);
+    }
+
+    .qr-frame {
+      width: 25mm;
+      height: 25mm;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 1.5mm;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .qr-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .qr-order-text {
+      flex: 1;
+    }
+
+    .qr-badge {
+      display: inline-block;
+      font-size: 6.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #10241b;
+      background: #f0dda8;
+      padding: 1.5px 5px;
+      border-radius: 3px;
+    }
+
+    .qr-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 1mm;
+      line-height: 1.2;
+    }
+
+    .qr-instructions {
+      font-size: 7.2px;
+      color: #d1dcce;
+      line-height: 1.35;
+      margin-top: 1mm;
+    }
+
+    .qr-instructions strong {
+      color: #f0dda8;
+    }
+
+    .web-link {
+      font-size: 8.5px;
+      font-weight: 800;
+      color: #f0dda8;
+      display: block;
+      margin-top: 1.5mm;
+      letter-spacing: 0.3px;
+    }
+
+    /* Small Legal Notice */
+    .legal-footer {
+      position: relative;
+      z-index: 2;
+      font-size: 5.8px;
+      line-height: 1.4;
+      color: #7b857f;
+      text-align: center;
+      border-top: 1px solid rgba(23, 56, 44, 0.1);
+      padding-top: 1.5mm;
+    }
+
+    /* Print Overrides */
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+        gap: 0;
+      }
+      .no-print-bar {
+        display: none !important;
+      }
+      .flyer-page {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Action Bar -->
+  <div class="no-print-bar">
+    <div>
+      <strong>HerbaGallus Letak A6</strong> (105 × 148 mm) · Sprednja in zadnja stran
+    </div>
+    <button class="print-btn" onclick="window.print()">
+      🖨️ Natisni v PDF / Tiskalnik
+    </button>
+  </div>
+
+  <!-- ==========================================
+       STRAN 1: SPREDNJA STRAN (FRONT)
+       ========================================== -->
+  <article class="flyer-page front-page" id="front">
+    <!-- Brand Header -->
+    <header class="brand-header">
+      <div class="brand-logo-wrap">
+        <img src="/brand/herbagallus-mark.png" alt="HerbaGallus" class="brand-logo-img">
+        <span class="brand-title">HerbaGallus</span>
+      </div>
+      <span class="badge-origin">100 % Slovensko · Outdoor</span>
+    </header>
+
+    <!-- Headline Section -->
+    <div class="headline-wrap">
+      <p class="headline-pre">Naravni konopljini vršički</p>
+      <h1 class="headline-main">
+        Za večerni mir in<br><em>naravno sprostitev.</em>
+      </h1>
+    </div>
+
+    <!-- Product Card -->
+    <div class="product-showcase">
+      <div class="product-img-wrap">
+        <img src="/products/herbagallus-cbd-flower-premium.jpg" alt="HerbaGallus CBD vršički White Heaven">
+      </div>
+      <div class="product-info">
+        <span class="product-tag">Vršički White Heaven</span>
+        <h2 class="product-name">CBD Vršički 6–9 %</h2>
+        <p class="product-specs">
+          Ročno obrani na soncu · <strong>Brez pesticidov</strong> · Polna naravna aroma terpenov.
+        </p>
+      </div>
+    </div>
+
+    <!-- Neighborhood Discount Banner -->
+    <div class="discount-callout">
+      <div class="discount-text-left">
+        <span class="discount-label">Darilo za sosesko</span>
+        <p class="discount-heading">-15 % popust na celoten nakup</p>
+      </div>
+      <div class="discount-code-pill">
+        <span>Vpiši kodo</span>
+        <strong>DOMA15</strong>
+      </div>
+    </div>
+
+    <!-- Front Footer -->
+    <footer class="front-footer">
+      <span>Naročila na <strong>herbagallus.com</strong></span>
+      <span>GLS dostava v 1–2 dneh</span>
+    </footer>
+  </article>
+
+  <!-- ==========================================
+       STRAN 2: ZADNJA STRAN (BACK)
+       ========================================== -->
+  <article class="flyer-page back-page" id="back">
+    <!-- Header -->
+    <header class="back-header">
+      <p class="back-eyebrow">Zakaj izbrati HerbaGallus?</p>
+      <h3 class="back-title">Kakovost brez kompromisov</h3>
+    </header>
+
+    <!-- 3 Key Benefits -->
+    <div class="benefits-list">
+      <div class="benefit-item">
+        <div class="benefit-icon">🌿</div>
+        <div class="benefit-content">
+          <h4>100 % Slovensko poreklo</h4>
+          <p>Pridelano na soncu na naraven način. Počasi sušeno za ohranitev čistih aromatskih terpenov.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">🔬</div>
+        <div class="benefit-content">
+          <h4>Laboratorijsko testirano</h4>
+          <p>Zagotovljena vsebnost 6–9 % naravnega CBD in THC strogo pod 0,3 % v skladu z zakonodajo.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">📦</div>
+        <div class="benefit-content">
+          <h4>Zanesljiva GLS dostava</h4>
+          <p>Paket prejmete v 1–2 dneh na dom ali paketomat. Možno plačilo po povzetju (z gotovino ali kartico).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR & Order Box -->
+    <div class="qr-order-card">
+      <div class="qr-frame">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fherbagallus.com%2F%3Fref%3DDOMA15&color=17382c&bgcolor=ffffff"
+          alt="QR koda za naročilo s kodo DOMA15"
+        >
+      </div>
+      <div class="qr-order-text">
+        <span class="qr-badge">Skeniraj s kamero</span>
+        <h4 class="qr-heading">Prihrani 15 % takoj</h4>
+        <p class="qr-instructions">
+          Skenirajte QR kodo z vašim telefonom — koda <strong>DOMA15</strong> se avtomatsko upošteva v košarici!
+        </p>
+        <span class="web-link">herbagallus.com</span>
+      </div>
+    </div>
+
+    <!-- Small Mandatory Legal Footer -->
+    <footer class="legal-footer">
+      Namen: za aromatiziranje prostorov. Izdelek ni primeren za osebe, mlajše od 18 let.<br>
+      Ponudnik: Herba Gallus, Stanislav Bregar s.p., Prvomajska cesta 11, 8310 Šentjernej.
+    </footer>
+  </article>
+
+</body>
+</html>
