@@ -112,3 +112,29 @@ export const directOrderSchema = z
     language: z.enum(["sl", "en", "de"]).optional().default("sl"),
   })
   .strict();
+
+export const partnerApplicationSchema = z
+  .object({
+    fullName: z.string().trim().min(2).max(120),
+    email: normalizedEmail,
+    socialPlatform: z.enum([
+      "Instagram",
+      "TikTok",
+      "YouTube",
+      "Facebook",
+      "Blog / Spletna stran",
+      "Drugo",
+    ]),
+    handle: z.string().trim().min(2).max(200),
+    audienceSize: z.enum(["< 1k", "1k – 10k", "10k – 50k", "50k+"]),
+    requestedPromoCode: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .regex(/^[A-Z0-9][A-Z0-9_-]{2,31}$/),
+    niche: z.string().trim().min(2).max(200),
+    promotionPlan: z.string().trim().max(1500).optional().default(""),
+    consent: z.literal(true),
+    website: z.string().max(0).optional().default(""),
+  })
+  .strict();

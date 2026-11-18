@@ -1,5 +1,7 @@
-import { BadgePercent, HandCoins, ShieldCheck } from "lucide-react";
+import { BadgePercent, Crown, HandCoins, ShieldCheck } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import PartnerApplicationModal from "../components/PartnerApplicationModal.jsx";
 import Seo from "../components/Seo.jsx";
 
 const benefits = [
@@ -37,6 +39,8 @@ const rules = [
 ];
 
 export default function PartnerProgramPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       <Seo
@@ -58,6 +62,22 @@ export default function PartnerProgramPage() {
               Program je namenjen ustvarjalcem, ki cenijo premišljeno predstavitev,
               jasne informacije in odgovorno komunikacijo o konopljinih izdelkih.
             </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full bg-forest px-8 text-sm font-bold text-porcelain shadow-[0_12px_30px_rgba(23,56,44,0.22)] transition-all hover:-translate-y-0.5 hover:bg-forest/92"
+              >
+                <Crown size={18} className="text-gold" aria-hidden="true" />
+                <span>Prijavi se kot ambasador</span>
+              </button>
+              <a
+                href="#kako-deluje"
+                className="inline-flex min-h-14 items-center justify-center border border-forest/20 px-6 text-sm font-bold text-forest transition-colors hover:bg-forest/5"
+              >
+                Kako deluje
+              </a>
+            </div>
           </div>
           <div className="border-l-2 border-gold bg-porcelain/65 p-6">
             <p className="text-sm font-bold text-forest">Pomembno</p>
@@ -85,7 +105,7 @@ export default function PartnerProgramPage() {
         </div>
       </section>
 
-      <section className="bg-cream py-16 sm:py-24">
+      <section id="kako-deluje" className="bg-cream py-16 sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">
@@ -137,17 +157,32 @@ export default function PartnerProgramPage() {
             Povej nam, kaj ustvarjaš
           </h2>
           <p className="mt-5 leading-8 text-forest/68">
-            V sporočilo dodaj povezave do kanalov, osnovne podatke o občinstvu in
-            primer vsebine, ki najbolje predstavlja tvoj slog.
+            Izpolni kratko prijavnico s svojimi kanali, občinstvom in želeno
+            promocijsko kodo. Odgovorimo ti v najkrajšem možnem času.
           </p>
-          <Link
-            to="/contact"
-            className="mt-8 inline-flex min-h-14 items-center justify-center bg-forest px-8 text-sm font-bold text-porcelain"
-          >
-            Pošlji predstavitev
-          </Link>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full bg-forest px-8 text-sm font-bold text-porcelain shadow-[0_12px_30px_rgba(23,56,44,0.22)] transition-all hover:-translate-y-0.5 hover:bg-forest/92"
+            >
+              <Crown size={18} className="text-gold" aria-hidden="true" />
+              <span>Odpri prijavnico ambasadorja</span>
+            </button>
+            <Link
+              to="/contact"
+              className="inline-flex min-h-14 items-center justify-center px-5 text-sm font-semibold text-forest/70 underline underline-offset-4 hover:text-forest"
+            >
+              Imaš splošno vprašanje?
+            </Link>
+          </div>
         </div>
       </section>
+
+      <PartnerApplicationModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 }

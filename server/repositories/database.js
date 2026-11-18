@@ -385,6 +385,95 @@ export const database = {
     return getBuiltInDiscountCode(normalized);
   },
 
+  async isReferralCodeTaken(publicCode) {
+    const normalized = normalizeReferralCode(publicCode);
+    if (!normalized) return true;
+    if (getBuiltInDiscountCode(normalized)) return true;
+
+    if (serverConfig.supabaseUrl && serverConfig.supabaseServiceRoleKey) {
+      const result = await getSupabaseAdmin()
+        .from("referral_partners")
+        .select("id")
+        .eq("public_code", normalized)
+        .maybeSingle();
+      if (result.error) {
+        throw new Error(`Check referral code failed: ${result.error.message}`);
+      }
+      return Boolean(result.data);
+    }
+    return false;
+  },
+
+  async createPartnerApplication(values) {
+    const normalizedCode = normalizeReferralCode(values.publicCode);
+    const result = await getSupabaseAdmin()
+      .from("referral_partners")
+      .insert({
+        display_name: values.displayName,
+        contact_email: values.contactEmail,
+        public_code: normalizedCode,
+        customer_discount_percent: values.customerDiscountPercent ?? 10,
+        commission_rate_bps: values.commissionRateBps ?? 1500,
+        status: values.status || "pending",
+        payout_method: "manual",
+        terms_accepted_at: new Date().toISOString(),
+        notes: values.notes || null,
+      })
+      .select(
+        "id,display_name,contact_email,public_code,customer_discount_percent,commission_rate_bps,status,notes,created_at,updated_at"
+      )
+      .single();
+    return assertResult(result, "Create partner application");
+  },
+
+  async listAdminReferralPartners(limit = 100) {
+    const result = await getSupabaseAdmin()
+      .from("referral_partners")
+      .select(
+        "id,display_name,contact_email,public_code,stripe_promotion_code_id,customer_discount_percent,commission_rate_bps,hold_days,status,payout_method,payout_reference,terms_accepted_at,notes,created_at,updated_at"
+      )
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    return assertResult(result, "List referral partners");
+  },
+
+  async updateAdminReferralPartner(partnerId, updates) {
+    const payload = {};
+    if (updates.status !== undefined) payload.status = updates.status;
+    if (updates.customerDiscountPercent !== undefined) {
+      payload.customer_discount_percent = updates.customerDiscountPercent;
+    }
+    if (updates.commissionRateBps !== undefined) {
+      payload.commission_rate_bps = updates.commissionRateBps;
+    }
+    if (updates.publicCode !== undefined) {
+      payload.public_code = normalizeReferralCode(updates.publicCode);
+    }
+    if (updates.displayName !== undefined) payload.display_name = updates.displayName;
+    if (updates.contactEmail !== undefined) payload.contact_email = updates.contactEmail;
+    if (updates.notes !== undefined) payload.notes = updates.notes;
+
+    const result = await getSupabaseAdmin()
+      .from("referral_partners")
+      .update(payload)
+      .eq("id", partnerId)
+      .select(
+        "id,display_name,contact_email,public_code,stripe_promotion_code_id,customer_discount_percent,commission_rate_bps,hold_days,status,payout_method,payout_reference,terms_accepted_at,notes,created_at,updated_at"
+      )
+      .maybeSingle();
+    return assertResult(result, "Update referral partner");
+  },
+
+  async deleteAdminReferralPartner(partnerId) {
+    const result = await getSupabaseAdmin()
+      .from("referral_partners")
+      .delete()
+      .eq("id", partnerId)
+      .select("id")
+      .maybeSingle();
+    return assertResult(result, "Delete referral partner");
+  },
+
   async recordReferralConversion(values) {
     const result = await getSupabaseAdmin()
       .rpc("record_referral_conversion", {

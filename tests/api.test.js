@@ -521,4 +521,151 @@ describe("public API validation", () => {
     expect(body.status).toBe("confirmed");
     expect(body.orderNumber).toBe("HA-PAID-001");
   });
+
+  it("partner application creates a pending partner and notifies owner", async () => {
+    vi.stubEnv("CONTACT_TO_EMAIL", "owner@herbagallus.com");
+    const createPartnerApplication = vi.fn().mockResolvedValue({
+      id: "11111111-1111-4111-8111-111111111111",
+      public_code: "MARTIN27",
+      status: "pending",
+    });
+    const sendEmail = vi.fn().mockResolvedValue({ id: "email_partner_1" });
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        isReferralCodeTaken: vi.fn().mockResolvedValue(false),
+        createPartnerApplication,
+      },
+    }));
+    vi.doMock("../server/services/email.js", () => ({ sendEmail }));
+
+    const { default: handler } = await import("../api/referrals/preview.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "https://herbagallus.com", host: "herbagallus.com" },
+        body: {
+          fullName: "Martin Jancar",
+          email: "martin@example.com",
+          socialPlatform: "Instagram",
+          handle: "@martinjancar",
+          audienceSize: "1k – 10k",
+          requestedPromoCode: "martin27",
+          niche: "Šport & regeneracija",
+          promotionPlan: "Instagram Reels in link v bio",
+          consent: true,
+        },
+        socket: { remoteAddress: "127.0.0.44" },
+      },
+      response
+    );
+
+    expect(response.statusCode).toBe(201);
+    expect(createPartnerApplication).toHaveBeenCalledWith(
+      expect.objectContaining({
+        displayName: "Martin Jancar",
+        contactEmail: "martin@example.com",
+        publicCode: "MARTIN27",
+        status: "pending",
+      })
+    );
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(response.body)).toMatchObject({
+      success: true,
+      partner: { publicCode: "MARTIN27", status: "pending" },
+    });
+  });
+
+  it("partner application rejects an already taken promo code", async () => {
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        isReferralCodeTaken: vi.fn().mockResolvedValue(true),
+      },
+    }));
+
+    const { default: handler } = await import("../api/referrals/preview.js");
+    const response = mockResponse();
+    await handler(
+      {
+        method: "POST",
+        headers: { origin: "https://herbagallus.com", host: "herbagallus.com" },
+        body: {
+          fullName: "Ana Novak",
+          email: "ana@example.com",
+          socialPlatform: "TikTok",
+          handle: "@ananovak",
+          audienceSize: "10k – 50k",
+          requestedPromoCode: "HERBA10",
+          niche: "Naravni življenjski slog",
+          promotionPlan: "TikTok video",
+          consent: true,
+        },
+        socket: { remoteAddress: "127.0.0.45" },
+      },
+      response
+    );
+
+    expect(response.statusCode).toBe(409);
+  });
+
+  it("admin orders endpoint lists and approves referral partners", async () => {
+    vi.stubEnv("ADMIN_DASHBOARD_TOKEN", "Zelenalekarna1");
+    const partnerId = "22222222-2222-4222-8222-222222222222";
+    const updateAdminReferralPartner = vi.fn().mockResolvedValue({
+      id: partnerId,
+      display_name: "Martin Jancar",
+      public_code: "MARTIN27",
+      status: "active",
+      customer_discount_percent: 10,
+      commission_rate_bps: 1500,
+    });
+    vi.doMock("../server/repositories/database.js", () => ({
+      database: {
+        listAdminOrders: vi.fn().mockResolvedValue([]),
+        listAdminContactSubmissions: vi.fn().mockResolvedValue([]),
+        listAdminReferralPartners: vi.fn().mockResolvedValue([
+          { id: partnerId, display_name: "Martin Jancar", public_code: "MARTIN27", status: "pending" },
+        ]),
+        updateAdminReferralPartner,
+      },
+    }));
+
+    const { default: adminHandler } = await import("../api/admin/orders.js");
+
+    const getRes = mockResponse();
+    await adminHandler(
+      {
+        method: "GET",
+        headers: { authorization: "Bearer Zelenalekarna1" },
+      },
+      getRes
+    );
+    expect(getRes.statusCode).toBe(200);
+    expect(JSON.parse(getRes.body).partners).toHaveLength(1);
+
+    const patchRes = mockResponse();
+    await adminHandler(
+      {
+        method: "PATCH",
+        headers: {
+          authorization: "Bearer Zelenalekarna1",
+          origin: "https://herbagallus.com",
+          host: "herbagallus.com",
+        },
+        body: {
+          partnerId,
+          status: "active",
+          customerDiscountPercent: 10,
+          commissionRatePercent: 15,
+        },
+      },
+      patchRes
+    );
+    expect(patchRes.statusCode).toBe(200);
+    expect(updateAdminReferralPartner).toHaveBeenCalledWith(partnerId, {
+      status: "active",
+      customerDiscountPercent: 10,
+      commissionRateBps: 1500,
+    });
+  });
 });

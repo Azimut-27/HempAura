@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   ChevronDown,
   Clock,
+  Crown,
   Download,
   LoaderCircle,
   LockKeyhole,
@@ -22,13 +23,17 @@ import {
   Truck,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import AdminPartnersTab from "../components/AdminPartnersTab.jsx";
 import {
+  createAdminPartner,
   deleteAdminContact,
   deleteAdminOrder,
+  deleteAdminPartner,
   downloadAdminGlsLabel,
   getAdminOrders,
   updateAdminContactStatus,
   updateAdminOrderStatus,
+  updateAdminPartner,
 } from "../services/api.js";
 
 const TOKEN_STORAGE_KEY = "hempaura_admin_dashboard_token";
@@ -212,7 +217,8 @@ export default function AdminOrdersPage() {
   const initialToken = useRef(token);
   const [orders, setOrders] = useState([]);
   const [contacts, setContacts] = useState([]);
-  const [activeTab, setActiveTab] = useState("orders"); // "orders" | "contacts"
+  const [partners, setPartners] = useState([]);
+  const [activeTab, setActiveTab] = useState("orders"); // "orders" | "contacts" | "partners"
   const [loading, setLoading] = useState(Boolean(token));
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
@@ -243,12 +249,14 @@ export default function AdminOrdersPage() {
       const payload = await getAdminOrders(adminToken);
       setOrders(payload.orders || []);
       setContacts(payload.contacts || []);
+      setPartners(payload.partners || []);
       sessionStorage.setItem(TOKEN_STORAGE_KEY, adminToken);
       setToken(adminToken);
     } catch (loadError) {
       setError(loadError.message);
       setOrders([]);
       setContacts([]);
+      setPartners([]);
     } finally {
       setLoading(false);
     }
@@ -476,15 +484,77 @@ export default function AdminOrdersPage() {
     }
   }
 
+  async function handleCreatePartner(data) {
+    setActiveAction("partner:create");
+    setError("");
+    try {
+      const result = await createAdminPartner(token, data);
+      if (result.partner) {
+        setPartners((prev) => [result.partner, ...prev]);
+      }
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function handleUpdatePartner(partnerId, updates) {
+    setActiveAction(`partner:${partnerId}:update`);
+    setError("");
+    try {
+      const result = await updateAdminPartner(token, partnerId, updates);
+      if (result.partner) {
+        setPartners((prev) =>
+          prev.map((p) => (p.id === partnerId ? result.partner : p))
+        );
+      }
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  async function handleDeletePartner(partnerId, displayName) {
+    if (
+      !window.confirm(
+        `POZOR: Ali res želite trajno izbrisati partnerja "${displayName}"?`
+      )
+    ) {
+      return;
+    }
+    setActiveAction(`partner:${partnerId}:delete`);
+    setError("");
+    try {
+      await deleteAdminPartner(token, partnerId);
+      setPartners((prev) => prev.filter((p) => p.id !== partnerId));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActiveAction("");
+    }
+  }
+
+  const pendingPartnersCount = useMemo(
+    () => partners.filter((p) => p.status === "pending").length,
+    [partners]
+  );
+
   function logout() {
     sessionStorage.removeItem(TOKEN_STORAGE_KEY);
     setToken("");
     setOrders([]);
     setContacts([]);
+    setPartners([]);
     setError("");
   }
 
-  if (!token || (!orders.length && !contacts.length && error && !loading)) {
+  if (!token || (!orders.length && !contacts.length && !partners.length && error && !loading)) {
     return <AdminLogin onLogin={loadOrders} error={error} loading={loading} />;
   }
 
@@ -521,9 +591,9 @@ export default function AdminOrdersPage() {
           </div>
         </div>
 
-        {/* Top Dual Navigation Tabs (matching Plečnikov čaj reference) */}
+        {/* Top Navigation Tabs */}
         <div className="border-t border-forest/10 bg-[#faf8f5]/60">
-          <div className="mx-auto flex max-w-[1500px] gap-6 px-5 sm:gap-10 sm:px-8">
+          <div className="mx-auto flex max-w-[1500px] gap-6 overflow-x-auto whitespace-nowrap px-5 sm:gap-10 sm:px-8">
             <button
               type="button"
               onClick={() => setActiveTab("orders")}
@@ -557,6 +627,28 @@ export default function AdminOrdersPage() {
               ) : (
                 <span className="rounded-full bg-forest/15 px-2.5 py-0.5 text-[11px] font-bold text-forest/70">
                   0 NOVIH
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("partners")}
+              className={`inline-flex items-center gap-2.5 border-b-2 py-3.5 text-xs font-bold uppercase tracking-wider transition-all sm:text-sm ${
+                activeTab === "partners"
+                  ? "border-forest text-forest"
+                  : "border-transparent text-forest/50 hover:text-forest"
+              }`}
+            >
+              <Crown size={16} aria-hidden="true" />
+              <span>PARTNERJI & AMBASADORJI</span>
+              {pendingPartnersCount > 0 ? (
+                <span className="animate-pulse rounded-full bg-amber-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-xs">
+                  {pendingPartnersCount} ČAKA
+                </span>
+              ) : (
+                <span className="rounded-full bg-forest/15 px-2.5 py-0.5 text-[11px] font-bold text-forest/70">
+                  {partners.length}
                 </span>
               )}
             </button>
@@ -1194,6 +1286,19 @@ export default function AdminOrdersPage() {
               )}
             </section>
           </div>
+        )}
+
+        {/* TAB 3: PARTNERJI & AMBASADORJI */}
+        {activeTab === "partners" && (
+          <AdminPartnersTab
+            partners={partners}
+            orders={orders}
+            loading={loading}
+            activeAction={activeAction}
+            onCreatePartner={handleCreatePartner}
+            onUpdatePartner={handleUpdatePartner}
+            onDeletePartner={handleDeletePartner}
+          />
         )}
       </div>
     </main>

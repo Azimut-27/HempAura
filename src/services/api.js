@@ -96,6 +96,36 @@ export const deleteAdminContact = (token, contactId) =>
     body: JSON.stringify({ contactId }),
   });
 
+export const checkPartnerCodeAvailability = (code) =>
+  request(`/api/referrals/preview?check_code=${encodeURIComponent(code)}`);
+
+export const submitPartnerApplication = (data) =>
+  request("/api/referrals/preview", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+export const createAdminPartner = (token, data) =>
+  request("/api/admin/orders", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ resource: "partner", ...data }),
+  });
+
+export const updateAdminPartner = (token, partnerId, updates) =>
+  request("/api/admin/orders", {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ partnerId, ...updates }),
+  });
+
+export const deleteAdminPartner = (token, partnerId) =>
+  request("/api/admin/orders", {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ partnerId }),
+  });
+
 export async function downloadAdminGlsLabel(token, orderNumber, retry = false) {
   const response = await fetch("/api/shipping/gls/labels", {
     method: "POST",

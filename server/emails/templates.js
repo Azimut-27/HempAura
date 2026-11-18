@@ -277,3 +277,45 @@ export function CodNewOrderNotificationEmail({
     ].join("")
   );
 }
+
+export function PartnerApplicationNotificationEmail(data) {
+  const reply = `mailto:${encodeURIComponent(data.email)}?subject=${encodeURIComponent(
+    `HerbaGallus partnerski program — prijava (${data.requestedPromoCode})`
+  )}`;
+  return layout(
+    `Nova prijava ambasadorja: ${data.fullName}`,
+    [
+      p(`Čas prijave: ${data.submittedAt}`),
+      p(`Ime ustvarjalca: ${data.fullName}`),
+      p(`E-pošta: ${data.email}`),
+      p(`Platforma: ${data.socialPlatform}`),
+      p(`Profil / Povezava: ${data.handle}`),
+      p(`Velikost občinstva: ${data.audienceSize}`),
+      `<div style="background:#f7f1e7;border:1px solid #b99552;padding:12px 16px;margin:14px 0;font-size:15px"><strong>Želena promo koda:</strong> <span style="font-family:monospace;font-size:17px;color:#17382c">${escapeHtml(data.requestedPromoCode)}</span></div>`,
+      p(`Glavna niša / Področje: ${data.niche}`),
+      data.promotionPlan
+        ? `<div style="white-space:pre-wrap;border-left:3px solid #b99552;padding:12px;margin:12px 0"><strong>Načrt promocije:</strong><br/>${escapeHtml(data.promotionPlan)}</div>`
+        : "",
+      p("Prijavo lahko potrdite in aktivirate kodo z enim klikom v nadzorni plošči /admin/orders (zavihek Partnerji)."),
+      `<p><a href="${reply}" style="display:inline-block;background:#17382c;color:#fffaf1;padding:12px 18px;text-decoration:none;font-weight:bold">Odgovori ustvarjalcu</a></p>`,
+    ].join("")
+  );
+}
+
+export function PartnerApplicationNotificationText(data) {
+  return [
+    `HerbaGallus — nova prijava ambasadorja: ${data.fullName}`,
+    "",
+    `Čas prijave: ${data.submittedAt}`,
+    `Ime: ${data.fullName}`,
+    `E-pošta: ${data.email}`,
+    `Platforma: ${data.socialPlatform}`,
+    `Profil: ${data.handle}`,
+    `Velikost občinstva: ${data.audienceSize}`,
+    `Želena promo koda: ${data.requestedPromoCode}`,
+    `Niša: ${data.niche}`,
+    data.promotionPlan ? `\nNačrt promocije:\n${data.promotionPlan}` : "",
+    "",
+    "Prijavo lahko potrdite v nadzorni plošči /admin/orders (zavihek Partnerji).",
+  ].join("\n");
+}
