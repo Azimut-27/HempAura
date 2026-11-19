@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HerbaGallus — Instagram Studio (Testni paket 3 objav)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0d1813;
+      color: #fffaf1;
+      padding: 32px 18px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      max-width: 780px;
+      margin-bottom: 34px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #f0dda8;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      color: #fffaf1;
+    }
+    p.lead {
+      font-size: 14.5px;
+      color: #a9bbb0;
+      line-height: 1.6;
+    }
+
+    /* Simulated Instagram 3-column Grid Preview */
+    .ig-grid-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1140px;
+      margin-bottom: 16px;
+      padding: 0 4px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ig-grid-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: #d4af37;
+    }
+    .dl-all-btn {
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #0d1c15;
+      font-weight: 800;
+      font-size: 13px;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.3);
+      transition: transform 0.15s ease;
+    }
+    .dl-all-btn:hover { transform: translateY(-2px); }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+      max-width: 1140px;
+    }
+
+    @media (max-width: 960px) {
+      .posts-grid {
+        grid-template-columns: 1fr;
+        max-width: 440px;
+      }
+    }
+
+    .post-card {
+      background: #14261e;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    }
+
+    .post-meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #c2d1c8;
+    }
+    .post-num {
+      font-weight: 800;
+      color: #f0dda8;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+    .post-dim {
+      font-size: 11px;
+      color: #849a8e;
+      background: rgba(255,255,255,0.06);
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .canvas-wrap {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #1c3329;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      position: relative;
+    }
+    .canvas-wrap canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .dl-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #0e2017;
+      font-weight: 800;
+      font-size: 13.5px;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
+      transition: transform 0.15s ease;
+    }
+    .dl-btn:hover { transform: translateY(-2px); }
+
+    .caption-box {
+      background: rgba(8, 16, 12, 0.55);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .caption-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #b99552;
+    }
+    .copy-btn {
+      background: rgba(240, 221, 168, 0.14);
+      color: #f0dda8;
+      border: 1px solid rgba(240, 221, 168, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .copy-btn:hover { background: rgba(240, 221, 168, 0.28); }
+    .caption-text {
+      font-size: 12px;
+      line-height: 1.55;
+      color: #d6e2db;
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+
+    .status-note {
+      margin-top: 28px;
+      font-size: 12.5px;
+      color: #8ea397;
+      text-align: center;
+      max-width: 760px;
+      line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span class="badge">HerbaGallus · Instagram Studio</span>
+    <h1>Testni komplet 3 objav (4:5 · Slovenščina)</h1>
+    <p class="lead">Hibridna izdelava: fotorealistične AI editorial fotografije + vaši pravi izdelki + ostra slovenska tipografija. Spodaj vidite točno, kako se vse 3 objave vizualno povežejo v enotno Instagram vrstico.</p>
+  </div>
+
+  <div class="ig-grid-banner">
+    <span class="ig-grid-label">Predogled Instagram mreže (3 stolpci)</span>
+    <button class="dl-all-btn" onclick="downloadAll()">⬇️ Prenesi vse 3 objave (PNG)</button>
+  </div>
+
+  <div class="posts-grid">
+
+    <!-- POST 1: Vršički White Heaven -->
+    <div class="post-card">
+      <div class="post-meta-top">
+        <span class="post-num">1 · Vršički (Lifestyle)</span>
+        <span class="post-dim">1080 × 1350 px</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="canvas-post1" width="1080" height="1350"></canvas>
+      </div>
+      <button class="dl-btn" onclick="downloadCanvas('canvas-post1', 'herbagallus-ig-01-vrsicki.png')">
+        ⬇️ Prenesi Objavo 1 (PNG)
+      </button>
+      <div class="caption-box">
+        <div class="caption-header">
+          <span>Pripravljen IG opis</span>
+          <button class="copy-btn" onclick="copyCaption('cap1', this)">📋 Kopiraj</button>
+        </div>
+        <div class="caption-text" id="cap1">Naravno pridelano. Kakovost na prvem mestu. 🌿☀️
+
+Naši vršički sorte White Heaven rastejo pod naravnim slovenskim soncem (sungrown), brez umetnih luči in brez bližnjic. Ročno obrani, počasi zoreni in laboratorijsko testirani (6–9 % naravnega CBD, THC < 0,3 %).
+
+Za večerni mir in pristno aromo domače narave. ✨
+
+🎁 -15 % na prvi nakup s kodo DOMA15 (povezava v bio)
+📍 Obiščite nas tudi na Vodnikovem trgu v Ljubljani ali naročite z GLS dostavo v 1–2 dneh.
+
+#herbagallus #slovenskakonoplja #sungrown #naravnasprostitev #whiteheaven #ljubljana #dolenjska #naravnapridelava</div>
+      </div>
+    </div>
+
+    <!-- POST 2: CBD Kapljice 5 % (Infografika) -->
+    <div class="post-card">
+      <div class="post-meta-top">
+        <span class="post-num">2 · Kapljice (Infografika)</span>
+        <span class="post-dim">1080 × 1350 px</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="canvas-post2" width="1080" height="1350"></canvas>
+      </div>
+      <button class="dl-btn" onclick="downloadCanvas('canvas-post2', 'herbagallus-ig-02-kapljice-infografika.png')">
+        ⬇️ Prenesi Objavo 2 (PNG)
+      </button>
+      <div class="caption-box">
+        <div class="caption-header">
+          <span>Pripravljen IG opis</span>
+          <button class="copy-btn" onclick="copyCaption('cap2', this)">📋 Kopiraj</button>
+        </div>
+        <div class="caption-text" id="cap2">Zakaj pri CBD kapljicah ni vseeno, v kakšnem olju so? 💧🫒
+
+Večina izdelkov na trgu uporablja rafinirano nosilno olje — pri HerbaGallus pa stavimo na 93,4 % BIO ekstra deviško olivno olje in polnospektralni CO₂ izvleček (500 mg CBD).
+
+✔️ Boljša naravna absorpcija
+✔️ Ohranjen celoten profil terpenov
+✔️ 100 % vegansko & laboratorijsko preverjeno (< 0,2 % THC)
+
+Shrani objavo za kasneje ali preveri našo kolekcijo na herbagallus.com (povezava v bio). 👇
+
+#herbagallus #cbdkapljice #bioolivnoolje #polnispekter #naravnanega #slovenskizdelki #vecernirituali</div>
+      </div>
+    </div>
+
+    <!-- POST 3: Krema + Trio Promo -->
+    <div class="post-card">
+      <div class="post-meta-top">
+        <span class="post-num">3 · Krema + Promo (-15 %)</span>
+        <span class="post-dim">1080 × 1350 px</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="canvas-post3" width="1080" height="1350"></canvas>
+      </div>
+      <button class="dl-btn" onclick="downloadCanvas('canvas-post3', 'herbagallus-ig-03-krema-promo.png')">
+        ⬇️ Prenesi Objavo 3 (PNG)
+      </button>
+      <div class="caption-box">
+        <div class="caption-header">
+          <span>Pripravljen IG opis</span>
+          <button class="copy-btn" onclick="copyCaption('cap3', this)">📋 Kopiraj</button>
+        </div>
+        <div class="caption-text" id="cap3">Dobrodošli v svetu HerbaGallus! 🌿✨
+
+Ob prvem naročilu vam podarjamo -15 % popust na celotno slovensko kolekcijo — izbirajte med vršički White Heaven, CBD kapljicami 5 % v bio ekstra deviškem olivnem olju in negovalno CBD kremo s karitejevim maslom, sivko in kamilico.
+
+🏷️ Vpišite kodo: DOMA15 (ali kliknite povezavo v bio za samodejni popust!)
+📦 Hitra GLS dostava v 1–2 dneh po celi Sloveniji
+📍 Osebno svetovanje: Vodnikov trg, Ljubljana
+
+#herbagallus #cbdkrema #naravnakozmetika #karitejevomaslo #sivka #ljubljana #popust #slovenskablagovnaznamka</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="status-note">
+    💡 Namig za objavljanje na Instagramu: Če želite točno takšen vrstni red v mreži (od leve proti desni: 1 → 2 → 3), objavite najprej <strong>Objavo 3</strong>, nato <strong>Objavo 2</strong> in na koncu <strong>Objavo 1</strong> (ker Instagram najnovejšo objavo postavi na levo).
+  </p>
+
+  <script>
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = (err) => reject(err);
+        img.src = src;
+      });
+    }
+
+    function drawCover(ctx, img, x, y, w, h, alignY = 0.5) {
+      const imgRatio = img.width / img.height;
+      const boxRatio = w / h;
+      let sx, sy, sw, sh;
+      if (imgRatio > boxRatio) {
+        sh = img.height;
+        sw = sh * boxRatio;
+        sx = (img.width - sw) / 2;
+        sy = 0;
+      } else {
+        sw = img.width;
+        sh = sw / boxRatio;
+        sx = 0;
+        sy = (img.height - sh) * alignY;
+      }
+      ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function drawRoundedImage(ctx, img, x, y, w, h, r) {
+      ctx.save();
+      roundRect(ctx, x, y, w, h, r);
+      ctx.clip();
+      drawCover(ctx, img, x, y, w, h);
+      ctx.restore();
+    }
+
+    async function renderAll() {
+      await document.fonts.ready;
+
+      const [
+        ai1, ai2, ai3,
+        prodFlower, prodOil, prodBalm,
+        markImg
+      ] = await Promise.all([
+        loadImage('/ig-studio/ai-post1-lifestyle.jpg'),
+        loadImage('/ig-studio/ai-post2-dropper.jpg'),
+        loadImage('/ig-studio/ai-post3-cream.jpg'),
+        loadImage('/products/herbagallus-cbd-flower-premium.jpg'),
+        loadImage('/products/herbagallus-cbd-oil-premium.jpg'),
+        loadImage('/products/herbagallus-cbd-balm-sl.png'),
+        loadImage('/brand/herbagallus-mark.png')
+      ]);
+
+      renderPost1(ai1, prodFlower, markImg);
+      renderPost2(ai2, prodOil, markImg);
+      renderPost3(ai3, prodFlower, prodOil, prodBalm, markImg);
+    }
+
+    /* =======================================================
+       POST 1: Vršički White Heaven — Editorial Lifestyle
+       ======================================================= */
+    function renderPost1(bg, prodFlower, mark) {
+      const c = document.getElementById('canvas-post1');
+      const ctx = c.getContext('2d');
+      const W = 1080, H = 1350;
+
+      // 1. Background editorial photo
+      drawCover(ctx, bg, 0, 0, W, H, 0.55);
+
+      // 2. Soft cream gradient on top for crisp headline readability
+      const topGrad = ctx.createLinearGradient(0, 0, 0, 480);
+      topGrad.addColorStop(0, 'rgba(250, 246, 239, 0.90)');
+      topGrad.addColorStop(0.65, 'rgba(250, 246, 239, 0.55)');
+      topGrad.addColorStop(1, 'rgba(250, 246, 239, 0)');
+      ctx.fillStyle = topGrad;
+      ctx.fillRect(0, 0, W, 480);
+
+      // Subtle inner luxury border frame
+      ctx.strokeStyle = 'rgba(185, 149, 82, 0.38)';
+      ctx.lineWidth = 2;
+      roundRect(ctx, 28, 28, W - 56, H - 56, 20);
+      ctx.stroke();
+
+      // 3. Top Header: Logo + Sungrown Badge
+      const markH = 44;
+      const markW = mark.width * (markH / mark.height);
+      ctx.drawImage(mark, 66, 58, markW, markH);
+
+      ctx.fillStyle = '#17382c';
+      ctx.font = '700 32px "Playfair Display", Georgia, serif';
+      ctx.fillText('HerbaGallus', 66 + markW + 14, 92);
+
+      // Origin badge top right
+      const badgeText = '100 % SLOVENSKO · SUNGROWN';
+      ctx.font = '800 17px "Plus Jakarta Sans", sans-serif';
+      const bw = ctx.measureText(badgeText).width + 38;
+      roundRect(ctx, W - 66 - bw, 58, bw, 42, 21);
+      ctx.fillStyle = 'rgba(185, 149, 82, 0.16)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(185, 149, 82, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#825822';
+      ctx.fillText(badgeText, W - 66 - bw + 19, 85);
+
+      // 4. Hero Headline
+      ctx.fillStyle = '#8e6128';
+      ctx.font = '800 19px "Plus Jakarta Sans", sans-serif';
+      ctx.letterSpacing = '2.5px';
+      ctx.fillText('NARAVNO PRIDELANO POD SLOVENSKIM SONCEM', 66, 175);
+      ctx.letterSpacing = '0px';
+
+      ctx.fillStyle = '#17382c';
+      ctx.font = '700 72px "Playfair Display", Georgia, serif';
+      ctx.fillText('Za večerni mir in', 66, 260);
+
+      ctx.fillStyle = '#8e6128';
+      ctx.font = 'italic 700 72px "Playfair Display", Georgia, serif';
+      ctx.fillText('naravno sprostitev.', 66, 342);
+
+      ctx.fillStyle = '#2f493d';
+      ctx.font = '500 26px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('Ročno obrani vršički White Heaven s polno aromo.', 66, 400);
+
+      // 5. Bottom Real Product Showcase Card
+      const cardX = 58, cardY = 1045, cardW = W - 116, cardH = 240;
+      ctx.save();
+      ctx.shadowColor = 'rgba(18, 40, 31, 0.18)';
+      ctx.shadowBlur = 32;
+      ctx.shadowOffsetY = 12;
+      roundRect(ctx, cardX, cardY, cardW, cardH, 24);
+      ctx.fillStyle = 'rgba(255, 253, 248, 0.94)';
+      ctx.fill();
+      ctx.restore();
+
+      roundRect(ctx, cardX, cardY, cardW, cardH, 24);
+      ctx.strokeStyle = 'rgba(185, 149, 82, 0.45)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Real product thumbnail
+      drawRoundedImage(ctx, prodFlower, cardX + 24, cardY + 24, 192, 192, 16);
+      ctx.strokeStyle = 'rgba(23, 56, 44, 0.12)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, cardX + 24, cardY + 24, 192, 192, 16);
+      ctx.stroke();
+
+      // Product details
+      const tx = cardX + 244;
+      roundRect(ctx, tx, cardY + 30, 196, 30, 6);
+      ctx.fillStyle = 'rgba(185, 149, 82, 0.18)';
+      ctx.fill();
+      ctx.fillStyle = '#825822';
+      ctx.font = '800 15px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('VRŠIČKI · OUTDOOR', tx + 14, cardY + 51);
+
+      ctx.fillStyle = '#17382c';
+      ctx.font = '700 40px "Playfair Display", Georgia, serif';
+      ctx.fillText('White Heaven', tx, cardY + 108);
+
+      ctx.fillStyle = '#3c5247';
+      ctx.font = '600 22px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('6–9 % naravnega CBD · THC < 0,3 %', tx, cardY + 148);
+
+      ctx.fillStyle = '#6c7c73';
+      ctx.font = '500 19px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('100 % naravno · Laboratorijsko testirano', tx, cardY + 184);
+
+      // Right pill CTA
+      const pillW = 210, pillH = 52;
+      const pillX = cardX + cardW - pillW - 24;
+      const pillY = cardY + cardH - pillH - 26;
+      roundRect(ctx, pillX, pillY, pillW, pillH, 12);
+      ctx.fillStyle = '#17382c';
+      ctx.fill();
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = '700 19px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('herbagallus.com', pillX + pillW / 2, pillY + 33);
+      ctx.textAlign = 'left';
+    }
+
+    /* =======================================================
+       POST 2: CBD Kapljice 5 % — Clean Infographic
+       ======================================================= */
+    function renderPost2(bg, prodOil, mark) {
+      const c = document.getElementById('canvas-post2');
+      const ctx = c.getContext('2d');
+      const W = 1080, H = 1350;
+
+      // 1. Background clean dropper photo
+      drawCover(ctx, bg, 0, 0, W, H, 0.5);
+
+      // Subtle inner frame
+      ctx.strokeStyle = 'rgba(23, 56, 44, 0.14)';
+      ctx.lineWidth = 2;
+      roundRect(ctx, 28, 28, W - 56, H - 56, 20);
+      ctx.stroke();
+
+      // 2. Top-left Header
+      const lx = 68;
+      ctx.fillStyle = '#8e6128';
+      ctx.font = '800 18px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('CBD KAPLJICE 5 % · POLNI SPEKTER', lx, 96);
+
+      ctx.fillStyle = '#17382c';
+      ctx.font = '700 58px "Playfair Display", Georgia, serif';
+      ctx.fillText('Zakaj je nosilno olje', lx, 168);
+
+      ctx.fillStyle = '#8e6128';
+      ctx.font = 'italic 700 58px "Playfair Display", Georgia, serif';
+      ctx.fillText('tako pomembno?', lx, 236);
+
+      // Gold accent bar
+      ctx.fillStyle = '#b99552';
+      roundRect(ctx, lx, 266, 130, 5, 3);
+      ctx.fill();
+
+      // 3. Infographic Stats (Nordic Oil crisp vertical hierarchy on left 56%)
+      const stats = [
+        { val: '93,4 %', accent: '#17382c', line1: 'Bio ekstra deviško olivno olje', line2: 'za optimalno naravno absorpcijo' },
+        { val: '500 mg', accent: '#17382c', line1: 'Naravnega CBD-ja (5 % v 10 ml)', line2: 'z ohranjenimi rastlinskimi terpeni' },
+        { val: 'CO₂', accent: '#8e6128', line1: 'Superkritična ekstrakcija', line2: 'najčistejši postopek brez topil' },
+        { val: '< 0,2 %', accent: '#17382c', line1: 'Vsebnost THC po EU zakonodaji', line2: 'neodvisno laboratorijsko testirano' },
+        { val: '100 %', accent: '#17382c', line1: 'Vegansko & naravno poreklo', line2: 'brez umetnih dodatkov ali arom' }
+      ];
+
+      let sy = 345;
+      stats.forEach((st) => {
+        ctx.fillStyle = st.accent;
+        ctx.font = '800 52px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(st.val, lx, sy);
+
+        ctx.fillStyle = '#233b30';
+        ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(st.line1, lx, sy + 32);
+
+        ctx.fillStyle = '#5e7066';
+        ctx.font = '500 19px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(st.line2, lx, sy + 58);
+
+        sy += 150;
+      });
+
+      // 4. Bottom Real Oil Product Strip (below the oil droplet)
+      const bx = 58, by = 1130, bw = W - 116, bh = 160;
+      ctx.save();
+      ctx.shadowColor = 'rgba(23, 56, 44, 0.12)';
+      ctx.shadowBlur = 24;
+      ctx.shadowOffsetY = 8;
+      roundRect(ctx, bx, by, bw, bh, 22);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.restore();
+
+      roundRect(ctx, bx, by, bw, bh, 22);
+      ctx.strokeStyle = 'rgba(185, 149, 82, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      drawRoundedImage(ctx, prodOil, bx + 18, by + 18, 124, 124, 14);
+
+      const btx = bx + 166;
+      ctx.fillStyle = '#17382c';
+      ctx.font = '700 32px "Playfair Display", Georgia, serif';
+      ctx.fillText('HerbaGallus CBD Olje 5 %', btx, by + 62);
+
+      ctx.fillStyle = '#4e6157';
+      ctx.font = '500 21px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('10 ml · 2–4 kapljice za vsakodnevno ravnovesje', btx, by + 100);
+
+      ctx.fillStyle = '#8e6128';
+      ctx.font = '800 19px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('herbagallus.com  ·  GLS dostava 1–2 dni', btx, by + 134);
+
+      // Small emblem top right of bottom card
+      const smH = 38;
+      const smW = mark.width * (smH / mark.height);
+      ctx.drawImage(mark, bx + bw - smW - 24, by + 24, smW, smH);
+    }
+
+    /* =======================================================
+       POST 3: CBD Krema + Trio Welcome Promo (-15 % DOMA15)
+       ======================================================= */
+    function renderPost3(bg, prodFlower, prodOil, prodBalm, mark) {
+      const c = document.getElementById('canvas-post3');
+      const ctx = c.getContext('2d');
+      const W = 1080, H = 1350;
+
+      // 1. Background moody cream & hands photo
+      drawCover(ctx, bg, 0, 0, W, H, 0.5);
+
+      // 2. Deep emerald top gradient for luxury bold promo contrast
+      const topGrad = ctx.createLinearGradient(0, 0, 0, 560);
+      topGrad.addColorStop(0, 'rgba(13, 33, 25, 0.92)');
+      topGrad.addColorStop(0.75, 'rgba(15, 39, 30, 0.72)');
+      topGrad.addColorStop(1, 'rgba(15, 39, 30, 0)');
+      ctx.fillStyle = topGrad;
+      ctx.fillRect(0, 0, W, 560);
+
+      // Bottom subtle dark gradient
+      const botGrad = ctx.createLinearGradient(0, 1020, 0, H);
+      botGrad.addColorStop(0, 'rgba(12, 29, 22, 0)');
+      botGrad.addColorStop(1, 'rgba(12, 29, 22, 0.88)');
+      ctx.fillStyle = botGrad;
+      ctx.fillRect(0, 1020, W, 330);
+
+      // Luxury gold inner border
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.42)';
+      ctx.lineWidth = 2;
+      roundRect(ctx, 28, 28, W - 56, H - 56, 20);
+      ctx.stroke();
+
+      // 3. Top Brand Row
+      ctx.fillStyle = '#fffaf1';
+      ctx.font = '700 32px "Playfair Display", Georgia, serif';
+      ctx.fillText('HerbaGallus', 68, 88);
+
+      const pillTop = 'SLOVENSKA NARAVNA KOLEKCIJA';
+      ctx.font = '800 16px "Plus Jakarta Sans", sans-serif';
+      const ptW = ctx.measureText(pillTop).width + 34;
+      roundRect(ctx, W - 68 - ptW, 56, ptW, 38, 19);
+      ctx.fillStyle = 'rgba(240, 221, 168, 0.14)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(240, 221, 168, 0.42)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#f0dda8';
+      ctx.fillText(pillTop, W - 68 - ptW + 17, 81);
+
+      // 4. Bold Promo Block in upper dark emerald zone
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = '800 20px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('DARILO ZA PRVI NAKUP · VSI IZDELKI', 68, 158);
+
+      // Metallic gold gradient for -15 %
+      const goldGrad = ctx.createLinearGradient(68, 180, 440, 310);
+      goldGrad.addColorStop(0, '#f8ebc2');
+      goldGrad.addColorStop(0.5, '#dfb84b');
+      goldGrad.addColorStop(1, '#b99038');
+
+      ctx.fillStyle = goldGrad;
+      ctx.font = '800 132px "Playfair Display", Georgia, serif';
+      ctx.fillText('-15 %', 64, 288);
+
+      ctx.fillStyle = '#fffaf1';
+      ctx.font = '800 42px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('NA CELOTNO', 442, 232);
+      ctx.fillText('KOLEKCIJO', 442, 284);
+
+      ctx.fillStyle = '#d3e0d8';
+      ctx.font = '500 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('CBD Krema s sivko · Kapljice 5 % · Vršički White Heaven', 68, 352);
+
+      // Prominent Gold Promo Code Pill
+      const cpX = 68, cpY = 390, cpW = 475, cpH = 82;
+      const btnGrad = ctx.createLinearGradient(cpX, cpY, cpX + cpW, cpY + cpH);
+      btnGrad.addColorStop(0, '#f3e1ac');
+      btnGrad.addColorStop(0.5, '#d7b043');
+      btnGrad.addColorStop(1, '#b68c32');
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+      ctx.shadowBlur = 22;
+      ctx.shadowOffsetY = 8;
+      roundRect(ctx, cpX, cpY, cpW, cpH, 16);
+      ctx.fillStyle = btnGrad;
+      ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = '#10241b';
+      ctx.font = '700 21px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('VPIŠI KODO:', cpX + 28, cpY + 49);
+
+      ctx.font = '900 38px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('DOMA15', cpX + 186, cpY + 54);
+
+      // Right helper label next to pill
+      ctx.fillStyle = '#b9cdc2';
+      ctx.font = '500 20px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('Velja na spletu:', cpX + cpW + 28, cpY + 34);
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('herbagallus.com', cpX + cpW + 28, cpY + 66);
+
+      // 5. Bottom Trio Showcase Card (All 3 real products!)
+      const bX = 56, bY = 1130, bW = W - 112, bH = 160;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.4)';
+      ctx.shadowBlur = 26;
+      roundRect(ctx, bX, bY, bW, bH, 22);
+      ctx.fillStyle = 'rgba(15, 36, 28, 0.92)';
+      ctx.fill();
+      ctx.restore();
+
+      roundRect(ctx, bX, bY, bW, bH, 22);
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.48)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 3 crisp product thumbnails
+      const thumbs = [prodBalm, prodOil, prodFlower];
+      thumbs.forEach((im, idx) => {
+        const tx = bX + 22 + idx * 124;
+        const ty = bY + 24;
+        drawRoundedImage(ctx, im, tx, ty, 112, 112, 14);
+        ctx.strokeStyle = 'rgba(240, 221, 168, 0.4)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, tx, ty, 112, 112, 14);
+        ctx.stroke();
+      });
+
+      const infoX = bX + 412;
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = '800 15px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('NEGA · KAPLJICE · VRŠIČKI', infoX, bY + 46);
+
+      ctx.fillStyle = '#fffaf1';
+      ctx.font = '700 28px "Playfair Display", Georgia, serif';
+      ctx.fillText('Krema s karitejem & sivko', infoX, bY + 86);
+
+      ctx.fillStyle = '#c8d8cf';
+      ctx.font = '500 20px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('📍 Vodnikov trg, LJ  ·  GLS dostava 1–2 dni', infoX, bY + 126);
+    }
+
+    function downloadCanvas(id, filename) {
+      const c = document.getElementById(id);
+      const a = document.createElement('a');
+      a.download = filename;
+      a.href = c.toDataURL('image/png');
+      a.click();
+    }
+
+    function downloadAll() {
+      const items = [
+        ['canvas-post1', 'herbagallus-ig-01-vrsicki.png'],
+        ['canvas-post2', 'herbagallus-ig-02-kapljice-infografika.png'],
+        ['canvas-post3', 'herbagallus-ig-03-krema-promo.png']
+      ];
+      items.forEach(([id, name], i) => {
+        setTimeout(() => downloadCanvas(id, name), i * 350);
+      });
+    }
+
+    function copyCaption(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = '✓ Kopirano!';
+        setTimeout(() => btn.innerText = orig, 1800);
+      });
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
