@@ -221,6 +221,29 @@ describe("GLS Slovenia client", () => {
     ]);
   });
 
+  it("throws an error when COD order has missing or zero total_cents", () => {
+    expect(() =>
+      buildGlsParcel({
+        public_order_number: "HA-20261029-A1B2C3",
+        customer_name: "Ana Novak",
+        customer_email: "ana@example.com",
+        provider: "cod",
+        payment_status: "cod_pending",
+        // total_cents is missing!
+        shipping_address_json: {
+          name: "Ana Novak",
+          line1: "Slovenska cesta 15",
+          line2: "",
+          postal_code: "1000",
+          city: "Ljubljana",
+          country: "SI",
+          phone: "041123456",
+        },
+        order_items: [{ sku_snapshot: "HA-CBD-FS-500-10ML" }],
+      })
+    ).toThrow(/nima veljavnega zneska odkupnine/);
+  });
+
   it("builds a parcel without COD service when order is already paid", () => {
     const parcel = buildGlsParcel({
       public_order_number: "HA-20261029-A1B2C3",

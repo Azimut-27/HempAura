@@ -287,7 +287,7 @@ export const database = {
     const result = await getSupabaseAdmin()
       .from("orders")
       .select(
-        "id,public_order_number,provider_session_id,customer_email,customer_name,payment_status,fulfillment_status,shipping_address_json,billing_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
+        "id,public_order_number,provider,provider_session_id,customer_email,customer_name,currency,total_cents,subtotal_cents,shipping_cents,discount_cents,payment_status,fulfillment_status,shipping_address_json,billing_address_json,order_items(product_id,sku_snapshot,name_snapshot,quantity)"
       )
       .eq("public_order_number", orderNumber)
       .maybeSingle();

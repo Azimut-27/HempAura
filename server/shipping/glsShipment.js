@@ -110,9 +110,15 @@ export function buildGlsParcel(order) {
   const isCod =
     order.provider === "cod" || order.payment_status === "cod_pending";
   if (isCod) {
+    const codAmount = Number(((order.total_cents || 0) / 100).toFixed(2));
+    if (!Number.isFinite(codAmount) || codAmount <= 0) {
+      throw new Error(
+        `Naročilo po povzetju ${order.public_order_number} nima veljavnega zneska odkupnine (total_cents: ${order.total_cents}).`
+      );
+    }
     services.push({
       Code: "COD",
-      CODAmount: Number(((order.total_cents || 0) / 100).toFixed(2)),
+      CODAmount: codAmount,
       CODReference: order.public_order_number,
     });
   }
