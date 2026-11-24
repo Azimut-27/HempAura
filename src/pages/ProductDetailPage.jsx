@@ -1,5 +1,5 @@
 import { ArrowLeft, Check, FileText, Minus, Plus, ShoppingBag } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FaqList from "../components/FaqList.jsx";
 import ProductCard from "../components/ProductCard.jsx";
@@ -31,9 +31,14 @@ export default function ProductDetailPage() {
   const product = getProductBySlug(slug);
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addItem } = useCart();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setSelectedImageIndex(0);
+  }, [slug]);
 
   const defaultVariant =
     product?.variants?.find((v) => v.default) || product?.variants?.[0] || null;
@@ -149,13 +154,81 @@ export default function ProductDetailPage() {
             <ArrowLeft size={17} aria-hidden="true" /> Nazaj na izdelke
           </Link>
           <div className="mt-8 grid gap-10 lg:grid-cols-2">
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-cream shadow-sm border border-forest/10">
-              {activeVariant?.sizeBadge && (
-                <span className="absolute bottom-4 right-4 z-10 rounded-xl bg-ink/85 px-3.5 py-1 text-sm font-bold text-white shadow-md">
-                  {activeVariant.sizeBadge}
-                </span>
-              )}
-              <ProductMedia product={product} fit="cover" className="h-full w-full object-cover" />
+            <div>
+              {(() => {
+                const primaryImage = getProductImage(product, language);
+                const extraPhotos = Array.isArray(product.gallery) ? product.gallery : [];
+                const galleryItems = [
+                  ...(primaryImage
+                    ? [{ src: primaryImage.src, alt: primaryImage.alt, isPrimary: true }]
+                    : []),
+                  ...extraPhotos,
+                ];
+                const activeItem = galleryItems[selectedImageIndex] || galleryItems[0];
+
+                return (
+                  <>
+                    <div className="relative aspect-square overflow-hidden rounded-2xl border border-forest/10 bg-cream shadow-sm">
+                      {activeVariant?.sizeBadge && selectedImageIndex === 0 && (
+                        <span className="absolute bottom-4 right-4 z-10 rounded-xl bg-ink/85 px-3.5 py-1 text-sm font-bold text-white shadow-md">
+                          {activeVariant.sizeBadge}
+                        </span>
+                      )}
+                      {selectedImageIndex === 0 ? (
+                        <ProductMedia
+                          product={product}
+                          fit="cover"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <>
+                          <img
+                            src={activeItem.src}
+                            alt={activeItem.alt}
+                            width="960"
+                            height="1280"
+                            className="h-full w-full object-cover object-center"
+                          />
+                          {activeItem.caption && (
+                            <span className="absolute bottom-4 left-4 z-10 rounded-xl bg-forest/85 px-3.5 py-1.5 text-xs font-semibold text-porcelain backdrop-blur-sm shadow-md">
+                              {t(activeItem.caption)}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {galleryItems.length > 1 && (
+                      <div className="mt-3.5 grid grid-cols-5 gap-2.5 sm:gap-3">
+                        {galleryItems.map((item, idx) => {
+                          const isSelected = idx === selectedImageIndex;
+                          return (
+                            <button
+                              key={item.src}
+                              type="button"
+                              onClick={() => setSelectedImageIndex(idx)}
+                              aria-label={`${t("Oglej si fotografijo")} ${idx + 1}`}
+                              aria-pressed={isSelected}
+                              className={`relative aspect-square overflow-hidden rounded-xl border-2 bg-cream transition-all ${
+                                isSelected
+                                  ? "border-forest ring-2 ring-forest/20"
+                                  : "border-transparent opacity-75 hover:opacity-100 hover:border-forest/30"
+                              }`}
+                            >
+                              <img
+                                src={item.src}
+                                alt={item.alt}
+                                loading="lazy"
+                                className="h-full w-full object-cover object-center"
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
             <div className="lg:py-4">
               <p className="text-xs font-bold uppercase text-clay">

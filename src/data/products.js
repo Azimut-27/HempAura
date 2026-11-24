@@ -78,6 +78,18 @@ export const products = [
         height: 1024,
       },
     },
+    gallery: [
+      {
+        src: "/farm/farm-rows-golden.jpg",
+        alt: "Sončni nasad industrijske konoplje HerbaGallus v Sloveniji",
+        caption: "Iz naše sončne pridelave",
+      },
+      {
+        src: "/farm/farm-loupe-check.jpg",
+        alt: "Ročni pregled zrelosti rastlin s povečevalnim steklom pred žetvijo",
+        caption: "Ročna kontrola zrelosti",
+      },
+    ],
     badge: "Polni spekter",
     featured: true,
     labReports: [],
@@ -234,6 +246,28 @@ export const products = [
         height: 1024,
       },
     },
+    gallery: [
+      {
+        src: "/farm/farm-cola-macro-purple.jpg",
+        alt: "Bližnji posnetek svežega vrha konoplje na nasadu HerbaGallus",
+        caption: "Prava fotografija naše pridelave",
+      },
+      {
+        src: "/farm/farm-white-heaven-frost.jpg",
+        alt: "Svež cvet sorte White Heaven z bogatimi smolnimi trihomi",
+        caption: "Sveži cvetovi sorte White Heaven",
+      },
+      {
+        src: "/farm/farm-autumn-bud.jpg",
+        alt: "Zrel cvet konoplje v jesenskih odtenkih na prostem",
+        caption: "Bogata aroma in smola",
+      },
+      {
+        src: "/farm/farm-sunlit-spire.jpg",
+        alt: "Rastlina konoplje na soncu pod zaščitno mrežo v Sloveniji",
+        caption: "Pridelava na prostem",
+      },
+    ],
     badge: "6–9 % CBD",
     featured: true,
     labReports: [],

@@ -1,8 +1,36 @@
 import { FileCheck2, PackageCheck, Scale } from "lucide-react";
 import { Link } from "react-router-dom";
 import ContactCta from "../components/ContactCta.jsx";
+import FarmGallery from "../components/FarmGallery.jsx";
 import Seo from "../components/Seo.jsx";
 import { useLanguage } from "../context/LanguageContext.jsx";
+
+const qualityFarmPhotos = [
+  {
+    src: "/farm/farm-loupe-check.jpg",
+    title: "Ročna kontrola zrelosti",
+    subtitle: "Pregled trihomov s povečevalnim steklom",
+    alt: "Pridelovalec s povečevalnim steklom preverja zrelost cvetov konoplje na sončnem nasadu",
+  },
+  {
+    src: "/farm/farm-rows-perspective.jpg",
+    title: "Pridelava na prostem",
+    subtitle: "Sončne vrste pod zaščitno mrežo",
+    alt: "Pogled vzdolž urejenih vrst zunanjih rastlin konoplje pod zaščitno mrežo v Sloveniji",
+  },
+  {
+    src: "/farm/farm-cola-sunset.jpg",
+    title: "Bogata aroma in smola",
+    subtitle: "Sveži cvetovi sorte White Heaven",
+    alt: "Bližnji posnetek zrelega vrha konoplje v večerni sončni svetlobi",
+  },
+  {
+    src: "/farm/farm-team-sunset.jpg",
+    title: "Ročna žetev",
+    subtitle: "Pobiranje ob optimalni zrelosti",
+    alt: "Ekipa HerbaGallus ob skrbnem pregledu rastlin v zlatem sončnem zahodu",
+  },
+];
 
 const principles = [
   {
@@ -73,6 +101,28 @@ export default function QualityPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Naša pridelava v sliki Section */}
+      <section className="bg-cream py-16 sm:py-20 border-b border-forest/10">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-clay">
+              {t("Z naše sončne pridelave")}
+            </p>
+            <h2 className="mt-3 font-display text-3xl sm:text-4xl font-semibold text-forest">
+              {t("Naša pridelava v sliki")}
+            </h2>
+            <p className="mt-3 text-base leading-7 text-forest/70">
+              {t(
+                "Pristne fotografije z našega slovenskega nasada – od rasti na prostem do skrbne ročne žetve."
+              )}
+            </p>
+          </div>
+          <div className="mt-10">
+            <FarmGallery items={qualityFarmPhotos} />
           </div>
         </div>
       </section>

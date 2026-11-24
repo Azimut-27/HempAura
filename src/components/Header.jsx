@@ -8,7 +8,7 @@ import { useLanguage } from "../context/LanguageContext.jsx";
 const navItems = [
   { label: "Izdelki", to: "/products" },
   { label: "Kakovost", to: "/quality" },
-  { label: "O znamki", to: "/#about" },
+  { label: "O nas", to: "/#about" },
   { label: "Partnerji", to: "/partners" },
   { label: "FAQ", to: "/faq" },
   { label: "Kontakt", to: "/contact" },

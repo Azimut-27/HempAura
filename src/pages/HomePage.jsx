@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ContactCta from "../components/ContactCta.jsx";
 import FaqList from "../components/FaqList.jsx";
+import FarmGallery from "../components/FarmGallery.jsx";
 import NewsletterForm from "../components/NewsletterForm.jsx";
 import PartnerApplicationModal from "../components/PartnerApplicationModal.jsx";
 import ProductCard from "../components/ProductCard.jsx";
@@ -13,6 +14,34 @@ import { faqs } from "../data/faqs.js";
 import { products } from "../data/products.js";
 
 const lifestyleImage = "/hemp-lifestyle.png";
+const qualityShowcaseImage = "/farm/farm-loupe-check.jpg";
+
+const homeFarmPhotos = [
+  {
+    src: "/farm/farm-rows-golden.jpg",
+    title: "Pridelava na prostem",
+    subtitle: "Sončne vrste pod zaščitno mrežo",
+    alt: "Vrste zunanjih rastlin konoplje v zlati sončni svetlobi pod zaščitno mrežo",
+  },
+  {
+    src: "/farm/farm-white-heaven-frost.jpg",
+    title: "Bogata aroma in smola",
+    subtitle: "Sveži cvetovi sorte White Heaven",
+    alt: "Bližnji posnetek svežega cvetu konoplje sorte White Heaven z vijoličastimi listi",
+  },
+  {
+    src: "/farm/farm-harvest-sunbeams.jpg",
+    title: "Ročna žetev",
+    subtitle: "Pobiranje ob optimalni zrelosti",
+    alt: "Sončni žarki skozi zaščitno mrežo nad sveže požeto konopljo na nasadu HerbaGallus",
+  },
+  {
+    src: "/farm/farm-cola-macro-purple.jpg",
+    title: "100 % slovensko poreklo",
+    subtitle: "Skrbno negovani vrhovi na soncu",
+    alt: "Makro posnetek cvetočega vrha konoplje na sončnem nasadu HerbaGallus",
+  },
+];
 
 const trustItems = [
   [PackageCheck, "100 % transparentna sestava"],
@@ -129,37 +158,53 @@ export default function HomePage() {
       <ReviewsSection />
 
       <section id="about" className="bg-porcelain py-18 sm:py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div>
-            <p className="text-xs font-bold uppercase text-clay">{t("Zakaj HerbaGallus")}</p>
-            <h2 className="mt-3 font-display text-4xl font-semibold text-forest sm:text-5xl">
-              {t("Naravno pridelano. Kakovost na prvem mestu.")}
-            </h2>
+        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div>
+              <p className="text-xs font-bold uppercase text-clay">{t("O nas")}</p>
+              <h2 className="mt-3 font-display text-4xl font-semibold text-forest sm:text-5xl">
+                {t("Naravno pridelano. Kakovost na prvem mestu.")}
+              </h2>
+            </div>
+            <div className="space-y-5 text-base leading-8 text-forest/72">
+              <p>
+                {t("HerbaGallus temelji na kakovostni outdoor konoplji, pregledni sestavi in jasnih informacijah o uporabi, serijah ter dokumentaciji.")}
+              </p>
+              <p>
+                {t("Naša trgovina je odprta z namenom, da vam ponudi kakovostne izdelke, pregledne informacije ter varen in enostaven nakup. Izbrane izdelke HerbaGallus lahko najdete tudi v trgovini Plečnikov čaj v Ljubljani.")}
+              </p>
+              <Link className="inline-flex items-center gap-2 font-bold text-forest hover:text-clay transition-colors" to="/quality">
+                {t("Preberi pristop h kakovosti")} <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+            </div>
           </div>
-          <div className="space-y-5 text-base leading-8 text-forest/72">
-            <p>
-              {t("HerbaGallus temelji na kakovostni outdoor konoplji, pregledni sestavi in jasnih informacijah o uporabi, serijah ter dokumentaciji.")}
-            </p>
-            <p>
-              {t("Naša trgovina je odprta z namenom, da vam ponudi kakovostne izdelke, pregledne informacije ter varen in enostaven nakup. Izbrane izdelke HerbaGallus lahko najdete tudi v trgovini Plečnikov čaj v Ljubljani.")}
-            </p>
-            <Link className="inline-flex items-center gap-2 font-bold text-forest hover:text-clay transition-colors" to="/quality">
-              {t("Preberi pristop h kakovosti")} <ArrowRight size={17} aria-hidden="true" />
-            </Link>
+
+          <div className="mt-12 border-t border-forest/10 pt-10 sm:mt-16 sm:pt-12">
+            <div className="mb-6 flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-clay">
+                  {t("Z naše sončne pridelave")}
+                </p>
+                <p className="mt-1 text-sm text-forest/65">
+                  {t("Pristne fotografije z našega slovenskega nasada – od rasti na prostem do skrbne ročne žetve.")}
+                </p>
+              </div>
+            </div>
+            <FarmGallery items={homeFarmPhotos} />
           </div>
         </div>
       </section>
 
       <section className="bg-forest py-18 text-porcelain sm:py-24">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <div className="aspect-[4/3] overflow-hidden">
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 shadow-[0_24px_60px_rgba(0,0,0,0.28)]">
             <img
-              src={lifestyleImage}
-              alt="Konopljina rastlina in jantarna steklenička v umirjenem domačem okolju"
-              width="1536"
-              height="1024"
+              src={qualityShowcaseImage}
+              alt="Ročna kontrola zrelosti cvetov konoplje s povečevalnim steklom na nasadu HerbaGallus"
+              width="960"
+              height="1280"
               loading="lazy"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-[50%_24%]"
             />
           </div>
           <div className="max-w-xl">
