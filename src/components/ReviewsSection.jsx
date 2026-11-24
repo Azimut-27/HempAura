@@ -27,17 +27,17 @@ export default function ReviewsSection() {
   };
 
   return (
-    <section className="bg-cream/40 py-18 sm:py-24 border-b border-forest/10" aria-label="Mnenja kupcev">
+    <section className="bg-cream/40 py-20 sm:py-24 border-b border-forest/8" aria-label="Mnenja kupcev">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Top Header Section */}
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between pb-10 sm:pb-12">
           {/* Left Title & Badge */}
           <div className="max-w-xl">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#c69214]/30 bg-[#fbf5ea] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#9b5940]">
-              <Star size={12} className="fill-[#c69214] text-[#c69214]" />
+            <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+              <Star size={12} className="fill-gold text-gold" />
               {t("MNENJA ZADOVOLJNIH KUPCEV")}
-            </span>
-            <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-forest sm:text-4xl lg:text-5xl">
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-[-0.015em] text-forest sm:text-4xl lg:text-5xl">
               {t("Kaj pravijo tisti, ki zaupajo HerbaGallus")}
             </h2>
           </div>
@@ -46,16 +46,16 @@ export default function ReviewsSection() {
           <div className="flex flex-wrap items-center gap-6 sm:gap-8">
             <div className="text-left sm:text-right">
               <div className="flex items-center gap-2 sm:justify-end">
-                <span className="font-display text-2xl sm:text-3xl font-bold text-forest">
-                  4.9 <span className="text-lg sm:text-xl font-normal text-forest/50">/ 5.0</span>
+                <span className="font-display text-2xl sm:text-3xl font-semibold text-forest">
+                  4.9 <span className="text-lg sm:text-xl font-normal text-forest/45">/ 5.0</span>
                 </span>
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={15} className="fill-[#E5A93C] text-[#E5A93C]" />
+                    <Star key={i} size={14} className="fill-gold text-gold" />
                   ))}
                 </div>
               </div>
-              <p className="mt-1 text-xs sm:text-sm text-forest/65">
+              <p className="mt-1 text-xs sm:text-sm text-forest/60">
                 {t("Več kot 250 zadovoljnih kupcev")}
               </p>
             </div>
@@ -63,9 +63,9 @@ export default function ReviewsSection() {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center gap-2 rounded-full bg-[#7C4828] hover:bg-[#683b1f] text-white px-5 py-3 text-xs sm:text-sm font-bold tracking-wide shadow-sm transition-all hover:scale-[1.02] active:scale-95"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-forest/22 bg-porcelain px-5 py-2.5 text-xs font-semibold tracking-[0.04em] text-forest transition-all hover:border-forest hover:bg-forest hover:text-porcelain active:scale-[0.98]"
             >
-              <PenLine size={15} />
+              <PenLine size={14} strokeWidth={1.8} />
               <span>{t("NAPIŠITE MNENJE")}</span>
             </button>
           </div>
@@ -76,13 +76,13 @@ export default function ReviewsSection() {
           {reviews.map((rev) => (
             <article
               key={rev.id}
-              className="relative flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-forest/10 bg-white p-6 sm:p-8 shadow-[0_6px_25px_rgba(27,59,43,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_35px_rgba(27,59,43,0.08)]"
+              className="relative flex flex-col justify-between rounded-2xl border border-forest/10 bg-porcelain p-6 sm:p-8 shadow-[0_6px_22px_rgba(23,56,44,0.03)] transition-all duration-300 hover:-translate-y-0.5 hover:border-forest/16 hover:shadow-[0_14px_32px_rgba(23,56,44,0.07)]"
             >
               {/* Star Rating & Relative Date */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   {[...Array(rev.rating)].map((_, i) => (
-                    <Star key={i} size={16} className="fill-[#E5A93C] text-[#E5A93C]" />
+                    <Star key={i} size={14} className="fill-gold text-gold" />
                   ))}
                 </div>
                 <span className="text-xs text-forest/45 font-medium">{t(rev.date)}</span>

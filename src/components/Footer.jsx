@@ -38,10 +38,13 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_2fr]">
           <div>
-            <p className="font-display text-4xl font-semibold">{siteConfig.brandName}</p>
+            <p className="font-display text-4xl font-semibold tracking-[-0.015em]">
+              {siteConfig.brandName}
+            </p>
             <p className="mt-4 max-w-md text-sm leading-7 text-porcelain/70">
-              Premium predstavitev konopljinih izdelkov z jasnimi informacijami,
-              odgovorno komunikacijo in mirno uporabniško izkušnjo.
+              Slovenska outdoor konoplja, pridelana na soncu. Preverjeno poreklo,
+              čiste sestavine in osebna skrb za vsako serijo — na voljo tudi na
+              Vodnikovem trgu v Ljubljani.
             </p>
           </div>
           <div className="grid gap-8 sm:grid-cols-3">

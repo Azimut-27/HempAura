@@ -79,26 +79,33 @@ export default function Header() {
     };
   }, [open]);
 
-  const navClass = ({ isActive }) =>
-    `text-sm font-semibold transition-colors ${
-      isActive ? "text-clay" : "text-forest/75 hover:text-forest"
+  const navClass = (to) => ({ isActive }) => {
+    const active =
+      to === "/#about"
+        ? location.pathname === "/" && location.hash === "#about"
+        : isActive;
+    return `relative py-1 text-sm font-medium tracking-[0.01em] transition-colors ${
+      active
+        ? "text-forest font-semibold after:absolute after:inset-x-0 after:-bottom-0.5 after:h-[1.5px] after:bg-gold"
+        : "text-forest/70 hover:text-forest"
     }`;
+  };
 
   return (
     <>
       {siteConfig.announcement.enabled && (
-        <div className="bg-ink px-4 py-2 text-center text-xs font-semibold text-porcelain">
+        <div className="bg-ink px-4 py-2 text-center text-xs font-medium tracking-[0.02em] text-porcelain">
           {siteConfig.announcement.text}
           {siteConfig.announcement.linkLabel && (
-            <Link className="ml-2 underline" to={siteConfig.announcement.linkTo}>
+            <Link className="ml-2 underline decoration-gold/70 underline-offset-4" to={siteConfig.announcement.linkTo}>
               {siteConfig.announcement.linkLabel}
             </Link>
           )}
         </div>
       )}
-      <header className="sticky top-0 z-40 border-b border-forest/10 bg-porcelain/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-forest/8 bg-porcelain/90 backdrop-blur-md">
         <nav
-          className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-3.5 sm:px-6 lg:px-8"
+          className="mx-auto flex h-16 sm:h-[74px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
           aria-label="Glavna navigacija"
         >
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 shrink-0 min-h-10" aria-label="HerbaGallus domov">
@@ -109,42 +116,42 @@ export default function Header() {
               height="240"
               className="h-8 w-auto object-contain sm:h-9"
             />
-            <span className="font-display text-xl font-bold tracking-tight text-forest sm:text-2xl lg:text-3xl translate-y-[2px] sm:translate-y-[3px]">
+            <span className="font-display text-xl font-semibold tracking-[-0.015em] text-forest sm:text-2xl lg:text-[28px] translate-y-[1px]">
               HerbaGallus
             </span>
           </Link>
 
-          <div className="hidden items-center gap-7 lg:flex">
+          <div className="hidden items-center gap-8 lg:flex">
             {navItems.map((item) => (
-              <NavLink key={item.to} to={item.to} className={navClass}>
+              <NavLink key={item.to} to={item.to} className={navClass(item.to)}>
                 {item.label}
               </NavLink>
             ))}
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <div ref={languageMenuRef} className="relative">
               <button
                 type="button"
                 onClick={() => setLanguageOpen((current) => !current)}
-                className="group inline-flex min-h-9 sm:min-h-11 items-center gap-1.5 sm:gap-2 border border-forest/15 bg-porcelain/75 px-2 sm:px-3 py-1 text-forest shadow-[0_4px_12px_rgba(28,33,29,0.04)] transition duration-200 hover:border-gold/60 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay"
+                className="group inline-flex min-h-9 sm:min-h-10 items-center gap-1.5 sm:gap-2 rounded-lg border border-forest/12 bg-porcelain/70 px-2.5 sm:px-3 py-1 text-forest transition duration-200 hover:border-gold/55 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
                 aria-label={t("Izberi jezik")}
                 aria-haspopup="menu"
                 aria-expanded={languageOpen}
                 aria-controls="language-menu"
               >
-                <span className="grid size-6 sm:size-7 place-items-center rounded-full bg-forest text-porcelain shadow-[inset_0_0_0_1px_rgba(185,149,82,0.35)] transition-colors group-hover:bg-ink">
-                  <Globe2 size={12} strokeWidth={1.8} aria-hidden="true" className="sm:hidden" />
-                  <Globe2 size={14} strokeWidth={1.8} aria-hidden="true" className="hidden sm:block" />
+                <span className="grid size-5 sm:size-6 place-items-center rounded-full bg-forest text-porcelain transition-colors group-hover:bg-ink">
+                  <Globe2 size={11} strokeWidth={1.8} aria-hidden="true" className="sm:hidden" />
+                  <Globe2 size={13} strokeWidth={1.8} aria-hidden="true" className="hidden sm:block" />
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[0.1em] sm:tracking-[0.14em]">
+                <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em]">
                   {languages.find((option) => option.code === language)?.shortLabel}
                 </span>
                 <ChevronDown
                   size={12}
                   strokeWidth={2}
                   aria-hidden="true"
-                  className={`text-moss transition-transform duration-200 ${languageOpen ? "rotate-180" : ""}`}
+                  className={`text-forest/60 transition-transform duration-200 ${languageOpen ? "rotate-180" : ""}`}
                 />
               </button>
 
@@ -153,9 +160,9 @@ export default function Header() {
                   id="language-menu"
                   role="menu"
                   aria-label={t("Izberi jezik")}
-                  className="absolute right-0 top-[calc(100%+0.65rem)] z-50 w-48 border border-forest/10 border-t-gold/70 bg-porcelain p-1.5 shadow-[0_24px_55px_rgba(28,33,29,0.2)]"
+                  className="absolute right-0 top-[calc(100%+0.6rem)] z-50 w-48 overflow-hidden rounded-xl border border-forest/10 bg-porcelain p-1.5 shadow-[0_20px_48px_rgba(23,56,44,0.14)]"
                 >
-                  <div className="border-b border-forest/10 px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-moss">
+                  <div className="border-b border-forest/8 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-forest/55">
                     {t("Izberi jezik")}
                   </div>
                   <div className="pt-1.5">
@@ -171,23 +178,23 @@ export default function Header() {
                             setLanguage(option.code);
                             setLanguageOpen(false);
                           }}
-                          className={`flex min-h-11 w-full items-center gap-3 px-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-clay ${
+                          className={`flex min-h-10 w-full items-center gap-3 rounded-lg px-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold ${
                             selected
                               ? "bg-forest text-porcelain"
-                              : "text-forest hover:bg-sage/70"
+                              : "text-forest hover:bg-sage/60"
                           }`}
                         >
                           <span
-                            className={`grid size-7 place-items-center border text-[10px] font-extrabold uppercase tracking-[0.08em] ${
+                            className={`grid size-6 place-items-center rounded-md border text-[10px] font-semibold uppercase tracking-[0.08em] ${
                               selected
                                 ? "border-gold/60 text-gold"
-                                : "border-forest/15 text-moss"
+                                : "border-forest/15 text-forest/65"
                             }`}
                           >
                             {option.shortLabel}
                           </span>
-                          <span className="flex-1 text-sm font-semibold">{option.label}</span>
-                          {selected && <Check size={16} className="text-gold" aria-hidden="true" />}
+                          <span className="flex-1 text-sm font-medium">{option.label}</span>
+                          {selected && <Check size={15} className="text-gold" aria-hidden="true" />}
                         </button>
                       );
                     })}
@@ -198,26 +205,26 @@ export default function Header() {
             <button
               type="button"
               onClick={openDrawer}
-              className="relative grid size-9 sm:size-12 place-items-center text-forest hover:bg-sage focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-clay"
+              className="relative grid size-9 sm:size-10 place-items-center rounded-lg text-forest transition-colors hover:bg-forest/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
               aria-label={`Odpri košarico, ${count} izdelkov`}
             >
-              <ShoppingBag size={18} className="sm:hidden" aria-hidden="true" />
-              <ShoppingBag size={21} className="hidden sm:block" aria-hidden="true" />
+              <ShoppingBag size={18} strokeWidth={1.7} className="sm:hidden" aria-hidden="true" />
+              <ShoppingBag size={20} strokeWidth={1.7} className="hidden sm:block" aria-hidden="true" />
               {count > 0 && (
-                <span className="absolute right-0.5 top-0.5 sm:right-1.5 sm:top-1.5 grid min-h-4 min-w-4 sm:min-h-5 sm:min-w-5 place-items-center rounded-full bg-clay px-1 text-[9px] sm:text-[10px] font-bold text-white">
+                <span className="absolute right-0.5 top-0.5 sm:right-1 sm:top-1 grid min-h-4 min-w-4 place-items-center rounded-full bg-forest px-1 text-[9px] font-semibold text-porcelain ring-2 ring-porcelain">
                   {count}
                 </span>
               )}
             </button>
             <Link
               to="/products"
-              className="hidden min-h-12 items-center bg-forest px-5 text-sm font-bold text-porcelain hover:bg-ink lg:inline-flex"
+              className="hidden min-h-10 items-center rounded-lg bg-forest px-5 text-sm font-semibold tracking-[0.03em] text-porcelain transition-colors hover:bg-ink lg:inline-flex"
             >
               Nakup
             </Link>
             <button
               type="button"
-              className="grid size-9 sm:size-12 place-items-center text-forest hover:bg-sage lg:hidden"
+              className="grid size-9 sm:size-10 place-items-center rounded-lg text-forest transition-colors hover:bg-forest/5 lg:hidden"
               onClick={() => setOpen(true)}
               aria-label="Odpri meni"
               aria-expanded={open}

@@ -43,7 +43,8 @@ export default function NewsletterForm() {
           type="email"
           required
           autoComplete="email"
-          className="mt-2 min-h-12 w-full border border-white/20 bg-porcelain px-4 text-forest outline-none focus:border-gold focus:ring-2 focus:ring-gold"
+          placeholder="vas.email@primer.si"
+          className="mt-2 min-h-12 w-full rounded-lg border border-white/20 bg-porcelain px-4 text-forest outline-none focus:border-gold focus:ring-2 focus:ring-gold/50"
         />
       </div>
       <label className="flex gap-3 text-sm leading-6 text-porcelain/78">
@@ -51,17 +52,17 @@ export default function NewsletterForm() {
           type="checkbox"
           name="consent"
           required
-          className="mt-1 size-5 shrink-0 accent-gold"
+          className="mt-1 size-5 shrink-0 rounded accent-gold"
         />
         <span>
           Strinjam se s prejemanjem e-novic. Prijavo bom potrdil/-a po e-pošti.
-          Prebral/-a sem <Link className="underline" to="/privacy">politiko zasebnosti</Link>.
+          Prebral/-a sem <Link className="underline decoration-gold/60 underline-offset-4" to="/privacy">politiko zasebnosti</Link>.
         </span>
       </label>
       <button
         type="submit"
         disabled={status === "loading"}
-        className="min-h-12 bg-gold px-6 text-sm font-bold text-ink hover:bg-porcelain disabled:opacity-60"
+        className="min-h-12 rounded-lg bg-gold px-7 text-sm font-semibold tracking-[0.03em] text-ink transition-colors hover:bg-porcelain disabled:opacity-60"
       >
         {status === "loading" ? "Pošiljanje ..." : "Prijavi se"}
       </button>

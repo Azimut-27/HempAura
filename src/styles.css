@@ -29,22 +29,13 @@ select {
   font: inherit;
 }
 
-button,
-a,
-summary,
-input,
-textarea,
-select {
-  border-radius: 0;
-}
-
 a,
 button {
   -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible {
-  outline: 2px solid #b86f52;
+  outline: 2px solid #b99552;
   outline-offset: 3px;
 }
 
@@ -86,8 +77,9 @@ button {
 
 .hero-media-frame {
   box-shadow:
-    0 30px 72px rgba(28, 33, 29, 0.16),
-    0 0 0 1px rgba(23, 56, 44, 0.1);
+    0 24px 64px rgba(23, 56, 44, 0.13),
+    0 2px 12px rgba(23, 56, 44, 0.05),
+    0 0 0 1px rgba(23, 56, 44, 0.08);
 }
 
 .skip-link {

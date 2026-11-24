@@ -1,4 +1,4 @@
-import { Eye, ShoppingBag, Sparkles, Star } from "lucide-react";
+import { Eye, ShoppingBag, Star } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
@@ -56,27 +56,21 @@ export default function ProductCard({ product }) {
 
   return (
     <>
-      <article className="group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-forest/10 bg-white shadow-[0_10px_30px_rgba(27,59,43,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(27,59,43,0.1)]">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-forest/10 bg-porcelain shadow-[0_6px_24px_rgba(23,56,44,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-forest/18 hover:shadow-[0_18px_40px_rgba(23,56,44,0.09)]">
         {/* Top Image Section */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream/20">
-          {/* Top Left Badges */}
-          <div className="absolute left-3.5 top-3.5 z-10 flex flex-col gap-1.5 items-start">
-            {product.badgeTop && (
-              <span className="rounded-full bg-[#2A1D15]/90 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#F7EFE8] shadow-sm backdrop-blur-sm">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream/40">
+          {/* Single Quiet Top-Left Badge */}
+          {product.badgeTop && (
+            <div className="absolute left-3.5 top-3.5 z-10">
+              <span className="inline-block rounded-md border border-forest/10 bg-porcelain/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-forest backdrop-blur-sm">
                 {t(product.badgeTop)}
               </span>
-            )}
-            {product.badgePopular && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[#A84A28] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-                <Sparkles size={11} />
-                {t(product.badgePopular.replace("✨ ", ""))}
-              </span>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Bottom Right Size Badge */}
+          {/* Subtle Bottom-Right Size Badge */}
           {displaySizeBadge && (
-            <span className="absolute bottom-3.5 right-3.5 z-10 rounded-lg bg-ink/85 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm transition-all">
+            <span className="absolute bottom-3 right-3 z-10 rounded-md bg-forest/85 px-2.5 py-0.5 text-[11px] font-semibold tracking-[0.04em] text-porcelain backdrop-blur-sm transition-all">
               {displaySizeBadge}
             </span>
           )}
@@ -90,18 +84,18 @@ export default function ProductCard({ product }) {
             <ProductMedia
               product={product}
               fit="cover"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
           </Link>
 
-          {/* Hover Quick View Button */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto bg-black/15 backdrop-blur-[1px]">
+          {/* Quiet Hover Quick View Pill */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center opacity-0 transition-opacity duration-300 group-hover:pointer-events-auto group-hover:opacity-100">
             <button
               type="button"
               onClick={handleOpenQuickView}
-              className="flex items-center gap-2 rounded-full bg-[#C6A355] px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white shadow-lg transition-transform hover:scale-105 active:scale-95 hover:bg-[#b59244]"
+              className="flex items-center gap-1.5 rounded-lg border border-forest/12 bg-porcelain/95 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-forest shadow-md backdrop-blur-md transition-colors hover:bg-forest hover:text-porcelain"
             >
-              <Eye size={15} />
+              <Eye size={14} strokeWidth={1.8} />
               {t("HITRI OGLED")}
             </button>
           </div>
@@ -111,11 +105,11 @@ export default function ProductCard({ product }) {
         <div className="flex flex-1 flex-col p-5 sm:p-6">
           {/* Category & Rating Row */}
           <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-moss">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-forest/55">
               {t(product.categoryLabel || product.type || "CBD IZDELEK")}
             </span>
-            <div className="flex items-center gap-1 text-xs font-bold text-amber-600">
-              <Star size={13} className="fill-amber-400 text-amber-400" />
+            <div className="flex items-center gap-1 text-xs font-semibold text-forest/80">
+              <Star size={12} className="fill-gold text-gold" />
               <span>{product.rating || 4.9}</span>
               <span className="text-forest/40 font-normal">({product.reviewCount || 128})</span>
             </div>
@@ -162,11 +156,11 @@ export default function ProductCard({ product }) {
                         e.stopPropagation();
                         setSelectedVariantId(variant.id);
                       }}
-                      className={`rounded-xl border py-1.5 text-center text-xs font-bold transition-all ${
+                      className={`rounded-lg border py-1.5 text-center text-xs font-semibold transition-all ${
                         isSelected
-                          ? "border-forest bg-forest text-porcelain shadow-sm"
+                          ? "border-forest bg-forest text-porcelain"
                           : variant.stock === 0
-                            ? "border-forest/10 bg-cream/20 text-forest/40 hover:border-forest/25"
+                            ? "border-forest/10 bg-cream/20 text-forest/35 hover:border-forest/25"
                             : "border-forest/12 bg-cream/60 text-forest/75 hover:border-forest/35 hover:bg-cream"
                       }`}
                     >
@@ -211,12 +205,12 @@ export default function ProductCard({ product }) {
               type="button"
               disabled={!available}
               onClick={handleAddToCart}
-              className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold transition-all ${
+              className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold tracking-[0.04em] transition-all ${
                 !available
                   ? "border border-forest/15 bg-forest/5 text-forest/45 cursor-not-allowed"
                   : isAdded
-                    ? "bg-emerald-700 text-white"
-                    : "bg-[#7C4828] text-white hover:bg-[#683b1f] active:scale-95 shadow-md"
+                    ? "bg-emerald-800 text-porcelain"
+                    : "bg-forest text-porcelain hover:bg-ink active:scale-[0.98]"
               }`}
             >
               {!available ? (
