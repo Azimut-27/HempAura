@@ -109,8 +109,9 @@ export function buildGlsParcel(order) {
   const services = [];
   const isCod =
     order.provider === "cod" || order.payment_status === "cod_pending";
+  let codAmount = 0;
   if (isCod) {
-    const codAmount = Number(((order.total_cents || 0) / 100).toFixed(2));
+    codAmount = Number(((order.total_cents || 0) / 100).toFixed(2));
     if (!Number.isFinite(codAmount) || codAmount <= 0) {
       throw new Error(
         `Naročilo po povzetju ${order.public_order_number} nima veljavnega zneska odkupnine (total_cents: ${order.total_cents}).`
@@ -125,6 +126,9 @@ export function buildGlsParcel(order) {
   return {
     ClientNumber: serverConfig.gls.clientNumber,
     ClientReference: order.public_order_number,
+    CODAmount: isCod ? codAmount : 0,
+    CODReference: isCod ? order.public_order_number : "",
+    CODCurrency: isCod ? (order.currency || "EUR").toUpperCase() : "EUR",
     Count: 1,
     Content: parcelContent(order),
     PickupAddress: getPickupAddress(),

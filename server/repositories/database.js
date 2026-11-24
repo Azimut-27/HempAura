@@ -321,7 +321,7 @@ export const database = {
       .single();
     const existing = assertResult(existingResult, "Get GLS shipment");
 
-    if (retry && existing.status === "failed") {
+    if (retry || (existing.status !== "processing" && existing.request_fingerprint !== values.requestFingerprint)) {
       const retryResult = await getSupabaseAdmin()
         .from("gls_shipments")
         .update({
@@ -329,11 +329,10 @@ export const database = {
           request_fingerprint: values.requestFingerprint,
           error_code: null,
           error_message: null,
-          attempts: existing.attempts + 1,
+          attempts: (existing.attempts || 1) + 1,
           last_attempt_at: new Date().toISOString(),
         })
         .eq("id", existing.id)
-        .eq("status", "failed")
         .select("*")
         .maybeSingle();
       const claimedRetry = assertResult(retryResult, "Retry GLS shipment");

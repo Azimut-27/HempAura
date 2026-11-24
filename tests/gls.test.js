@@ -212,6 +212,9 @@ describe("GLS Slovenia client", () => {
       order_items: [{ sku_snapshot: "HA-CBD-FS-500-10ML" }],
     });
 
+    expect(parcel.CODAmount).toBe(34.9);
+    expect(parcel.CODReference).toBe("HA-20261029-A1B2C3");
+    expect(parcel.CODCurrency).toBe("EUR");
     expect(parcel.ServiceList).toEqual([
       {
         Code: "COD",
@@ -264,6 +267,8 @@ describe("GLS Slovenia client", () => {
       order_items: [{ sku_snapshot: "HA-CBD-FS-500-10ML" }],
     });
 
+    expect(parcel.CODAmount).toBe(0);
+    expect(parcel.CODReference).toBe("");
     expect(parcel.ServiceList).toEqual([]);
   });
 });

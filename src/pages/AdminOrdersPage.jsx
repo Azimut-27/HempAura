@@ -435,15 +435,19 @@ export default function AdminOrdersPage() {
     }
   }
 
-  async function createLabel(order) {
+  async function createLabel(order, forceRetry = false) {
     const shipment = relation(order.gls_shipments)[0];
-    setActiveAction(`${order.public_order_number}:label`);
+    setActiveAction(
+      forceRetry
+        ? `${order.public_order_number}:relabel`
+        : `${order.public_order_number}:label`
+    );
     setError("");
     try {
       await downloadAdminGlsLabel(
         token,
         order.public_order_number,
-        shipment?.status === "failed"
+        forceRetry || shipment?.status === "failed"
       );
       await loadOrders(token);
     } catch (actionError) {
@@ -966,6 +970,24 @@ export default function AdminOrdersPage() {
                                 );
                               })()}
 
+                              {relation(order.gls_shipments)[0]?.status === "label_created" &&
+                                order.fulfillment_status !== "cancelled" && (
+                                  <button
+                                    type="button"
+                                    onClick={() => createLabel(order, true)}
+                                    disabled={actionLoading}
+                                    title="Znova kontaktira GLS in zgenerira novo posodobljeno nalepko"
+                                    className="inline-flex min-h-11 items-center justify-center gap-1.5 border border-forest/20 px-3 text-xs font-semibold text-forest transition-colors hover:bg-stone-50 disabled:opacity-45"
+                                  >
+                                    {activeAction === `${order.public_order_number}:relabel` ? (
+                                      <LoaderCircle className="animate-spin" size={15} />
+                                    ) : (
+                                      <RefreshCw size={15} />
+                                    )}
+                                    Ponovno ustvari nalepko
+                                  </button>
+                                )}
+
                               {order.payment_status === "cod_pending" &&
                                 order.fulfillment_status !== "cancelled" && (
                                   <button
@@ -977,6 +999,22 @@ export default function AdminOrdersPage() {
                                     className="inline-flex min-h-11 items-center justify-center gap-2 border border-emerald-600/30 bg-emerald-50 px-4 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100 disabled:opacity-45"
                                   >
                                     <CheckCircle2 size={16} /> Označi: plačilo prevzeto (COD)
+                                  </button>
+                                )}
+
+                              {order.provider === "cod" &&
+                                order.payment_status === "paid" &&
+                                order.fulfillment_status !== "cancelled" && (
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      changePaymentStatus(order.public_order_number, "cod_pending")
+                                    }
+                                    disabled={actionLoading}
+                                    title="Razveljavi status 'Plačano' in vrne naročilo na čakamo plačilo po povzetju"
+                                    className="inline-flex min-h-11 items-center justify-center gap-2 border border-amber-600/30 bg-amber-50 px-4 text-xs font-bold text-amber-800 transition-colors hover:bg-amber-100 disabled:opacity-45"
+                                  >
+                                    <RotateCcw size={16} /> Razveljavi: čakamo odkupnino (COD)
                                   </button>
                                 )}
 
