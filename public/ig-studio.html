@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HerbaGallus — Instagram Studio (Celoten komplet 9 objav + 5 Highlights)</title>
+  <title>HerbaGallus — Instagram Launch Studio (Bio, Highlights, Storyji & 3×3 Mreža)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -312,18 +312,322 @@
       padding: 16px 22px;
     }
     .status-note strong { color: #f0dda8; }
+
+    /* Jump Nav */
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 34px;
+      max-width: 1140px;
+    }
+    .quick-nav a {
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e6efe9;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 8px 15px;
+      border-radius: 50px;
+      transition: all 0.15s ease;
+    }
+    .quick-nav a:hover {
+      background: rgba(212, 175, 55, 0.18);
+      color: #f0dda8;
+      transform: translateY(-1px);
+    }
+
+    /* Bio Setup Grid */
+    .bio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) {
+      .bio-grid { grid-template-columns: 1fr; }
+    }
+    .bio-card {
+      background: #13241c;
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+    }
+    .bio-card.recommended {
+      border-color: rgba(240, 221, 168, 0.65);
+      background: linear-gradient(160deg, #183226 0%, #102119 100%);
+    }
+    .bio-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .bio-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: #f0dda8;
+    }
+    .bio-pill {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: rgba(212, 175, 55, 0.22);
+      color: #f0dda8;
+      padding: 3px 9px;
+      border-radius: 50px;
+    }
+    .bio-pre {
+      background: rgba(7, 15, 11, 0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #fffaf1;
+      white-space: pre-wrap;
+      flex: 1;
+    }
+    .profile-fields {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 820px) {
+      .profile-fields { grid-template-columns: repeat(2, 1fr); }
+    }
+    .pf-box {
+      background: #13241c;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pf-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #b99552;
+    }
+    .pf-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fffaf1;
+      word-break: break-word;
+    }
+
+    /* 9:16 Story Grid */
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .stories-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 1040px) {
+      .stories-grid { grid-template-columns: repeat(3, 1fr); }
+      .stories-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .stories-grid { grid-template-columns: repeat(2, 1fr); }
+      .stories-grid-4 { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; }
+    }
+    .story-card {
+      background: #14261e;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      border-radius: 18px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.4);
+    }
+    .story-canvas-wrap {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0e1e17;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+    .story-canvas-wrap canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .story-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #f0dda8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .story-tip {
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #a9bbb0;
+      min-height: 34px;
+    }
+
+    /* 14-Day Daily Story Calendar */
+    .schedule-box {
+      margin-top: 26px;
+      background: #13241c;
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      border-radius: 20px;
+      padding: 22px;
+      overflow-x: auto;
+    }
+    .schedule-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      color: #fffaf1;
+      margin-bottom: 6px;
+    }
+    .schedule-sub {
+      font-size: 13px;
+      color: #9cb2a6;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+    .sched-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      min-width: 680px;
+    }
+    .sched-table th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #d4af37;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.28);
+    }
+    .sched-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #dce7e0;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .sched-day {
+      font-weight: 800;
+      color: #f0dda8;
+      white-space: nowrap;
+    }
+    .sticker-tag {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #f0dda8;
+      background: rgba(212, 175, 55, 0.14);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
 
   <div class="header">
     <span class="badge">HerbaGallus · Celoten Instagram Launch Kit</span>
-    <h1>9 objav (3 × 3 mreža) + 5 Highlight ikon</h1>
-    <p class="lead">Vse v slovenščini, v profesionalnem formatu <strong>1080 × 1350 px (4:5)</strong> z enotno paleto HerbaGallus, vašimi pravimi izdelki, AI lifestyle fotografijami in pripravljenimi opisi s hashtagi.</p>
+    <h1>Bio + 5 Highlights + 18 Storyjev + 9 Feed objav</h1>
+    <p class="lead">Vse na enem mestu v slovenščini — z vašimi <strong>pravimi fotografijami nasada</strong>, izdelki, pripravljenim IG Bio opisom, <strong>10 pred-launch Highlight Storyji</strong>, <strong>8 dnevnimi Storyji + 14-dnevnim načrtom (1–2× na dan)</strong> in celotno <strong>3 × 3 Feed mrežo</strong>.</p>
   </div>
 
+  <nav class="quick-nav" aria-label="Hitri skoki">
+    <a href="#bio">✍️ Bio & Profil</a>
+    <a href="#highlights">✨ 5 Highlight ikon</a>
+    <a href="#hl-stories">📌 10 Highlight Storyjev (Pre-Launch)</a>
+    <a href="#daily-stories">📅 8 Dnevnih Storyjev + 14-dnevni načrt</a>
+    <a href="#feed-posts">📸 9 Feed objav (3×3)</a>
+  </nav>
+
+  <!-- SECTION 0: IG BIO & PROFILE SETUP -->
+  <section class="section-wrap" id="bio">
+    <div class="ig-grid-banner">
+      <span class="ig-grid-label">✍️ Nastavitev IG profila & Bio opis (1-klik kopiranje)</span>
+    </div>
+
+    <div class="profile-fields">
+      <div class="pf-box">
+        <span class="pf-label">Ime profila (SEO)</span>
+        <span class="pf-val" id="pf-name">HerbaGallus | Naravni CBD · Slovenija</span>
+        <button class="copy-btn" style="align-self:flex-start" onclick="copyCaption('pf-name', this)">📋 Kopiraj</button>
+      </div>
+      <div class="pf-box">
+        <span class="pf-label">Uporabniško ime</span>
+        <span class="pf-val" id="pf-handle">@herbagallus</span>
+        <button class="copy-btn" style="align-self:flex-start" onclick="copyCaption('pf-handle', this)">📋 Kopiraj</button>
+      </div>
+      <div class="pf-box">
+        <span class="pf-label">Kategorija</span>
+        <span class="pf-val">Zdravje/lepota (ali Kmetija)</span>
+      </div>
+      <div class="pf-box">
+        <span class="pf-label">Povezava v Bio</span>
+        <span class="pf-val" id="pf-link">https://herbagallus.com</span>
+        <button class="copy-btn" style="align-self:flex-start" onclick="copyCaption('pf-link', this)">📋 Kopiraj</button>
+      </div>
+    </div>
+
+    <div class="bio-grid">
+      <div class="bio-card recommended">
+        <div class="bio-meta">
+          <span class="bio-tag">Bio različica 1</span>
+          <span class="bio-pill">⭐ Priporočena</span>
+        </div>
+        <div class="bio-pre" id="bio-opt1">🌿 100 % slovenska outdoor konoplja (sungrown)
+💧 Bio CBD kapljice & White Heaven vršički
+📍 Vodnikov trg, LJ · GLS dostava 1–2 dni
+🎁 -15 % s kodo DOMA15 👇</div>
+        <button class="copy-btn" onclick="copyCaption('bio-opt1', this)">📋 Kopiraj Bio #1</button>
+      </div>
+
+      <div class="bio-card">
+        <div class="bio-meta">
+          <span class="bio-tag">Bio različica 2</span>
+          <span class="bio-pill">Quiet Luxury</span>
+        </div>
+        <div class="bio-pre" id="bio-opt2">Naravno pridelano. Kakovost na prvem mestu. 🌿
+Slovenska sončna konoplja · Laboratorijsko preverjeno
+📍 Plečnikov čaj, Ljubljana & spletna trgovina 👇</div>
+        <button class="copy-btn" onclick="copyCaption('bio-opt2', this)">📋 Kopiraj Bio #2</button>
+      </div>
+
+      <div class="bio-card">
+        <div class="bio-meta">
+          <span class="bio-tag">Bio različica 3</span>
+          <span class="bio-pill">Kratka & prodajna</span>
+        </div>
+        <div class="bio-pre" id="bio-opt3">☀️ Slovenski outdoor CBD s srcem
+🌱 Vršički · Bio olivne kapljice · Krema
+📦 Hitra GLS dostava (tudi po povzetju)
+👇 Koda DOMA15 za -15 % na prvi nakup</div>
+        <button class="copy-btn" onclick="copyCaption('bio-opt3', this)">📋 Kopiraj Bio #3</button>
+      </div>
+    </div>
+  </section>
+
   <!-- SECTION 1: 5 STORY HIGHLIGHTS -->
-  <section class="section-wrap">
+  <section class="section-wrap" id="highlights">
     <div class="ig-grid-banner">
       <span class="ig-grid-label">✨ 5 naslovnic za Story Highlights (1080 × 1080 px)</span>
       <button class="dl-all-btn" onclick="downloadAllHighlights()">⬇️ Prenesi vseh 5 ikon (PNG)</button>
@@ -357,8 +661,194 @@
     </div>
   </section>
 
-  <!-- SECTION 2: 9 POSTS (3x3 GRID) -->
-  <section class="section-wrap">
+  <!-- SECTION 1B: 10 PRE-LAUNCH HIGHLIGHT STORIES (1080 x 1920) -->
+  <section class="section-wrap" id="hl-stories">
+    <div class="ig-grid-banner">
+      <span class="ig-grid-label">📌 10 Storyjev za v 5 Highlights pred launchom (1080 × 1920 px · 9:16)</span>
+      <button class="dl-all-btn" onclick="downloadAllHighlightStories()">⬇️ Prenesi vseh 10 Highlight Storyjev (PNG)</button>
+    </div>
+
+    <div class="stories-grid">
+      <div class="story-card">
+        <span class="story-label">O nas · 1/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-01" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Objavi kot Story → dodaj v Highlight <strong>O nas</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-01', 'herbagallus-hl-story-01-o-nas-zgodba.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">O nas · 2/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-02" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Drugi slide za Highlight <strong>O nas</strong> (sončna pridelava).</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-02', 'herbagallus-hl-story-02-o-nas-filozofija.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Izdelki · 1/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-03" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <em>herbagallus.com</em> → v <strong>Izdelki</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-03', 'herbagallus-hl-story-03-izdelki-vrsicki.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Izdelki · 2/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-04" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <em>herbagallus.com</em> → v <strong>Izdelki</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-04', 'herbagallus-hl-story-04-izdelki-kapljice.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Kakovost · 1/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-05" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prava fotografija s povečevalom → v <strong>Kakovost</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-05', 'herbagallus-hl-story-05-kakovost-lupa.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Kakovost · 2/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-06" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Lab testiranje & transparentnost → v <strong>Kakovost</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-06', 'herbagallus-hl-story-06-kakovost-lab.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">CBD 101 · 1/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-07" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">3-koračni vodnik za kapljice → v <strong>CBD 101</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-07', 'herbagallus-hl-story-07-cbd101-uporaba.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">CBD 101 · 2/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-08" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Zakaj polni spekter + bio olje → v <strong>CBD 101</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-08', 'herbagallus-hl-story-08-cbd101-spekter.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Trgovina · 1/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-09" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj lokacijsko nalepko <em>Vodnikov trg</em> → v <strong>Trgovina</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-09', 'herbagallus-hl-story-09-trgovina-ljubljana.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Trgovina · 2/2</span>
+        <div class="story-canvas-wrap"><canvas id="hls-10" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <em>herbagallus.com</em> → v <strong>Trgovina</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('hls-10', 'herbagallus-hl-story-10-trgovina-gls-promo.png')">⬇️ PNG</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: DAILY STORIES (1-2x / DAY) + 14-DAY CALENDAR -->
+  <section class="section-wrap" id="daily-stories">
+    <div class="ig-grid-banner">
+      <span class="ig-grid-label">📅 8 Dnevnih Story predlog (1–2× na dan · 1080 × 1920 px · s prostorom za IG nalepke)</span>
+      <button class="dl-all-btn" onclick="downloadAllDailyStories()">⬇️ Prenesi vseh 8 Dnevnih Storyjev (PNG)</button>
+    </div>
+
+    <div class="stories-grid-4">
+      <div class="story-card">
+        <span class="story-label">Dnevni #1 · Anketa (Ritual)</span>
+        <div class="story-canvas-wrap"><canvas id="ds-01" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prilepi IG <strong>Anketo</strong>: <em>"Zjutraj za fokus" / "Zvečer za mir"</em>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-01', 'herbagallus-daily-01-anketa-ritual.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #2 · Z našega nasada</span>
+        <div class="story-canvas-wrap"><canvas id="ds-02" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prava fotografija vrst na soncu + lokacija <em>Slovenija</em>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-02', 'herbagallus-daily-02-z-nasada.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #3 · Anketa (Izdelek)</span>
+        <div class="story-canvas-wrap"><canvas id="ds-03" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prilepi IG <strong>Anketo</strong>: <em>"CBD kapljice 💧" / "Vršički 🌿"</em>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-03', 'herbagallus-daily-03-anketa-izdelek.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #4 · Vprašaj nas (Q&A)</span>
+        <div class="story-canvas-wrap"><canvas id="ds-04" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prilepi IG <strong>Okvir za vprašanja</strong> na sredino kartice.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-04', 'herbagallus-daily-04-vprasaj-nas.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #5 · Makro cvet (Slider)</span>
+        <div class="story-canvas-wrap"><canvas id="ds-05" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prilepi IG <strong>Emoji drsnik (🌿)</strong> nad spodnjo kartico.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-05', 'herbagallus-daily-05-makro-drsnik.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #6 · Mnenje kupca</span>
+        <div class="story-canvas-wrap"><canvas id="ds-06" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <em>Preveri kapljice → herbagallus.com</em>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-06', 'herbagallus-daily-06-mnenje-kupca.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #7 · Za kulisami (Ekipa)</span>
+        <div class="story-canvas-wrap"><canvas id="ds-07" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prava fotografija ekipe v sončnem zahodu na nasadu.</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-07', 'herbagallus-daily-07-ekipa-nasad.png')">⬇️ PNG</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">Dnevni #8 · Vikend / Promo CTA</span>
+        <div class="story-canvas-wrap"><canvas id="ds-08" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <em>herbagallus.com</em> (koda DOMA15).</p>
+        <button class="dl-btn" onclick="downloadCanvas('ds-08', 'herbagallus-daily-08-promo-doma15.png')">⬇️ PNG</button>
+      </div>
+    </div>
+
+    <!-- 14-DAY ROTATING DAILY STORY PLAN -->
+    <div class="schedule-box">
+      <h2 class="schedule-title">📆 14-dnevni načrt za dnevne Storyje (1–2× na dan)</h2>
+      <p class="schedule-sub">Po 14 dneh ritem enostavno ponovite s svežimi 5–10 sekundnimi posnetki pakiranja, trgovine na Vodnikovem trgu in fotografijami iz mape <em>Farm photos</em>. Zlato pravilo: <strong>1. Story zjutraj (08:30–10:00)</strong> za doseg, <strong>2. Story pozno popoldne (17:30–20:00)</strong> za interakcijo ali klik v trgovino.</p>
+      <table class="sched-table">
+        <thead>
+          <tr>
+            <th>Dan</th>
+            <th>Jutranji Story (08:30–10:00)</th>
+            <th>Popoldanski / Večerni Story (17:30–20:00)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="sched-day">Dan 1 (Pon)</td>
+            <td><strong>Dnevni #2 (Z nasada)</strong> — pogled na sončne vrste.<br><span class="sticker-tag">📍 Lokacija: Slovenija</span></td>
+            <td><strong>Dnevni #1 (Anketa ritual)</strong> — kdaj vzamete kapljice?<br><span class="sticker-tag">📊 Anketa: Zjutraj / Zvečer</span></td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 2 (Tor)</td>
+            <td>Kratek 5s video pakiranja GLS naročil iz pisarne/trgovine.<br><span class="sticker-tag">💬 Besedilo: "Današnji paketi že na poti 📦"</span></td>
+            <td><strong>Dnevni #6 (Mnenje kupca 5★)</strong> — socialni dokaz.<br><span class="sticker-tag">🔗 Link: herbagallus.com</span></td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 3 (Sre)</td>
+            <td><strong>Dnevni #5 (Makro cvet)</strong> — jesenski cvet White Heaven.<br><span class="sticker-tag">🌿 Emoji drsnik</span></td>
+            <td><strong>Dnevni #4 (Vprašaj nas Q&A)</strong> — zberi vprašanja sledilcev.<br><span class="sticker-tag">❓ Okvir za vprašanja</span></td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 4 (Čet)</td>
+            <td>Odgovor na 1–2 vprašanji iz Q&A (preprosto na čisti podlagi ali čez farm sliko).</td>
+            <td><strong>Dnevni #3 (Anketa izdelek)</strong> — Kapljice ali Vršički?<br><span class="sticker-tag">📊 Anketa: Kapljice 💧 / Vršički 🌿</span></td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 5 (Pet)</td>
+            <td>Fotografija iz trgovine na <strong>Vodnikovem trgu</strong> — povabilo na vikend obisk.<br><span class="sticker-tag">📍 Vodnikov trg, Ljubljana</span></td>
+            <td><strong>Dnevni #8 (Promo -15 % DOMA15)</strong> — vikend naročilo.<br><span class="sticker-tag">🔗 Link: herbagallus.com</span></td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 6 (Sob)</td>
+            <td><strong>Dnevni #7 (Ekipa na nasadu)</strong> — sproščen sobotni utrinek s polja.</td>
+            <td><em>Opcijsko:</em> delite svojo zadnjo Feed objavo v Story ("Nova objava 👆").</td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 7 (Ned)</td>
+            <td>Mirna nedeljska fotka skodelice čaja + kapljic (ali Highlight CBD 101 slide).</td>
+            <td><strong>Dnevni #1</strong> ali kratek opomnik: večerni ritual pred novim tednom.<br><span class="sticker-tag">🔗 Link: CBD kapljice 5 %</span></td>
+          </tr>
+          <tr>
+            <td class="sched-day">Dan 8–14 (2. teden)</td>
+            <td colspan="2">Ponovite enak ritem (<strong>Nasadi/Kulise → Izdelek + Link → Anketa/Drsnik → Mnenje kupca → Vodnikov trg → Vikend promo</strong>) z različnimi pravimi slikami iz mape <em>Farm photos</em> in 1× tedensko kratkim videom (npr. posnetek nasada <code>09.39.31.mp4</code> kot Reel + delitev v Story).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 3: 9 POSTS (3x3 GRID) -->
+  <section class="section-wrap" id="feed-posts">
     <div class="ig-grid-banner">
       <span class="ig-grid-label">📸 Celotna 3 × 3 Instagram mreža (9 objav · 1080 × 1350 px)</span>
       <button class="dl-all-btn" onclick="downloadAllPosts()">⬇️ Prenesi vseh 9 objav (PNG)</button>
@@ -653,7 +1143,9 @@ Ste iz drugega konca Slovenije?
       const [
         ai1, ai2, ai3, ai5,
         prodFlower, prodOil, prodBalm,
-        markImg
+        markImg,
+        fRows, fHarvest, fFrost, fLoupe, fMacro,
+        fPersp, fAutumn, fSpire, fTeam, fSunset
       ] = await Promise.all([
         loadImage('/ig-studio/ai-post1-lifestyle.jpg'),
         loadImage('/ig-studio/ai-post2-dropper.jpg'),
@@ -662,11 +1154,33 @@ Ste iz drugega konca Slovenije?
         loadImage('/products/herbagallus-cbd-flower-premium.jpg'),
         loadImage('/products/herbagallus-cbd-oil-premium.jpg'),
         loadImage('/products/herbagallus-cbd-balm-sl.png'),
-        loadImage('/brand/herbagallus-mark.png')
+        loadImage('/brand/herbagallus-mark.png'),
+        loadImage('/farm/farm-rows-golden.jpg'),
+        loadImage('/farm/farm-harvest-sunbeams.jpg'),
+        loadImage('/farm/farm-white-heaven-frost.jpg'),
+        loadImage('/farm/farm-loupe-check.jpg'),
+        loadImage('/farm/farm-cola-macro-purple.jpg'),
+        loadImage('/farm/farm-rows-perspective.jpg'),
+        loadImage('/farm/farm-autumn-bud.jpg'),
+        loadImage('/farm/farm-sunlit-spire.jpg'),
+        loadImage('/farm/farm-team-sunset.jpg'),
+        loadImage('/farm/farm-cola-sunset.jpg')
       ]);
+
+      const farm = {
+        rows: fRows, harvest: fHarvest, frost: fFrost, loupe: fLoupe,
+        macro: fMacro, persp: fPersp, autumn: fAutumn, spire: fSpire,
+        team: fTeam, sunset: fSunset
+      };
 
       // Render 5 Story Highlights
       renderHighlights();
+
+      // Render 10 Pre-Launch Highlight Stories (9:16)
+      renderHighlightStories(farm, prodFlower, prodOil, prodBalm, markImg);
+
+      // Render 8 Daily Stories (9:16)
+      renderDailyStories(farm, prodFlower, prodOil, markImg);
 
       // Render all 9 Posts
       renderPost1(ai1, prodFlower, markImg);
@@ -1801,6 +2315,466 @@ Ste iz drugega konca Slovenije?
     }
 
     /* =======================================================
+       9:16 STORY RENDERERS (10 HIGHLIGHT + 8 DAILY STORIES)
+       ======================================================= */
+    function drawStoryPhotoTemplate(canvasId, {
+      bgImg, alignY = 0.45, eyebrow, title, body, bullets = [],
+      footerTag = 'HERBAGALLUS.COM', stickerHint = '', insetImg = null, darkOverlay = 0.88
+    }) {
+      const c = document.getElementById(canvasId);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = 1080, H = 1920;
+
+      // Full-bleed background photo
+      drawCover(ctx, bgImg, 0, 0, W, H, alignY);
+
+      // Subtle top vignette for IG safe zone
+      const topG = ctx.createLinearGradient(0, 0, 0, 460);
+      topG.addColorStop(0, 'rgba(10, 26, 19, 0.72)');
+      topG.addColorStop(1, 'rgba(10, 26, 19, 0)');
+      ctx.fillStyle = topG;
+      ctx.fillRect(0, 0, W, 460);
+
+      // Bottom rich emerald gradient for crisp readability
+      const botG = ctx.createLinearGradient(0, 740, 0, H);
+      botG.addColorStop(0, 'rgba(12, 30, 22, 0)');
+      botG.addColorStop(0.35, `rgba(12, 30, 22, ${darkOverlay * 0.65})`);
+      botG.addColorStop(0.7, `rgba(12, 30, 22, ${darkOverlay})`);
+      botG.addColorStop(1, 'rgba(10, 24, 18, 0.98)');
+      ctx.fillStyle = botG;
+      ctx.fillRect(0, 740, W, H - 740);
+
+      // Refined gold hairline frame
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+      ctx.lineWidth = 2;
+      roundRect(ctx, 36, 36, W - 72, H - 72, 26);
+      ctx.stroke();
+
+      // Top brand pill (inside safe zone below IG bar)
+      ctx.fillStyle = 'rgba(15, 36, 27, 0.72)';
+      roundRect(ctx, 76, 210, 440, 58, 29);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(240, 221, 168, 0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(eyebrow.toUpperCase(), 108, 247);
+
+      // Optional inset product card (top-right / middle)
+      if (insetImg) {
+        const iw = 330, ih = 390, ix = W - iw - 76, iy = 210;
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.45)';
+        ctx.shadowBlur = 32;
+        ctx.shadowOffsetY = 14;
+        roundRect(ctx, ix, iy, iw, ih, 24);
+        ctx.fillStyle = '#fffaf1';
+        ctx.fill();
+        ctx.restore();
+        drawRoundedImage(ctx, insetImg, ix + 10, iy + 10, iw - 20, ih - 20, 18, 0.5);
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
+        ctx.lineWidth = 2;
+        roundRect(ctx, ix, iy, iw, ih, 24);
+        ctx.stroke();
+      }
+
+      // Optional dedicated IG sticker box
+      if (stickerHint) {
+        const sy = 960, sh = 260;
+        roundRect(ctx, 90, sy, W - 180, sh, 26);
+        ctx.fillStyle = 'rgba(255, 250, 241, 0.12)';
+        ctx.fill();
+        ctx.setLineDash([12, 10]);
+        ctx.strokeStyle = 'rgba(240, 221, 168, 0.65)';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#f0dda8';
+        ctx.font = '700 24px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(stickerHint, W / 2, sy + sh / 2 + 8);
+        ctx.textAlign = 'left';
+      }
+
+      // Main headline & body in lower third
+      let y = stickerHint ? 1310 : (bullets.length ? 1080 : 1220);
+
+      ctx.fillStyle = '#fffaf1';
+      ctx.font = '700 66px "Playfair Display", Georgia, serif';
+      y = drawWrappedText(ctx, title, 78, y, W - 156, 78) + 46;
+
+      // Gold accent line
+      ctx.fillStyle = '#d4af37';
+      ctx.fillRect(78, y - 16, 92, 4);
+      y += 28;
+
+      if (body) {
+        ctx.fillStyle = '#e5efe9';
+        ctx.font = '500 32px "Plus Jakarta Sans", sans-serif';
+        y = drawWrappedText(ctx, body, 78, y, W - 156, 48) + 40;
+      }
+
+      if (bullets.length) {
+        bullets.forEach((b) => {
+          roundRect(ctx, 78, y - 16, W - 156, 74, 16);
+          ctx.fillStyle = 'rgba(255, 250, 241, 0.09)';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(240, 221, 168, 0.25)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText(b, 108, y + 31);
+          y += 92;
+        });
+      }
+
+      // Footer brand bar (above IG bottom reply safe zone)
+      ctx.fillStyle = 'rgba(240, 221, 168, 0.82)';
+      ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`HERBAGALLUS  ·  ${footerTag}`, W / 2, H - 110);
+      ctx.textAlign = 'left';
+    }
+
+    function drawStoryEditorialCard(canvasId, {
+      theme = 'emerald', eyebrow, title, subtitle = '', cards = [],
+      ctaText = '', stickerHint = '', markImg = null
+    }) {
+      const c = document.getElementById(canvasId);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = 1080, H = 1920;
+      const isCream = theme === 'cream';
+
+      if (isCream) {
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, '#fcf7ee');
+        bg.addColorStop(1, '#efe5d3');
+        ctx.fillStyle = bg;
+      } else {
+        const bg = ctx.createRadialGradient(W / 2, 360, 120, W / 2, H / 2, 1200);
+        bg.addColorStop(0, '#1e4637');
+        bg.addColorStop(1, '#0d2018');
+        ctx.fillStyle = bg;
+      }
+      ctx.fillRect(0, 0, W, H);
+
+      // Subtle frame
+      ctx.strokeStyle = isCream ? 'rgba(23, 56, 44, 0.16)' : 'rgba(212, 175, 55, 0.32)';
+      ctx.lineWidth = 2;
+      roundRect(ctx, 40, 40, W - 80, H - 80, 28);
+      ctx.stroke();
+
+      // Top logo mark
+      if (markImg) {
+        ctx.save();
+        if (!isCream) ctx.filter = 'brightness(0) invert(1) opacity(0.9)';
+        ctx.drawImage(markImg, W / 2 - 44, 195, 88, 110);
+        ctx.restore();
+      }
+
+      // Eyebrow
+      ctx.fillStyle = isCream ? '#9b5940' : '#d4af37';
+      ctx.font = '800 23px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(eyebrow.toUpperCase(), W / 2, 365);
+
+      // Title
+      ctx.fillStyle = isCream ? '#17382c' : '#fffaf1';
+      ctx.font = '700 68px "Playfair Display", Georgia, serif';
+      let y = drawWrappedText(ctx, title, W / 2, 455, W - 160, 82, 'center') + 48;
+
+      if (subtitle) {
+        ctx.fillStyle = isCream ? 'rgba(23, 56, 44, 0.72)' : '#cbe0d4';
+        ctx.font = '500 31px "Plus Jakarta Sans", sans-serif';
+        y = drawWrappedText(ctx, subtitle, W / 2, y, W - 180, 46, 'center') + 52;
+      } else {
+        y += 24;
+      }
+
+      // Cards stack
+      cards.forEach((item) => {
+        const cardH = item.desc ? 195 : 112;
+        roundRect(ctx, 84, y, W - 168, cardH, 22);
+        ctx.fillStyle = isCream ? '#ffffff' : 'rgba(255, 250, 241, 0.07)';
+        ctx.fill();
+        ctx.strokeStyle = isCream ? 'rgba(23, 56, 44, 0.12)' : 'rgba(240, 221, 168, 0.25)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = isCream ? '#17382c' : '#f0dda8';
+        ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(item.head, 126, y + 60);
+
+        if (item.desc) {
+          ctx.fillStyle = isCream ? 'rgba(23, 56, 44, 0.78)' : '#e2ece6';
+          ctx.font = '500 27px "Plus Jakarta Sans", sans-serif';
+          drawWrappedText(ctx, item.desc, 126, y + 108, W - 252, 40);
+        }
+        y += cardH + 26;
+      });
+
+      // Optional IG sticker box
+      if (stickerHint) {
+        const sy = Math.max(y + 18, 920);
+        const sh = 340;
+        roundRect(ctx, 96, sy, W - 192, sh, 28);
+        ctx.fillStyle = isCream ? 'rgba(23, 56, 44, 0.05)' : 'rgba(255, 250, 241, 0.08)';
+        ctx.fill();
+        ctx.setLineDash([12, 10]);
+        ctx.strokeStyle = isCream ? 'rgba(23, 56, 44, 0.35)' : 'rgba(240, 221, 168, 0.6)';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = isCream ? '#17382c' : '#f0dda8';
+        ctx.font = '700 26px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(stickerHint, W / 2, sy + sh / 2 + 8);
+      }
+
+      // Optional bottom CTA pill
+      if (ctaText) {
+        const cy = H - 280;
+        roundRect(ctx, 110, cy, W - 220, 104, 20);
+        ctx.fillStyle = isCream ? '#17382c' : '#d4af37';
+        ctx.fill();
+        ctx.fillStyle = isCream ? '#fffaf1' : '#10241b';
+        ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(ctaText, W / 2, cy + 63);
+      }
+
+      ctx.fillStyle = isCream ? 'rgba(23, 56, 44, 0.55)' : 'rgba(240, 221, 168, 0.78)';
+      ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('HERBAGALLUS  ·  100 % SLOVENSKO', W / 2, H - 105);
+      ctx.textAlign = 'left';
+    }
+
+    function renderHighlightStories(farm, prodFlower, prodOil, prodBalm, markImg) {
+      // 1-2: O NAS
+      drawStoryPhotoTemplate('hls-01', {
+        bgImg: farm.rows, alignY: 0.45,
+        eyebrow: 'O nas · 1/2',
+        title: '100 % slovenska sončna konoplja.',
+        body: 'Naša konoplja raste na prostem pod slovenskim soncem in zaščitno mrežo. Brez umetnih luči, brez bližnjic — le čista narava.',
+        footerTag: 'PRIDELANO V SLOVENIJI'
+      });
+
+      drawStoryPhotoTemplate('hls-02', {
+        bgImg: farm.harvest, alignY: 0.5,
+        eyebrow: 'O nas · 2/2',
+        title: 'Ročna žetev ob pravem trenutku.',
+        body: 'Vsako rastlino spremljamo od semena do končnega izdelka. Počasi zoreno, skrbno obrezano in pripravljeno v manjših serijah.',
+        footerTag: 'NARAVNO PRIDELANO'
+      });
+
+      // 3-4: IZDELKI
+      drawStoryPhotoTemplate('hls-03', {
+        bgImg: farm.frost, alignY: 0.4,
+        insetImg: prodFlower,
+        eyebrow: 'Izdelki · Vršički',
+        title: 'White Heaven CBD vršički',
+        body: 'Outdoor sorta s polno naravno aromo in 6–9 % naravnega CBD (THC < 0,3 %).',
+        bullets: [
+          '🌿 Pakiranja: 3 g · 5 g · 10 g · 25 g',
+          '☀️ 100 % naravno · slovensko poreklo',
+          '🎁 -15 % s kodo DOMA15 na herbagallus.com'
+        ],
+        footerTag: 'KLIKNI POVEZAVO SPODAJ'
+      });
+
+      drawStoryPhotoTemplate('hls-04', {
+        bgImg: farm.spire, alignY: 0.45,
+        insetImg: prodOil,
+        eyebrow: 'Izdelki · Kapljice',
+        title: 'CBD kapljice 5 % Premium',
+        body: '500 mg polnospektralnega CO₂ izvlečka v 93,4 % BIO ekstra deviškem olivnem olju.',
+        bullets: [
+          '🫒 Bio ekstra deviško olivno olje',
+          '🧪 Polni spekter + terpeni (THC < 0,2 %)',
+          '🎁 -15 % s kodo DOMA15 na herbagallus.com'
+        ],
+        footerTag: 'KLIKNI POVEZAVO SPODAJ'
+      });
+
+      // 5-6: KAKOVOST
+      drawStoryPhotoTemplate('hls-05', {
+        bgImg: farm.loupe, alignY: 0.25,
+        eyebrow: 'Kakovost · 1/2',
+        title: 'Ročna kontrola vsake serije.',
+        body: 'Pred žetvijo zrelost cvetov in smolnih trihomov ročno preverimo s povečevalnim steklom, da ujamemo popoln trenutek.',
+        footerTag: 'KAKOVOST NA PRVEM MESTU'
+      });
+
+      drawStoryPhotoTemplate('hls-06', {
+        bgImg: farm.macro, alignY: 0.4,
+        eyebrow: 'Kakovost · 2/2',
+        title: 'Popolna transparentnost.',
+        body: 'Vsak izdelek spremljajo jasna deklaracija, preverjena vsebnost kanabinoidov in zakonska skladnost brez neutemeljenih obljub.',
+        bullets: [
+          '✔️ Neodvisno laboratorijsko preverjeno',
+          '✔️ Sledljivo poreklo in čiste sestavine'
+        ],
+        footerTag: 'HERBAGALLUS.COM/QUALITY'
+      });
+
+      // 7-8: CBD 101
+      drawStoryEditorialCard('hls-07', {
+        theme: 'cream',
+        eyebrow: 'CBD 101 · Vodnik',
+        title: 'Kako uporabljati CBD kapljice?',
+        subtitle: 'Preprost 3-koračni dnevni ritual za optimalno absorpcijo.',
+        markImg,
+        cards: [
+          { head: '1. Nežno pretresi stekleničko', desc: 'Da se naravni izvleček in bio olivno olje enakomerno premešata.' },
+          { head: '2. 2–4 kapljice pod jezik', desc: 'Zadrži približno 60 sekund za najboljšo naravno absorpcijo.' },
+          { head: '3. Redna rutina', desc: 'Začni počasi zjutraj ali zvečer in prisluhni svojemu telesu.' }
+        ],
+        ctaText: 'SHRANJENO V CBD 101'
+      });
+
+      drawStoryEditorialCard('hls-08', {
+        theme: 'emerald',
+        eyebrow: 'CBD 101 · Zakaj polni spekter?',
+        title: 'Sinergija cele rastline.',
+        subtitle: 'Namesto izolata ohranjamo bogat naravni profil industrijske konoplje.',
+        markImg,
+        cards: [
+          { head: '🌿 CBD + CBG + CBC', desc: 'Naravno prisotni kanabinoidi delujejo v medsebojni harmoniji.' },
+          { head: '✨ Naravni terpeni', desc: 'β-kariofilen, mircen in limonen dajejo pristno aromo in karakter.' },
+          { head: '🫒 Bio ekstra deviško olivno olje', desc: 'Hladno stiskano nosilno olje brez umetnih dodatkov.' }
+        ],
+        ctaText: 'HERBAGALLUS.COM'
+      });
+
+      // 9-10: TRGOVINA
+      drawStoryEditorialCard('hls-09', {
+        theme: 'emerald',
+        eyebrow: 'Trgovina v živo · Ljubljana',
+        title: 'Obiščite nas na Vodnikovem trgu.',
+        subtitle: 'Izbrane izdelke HerbaGallus lahko spoznate v živo v trgovini Plečnikov čaj.',
+        markImg,
+        cards: [
+          { head: '📍 Lokacija', desc: 'Vodnikov trg (pri osrednji tržnici), 1000 Ljubljana' },
+          { head: '🤝 Osebno svetovanje', desc: 'Z veseljem vam pomagamo pri izbiri pravega izdelka za vaš ritual.' },
+          { head: '🌿 Pristna izkušnja', desc: 'Oglejte si izdelke od blizu in spoznajte našo slovensko zgodbo.' }
+        ],
+        ctaText: 'PRIJAZNO DOBRODOŠLI'
+      });
+
+      drawStoryEditorialCard('hls-10', {
+        theme: 'cream',
+        eyebrow: 'Spletna trgovina & dostava',
+        title: 'Naročite iz udobja doma.',
+        subtitle: 'Varno, hitro in diskretno po vsej Sloveniji.',
+        markImg,
+        cards: [
+          { head: '📦 GLS dostava v 1–2 delovnih dneh', desc: 'Na vaš dom ali najbližji GLS paketomat (brezplačno nad 50 €).' },
+          { head: '💳 Prilagodljivo plačilo', desc: 'Plačilo po povzetju (kurirju z gotovino/kartico), po UPN ali s kartico.' },
+          { head: '🎁 Dobrodošlica: -15 % popusta', desc: 'Ob zaključku nakupa vnesite kodo DOMA15.' }
+        ],
+        ctaText: 'HERBAGALLUS.COM  →'
+      });
+    }
+
+    function renderDailyStories(farm, prodFlower, prodOil, markImg) {
+      // Daily #1: Poll Ritual
+      drawStoryEditorialCard('ds-01', {
+        theme: 'cream',
+        eyebrow: 'Dnevna anketa · Tvoj ritual',
+        title: 'Kdaj ti najbolj prija trenutek miru?',
+        subtitle: 'Povej nam v anketi spodaj 👇',
+        markImg,
+        stickerHint: '📊 SEM PRILEPI IG ANKETO (Zjutraj / Zvečer)'
+      });
+
+      // Daily #2: Farm Behind the Scenes
+      drawStoryPhotoTemplate('ds-02', {
+        bgImg: farm.persp, alignY: 0.5,
+        eyebrow: 'Z našega nasada',
+        title: 'Svež zrak. Slovensko sonce.',
+        body: 'Takole izgledajo naše vrste outdoor konoplje pod zaščitno mrežo. Čista narava od prvega dne.',
+        footerTag: '100 % SUNGROWN · SLOVENIJA'
+      });
+
+      // Daily #3: Poll Product
+      drawStoryPhotoTemplate('ds-03', {
+        bgImg: farm.sunset, alignY: 0.4,
+        eyebrow: 'Izberi svojega favorita',
+        title: 'Kapljice ali vršički?',
+        body: 'Kateri HerbaGallus izdelek bi najprej preizkusil/-a?',
+        stickerHint: '📊 SEM PRILEPI IG ANKETO (Kapljice 💧 / Vršički 🌿)',
+        footerTag: 'HERBAGALLUS.COM'
+      });
+
+      // Daily #4: Q&A
+      drawStoryEditorialCard('ds-04', {
+        theme: 'emerald',
+        eyebrow: 'Vprašaj nas karkoli · Q&A',
+        title: 'Imaš vprašanje o CBD-ju ali pridelavi?',
+        subtitle: 'Zapiši ga spodaj — z veseljem odgovorimo iskreno in preprosto.',
+        markImg,
+        stickerHint: '❓ SEM PRILEPI IG OKVIR ZA VPRAŠANJA'
+      });
+
+      // Daily #5: Macro Bud Slider
+      drawStoryPhotoTemplate('ds-05', {
+        bgImg: farm.autumn, alignY: 0.42,
+        eyebrow: 'Jesenski odtenki · White Heaven',
+        title: 'Poglej te naravne barve.',
+        body: 'Hladnejše jesenske noči in toplo sonce ustvarijo bogato aromo in zlate tone listov.',
+        stickerHint: '🌿 SEM PRILEPI IG EMOJI DRSNIK',
+        footerTag: 'WHITE HEAVEN 6–9 % CBD'
+      });
+
+      // Daily #6: Customer Review Spotlight
+      drawStoryEditorialCard('ds-06', {
+        theme: 'cream',
+        eyebrow: '★★★★★  Mnenje kupca',
+        title: '»Končno kapljice z res prijetnim okusom.«',
+        subtitle: 'Kombinacija polnega spektra in bio olivnega olja prepriča že po prvem tednu.',
+        markImg,
+        cards: [
+          { head: 'Maja K. · Preverjen nakup ✓', desc: '»Že po enem tednu uporabe opažam večji večerni mir. Dostava z GLS je bila pri meni že naslednji dan!«' },
+          { head: 'HerbaGallus CBD kapljice 5 %', desc: '500 mg CBD · Bio ekstra deviško olivno olje · 31,00 €' }
+        ],
+        ctaText: 'PREVERI NA HERBAGALLUS.COM'
+      });
+
+      // Daily #7: Team at Sunset
+      drawStoryPhotoTemplate('ds-07', {
+        bgImg: farm.team, alignY: 0.45,
+        eyebrow: 'Za kulisami · Ekipa HerbaGallus',
+        title: 'Za vsako serijo stojimo ljudje.',
+        body: 'Brez množične industrije — osebna skrb na polju, ročna obdelava in neposreden stik z vami.',
+        footerTag: 'SLOVENSKA PRIDELAVA'
+      });
+
+      // Daily #8: Weekend / Promo CTA
+      drawStoryPhotoTemplate('ds-08', {
+        bgImg: farm.rows, alignY: 0.4,
+        insetImg: prodOil,
+        eyebrow: 'Posebna ugodnost',
+        title: '-15 % na tvoje prvo naročilo.',
+        body: 'Izkoristi kodo DOMA15 na herbagallus.com. Paket odpošljemo z GLS v 1–2 delovnih dneh.',
+        bullets: [
+          '🎁 Koda za popust: DOMA15',
+          '📦 Možnost plačila po povzetju (GLS)'
+        ],
+        footerTag: 'DODAJ LINK NALEPKO HERBAGALLUS.COM'
+      });
+    }
+
+    /* =======================================================
        DOWNLOAD & COPY HELPERS
        ======================================================= */
     function downloadCanvas(id, filename) {
@@ -1809,6 +2783,40 @@ Ste iz drugega konca Slovenije?
       a.download = filename;
       a.href = c.toDataURL('image/png');
       a.click();
+    }
+
+    function downloadAllHighlightStories() {
+      const items = [
+        ['hls-01', 'herbagallus-hl-story-01-o-nas-zgodba.png'],
+        ['hls-02', 'herbagallus-hl-story-02-o-nas-filozofija.png'],
+        ['hls-03', 'herbagallus-hl-story-03-izdelki-vrsicki.png'],
+        ['hls-04', 'herbagallus-hl-story-04-izdelki-kapljice.png'],
+        ['hls-05', 'herbagallus-hl-story-05-kakovost-lupa.png'],
+        ['hls-06', 'herbagallus-hl-story-06-kakovost-lab.png'],
+        ['hls-07', 'herbagallus-hl-story-07-cbd101-uporaba.png'],
+        ['hls-08', 'herbagallus-hl-story-08-cbd101-spekter.png'],
+        ['hls-09', 'herbagallus-hl-story-09-trgovina-ljubljana.png'],
+        ['hls-10', 'herbagallus-hl-story-10-trgovina-gls-promo.png']
+      ];
+      items.forEach(([id, name], i) => {
+        setTimeout(() => downloadCanvas(id, name), i * 380);
+      });
+    }
+
+    function downloadAllDailyStories() {
+      const items = [
+        ['ds-01', 'herbagallus-daily-01-anketa-ritual.png'],
+        ['ds-02', 'herbagallus-daily-02-z-nasada.png'],
+        ['ds-03', 'herbagallus-daily-03-anketa-izdelek.png'],
+        ['ds-04', 'herbagallus-daily-04-vprasaj-nas.png'],
+        ['ds-05', 'herbagallus-daily-05-makro-drsnik.png'],
+        ['ds-06', 'herbagallus-daily-06-mnenje-kupca.png'],
+        ['ds-07', 'herbagallus-daily-07-ekipa-nasad.png'],
+        ['ds-08', 'herbagallus-daily-08-promo-doma15.png']
+      ];
+      items.forEach(([id, name], i) => {
+        setTimeout(() => downloadCanvas(id, name), i * 380);
+      });
     }
 
     function downloadAllPosts() {
