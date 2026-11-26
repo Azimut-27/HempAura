@@ -151,7 +151,7 @@ export default function HomePage() {
               Vsi izdelki <ArrowRight size={15} aria-hidden="true" />
             </Link>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {products.filter((product) => product.featured).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
