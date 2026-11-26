@@ -444,25 +444,30 @@ export const products = [
     lowStockThreshold: 3,
     imagesByLanguage: {
       sl: {
-        src: "/products/herbagallus-cbd-prerolls-premium.jpg",
-        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 kosi) v mat črni vrečki",
-        width: 896,
-        height: 1152,
+        src: "/products/herbagallus-cbd-prerolls-front-back.jpg",
+        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 kosi) — sprednja in zadnja stran črne vrečke s prosojnim oknom",
+        width: 1200,
+        height: 900,
       },
       en: {
-        src: "/products/herbagallus-cbd-prerolls-premium.jpg",
-        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 pcs) in matte black pouch",
-        width: 896,
-        height: 1152,
+        src: "/products/herbagallus-cbd-prerolls-front-back.jpg",
+        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 pcs) — front and back view with clear window",
+        width: 1200,
+        height: 900,
       },
       de: {
-        src: "/products/herbagallus-cbd-prerolls-premium.jpg",
-        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 Stück) im mattschwarzen Beutel",
-        width: 896,
-        height: 1152,
+        src: "/products/herbagallus-cbd-prerolls-front-back.jpg",
+        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 Stück) — Vorder- und Rückseite mit Sichtfenster",
+        width: 1200,
+        height: 900,
       },
     },
     gallery: [
+      {
+        src: "/products/herbagallus-cbd-prerolls-premium.jpg",
+        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 kosi) z nebeljenimi zvitki in cvetovi",
+        caption: "3 ročno napolnjeni zvitki · White Heaven",
+      },
       {
         src: "/farm/farm-cola-macro-purple.jpg",
         alt: "Svež cvet industrijske konoplje sorte White Heaven na nasadu HerbaGallus",
