@@ -542,17 +542,129 @@
       border-radius: 6px;
       margin-top: 4px;
     }
+
+    /* Animated Reels Studio */
+    .reels-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 1100px) {
+      .reels-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 620px) {
+      .reels-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+    }
+    .reel-card {
+      background: linear-gradient(165deg, #162c22 0%, #102119 100%);
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      border-radius: 20px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
+    }
+    .reel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .reel-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #f0dda8;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .reel-dur {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #cfe0d6;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .reel-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0a1711;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+    }
+    .reel-stage canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .reel-progress-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .reel-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f0dda8, #d4af37);
+      border-radius: 99px;
+      transition: width 0.05s linear;
+    }
+    .reel-controls {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 8px;
+    }
+    .reel-play-btn {
+      background: rgba(255, 250, 241, 0.1);
+      color: #fffaf1;
+      border: 1px solid rgba(240, 221, 168, 0.3);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 10px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .reel-play-btn:hover { background: rgba(255, 250, 241, 0.2); }
+    .reel-export-btn {
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #0e2017;
+      border: none;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 10px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.26);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .reel-export-btn:hover:not(:disabled) { transform: translateY(-1px); }
+    .reel-export-btn:disabled { opacity: 0.65; cursor: wait; }
+    .reel-status {
+      font-size: 11px;
+      color: #a9bbb0;
+      min-height: 16px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
   <div class="header">
     <span class="badge">HerbaGallus · Celoten Instagram Launch Kit</span>
-    <h1>Bio + 5 Highlights + 18 Storyjev + 9 Feed objav</h1>
-    <p class="lead">Vse na enem mestu v slovenščini — z vašimi <strong>pravimi fotografijami nasada</strong>, izdelki, pripravljenim IG Bio opisom, <strong>10 pred-launch Highlight Storyji</strong>, <strong>8 dnevnimi Storyji + 14-dnevnim načrtom (1–2× na dan)</strong> in celotno <strong>3 × 3 Feed mrežo</strong>.</p>
+    <h1>Reels Studio + Bio + Highlights + Storyji + 3×3 Mreža</h1>
+    <p class="lead">Vse na enem mestu v slovenščini — vključno z <strong>4 animiranimi 1080 × 1920 Video Reeli (1-klik izvoz)</strong>, pravimi fotografijami nasada, novimi izdelki (<strong>Pre-Rolls &amp; CBD za živali</strong>), IG Bio opisom, Storyji in Feed mrežo.</p>
   </div>
 
   <nav class="quick-nav" aria-label="Hitri skoki">
+    <a href="#reels-studio" style="background:rgba(212,175,55,0.22);border-color:rgba(240,221,168,0.65);color:#f0dda8;">🎬 Reels Studio (4 animirani videi)</a>
     <a href="#bio">✍️ Bio & Profil</a>
     <a href="#new-products">🆕 Novosti: Pre-Rolls & Živali (6 vizualov)</a>
     <a href="#highlights">✨ 5 Highlight ikon</a>
@@ -560,6 +672,128 @@
     <a href="#daily-stories">📅 8 Dnevnih Storyjev + 14-dnevni načrt</a>
     <a href="#feed-posts">📸 9 Feed objav (3×3)</a>
   </nav>
+
+  <!-- SECTION REELS STUDIO: 4 ANIMATED 1080x1920 VIDEO REELS -->
+  <section class="section-wrap" id="reels-studio">
+    <div class="ig-grid-banner">
+      <span class="ig-grid-label">🎬 HerbaGallus Reels Studio — 4 animirani videi (1080 × 1920 · 60fps · 1-klik Video Export)</span>
+    </div>
+
+    <div class="reels-grid">
+
+      <!-- REEL 1 -->
+      <div class="reel-card">
+        <div class="reel-head">
+          <span class="reel-title">Reel 1 · Od sonca do kapljice</span>
+          <span class="reel-dur">12s · 1080×1920</span>
+        </div>
+        <div class="reel-stage" onclick="toggleReelPreview('reel1')">
+          <canvas id="cv-reel1" width="1080" height="1920"></canvas>
+        </div>
+        <div class="reel-progress-track"><div class="reel-progress-fill" id="prog-reel1"></div></div>
+        <div class="reel-controls">
+          <button class="reel-play-btn" id="play-reel1" onclick="toggleReelPreview('reel1')">▶️ Predvajaj</button>
+          <button class="reel-export-btn" id="exp-reel1" onclick="exportReelVideo('reel1', 'herbagallus-reel-01-kapljice')">🎬 Izvozi Video</button>
+        </div>
+        <div class="reel-status" id="stat-reel1">Nasad → Ročna lupa → CBD 5 % → CTA</div>
+        <div class="caption-box">
+          <div class="caption-header"><span>Reel opis #1</span><button class="copy-btn" onclick="copyCaption('rcap1', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="rcap1">Od slovenskega sonca do tvojega večernega miru. 🌿☀️
+
+Vsako rastlino spremljamo na prostem, zrelost ročno preverimo s povečevalnim steklom in ustvarimo čiste 5 % CBD kapljice v 93,4 % BIO ekstra deviškem olivnem olju.
+
+🎁 -15 % na prvi nakup s kodo DOMA15 na herbagallus.com (povezava v bio).
+🎵 Zvok v IG: dodaj umirjen akustični / lo-fi trendovski zvok.
+
+#herbagallus #slovenskakonoplja #cbdkapljice #sungrown #naravniravnovesje #slovenija</div>
+        </div>
+      </div>
+
+      <!-- REEL 2 -->
+      <div class="reel-card">
+        <div class="reel-head">
+          <span class="reel-title">Reel 2 · NOVO CBD Pre-Rolls</span>
+          <span class="reel-dur">11s · 1080×1920</span>
+        </div>
+        <div class="reel-stage" onclick="toggleReelPreview('reel2')">
+          <canvas id="cv-reel2" width="1080" height="1920"></canvas>
+        </div>
+        <div class="reel-progress-track"><div class="reel-progress-fill" id="prog-reel2"></div></div>
+        <div class="reel-controls">
+          <button class="reel-play-btn" id="play-reel2" onclick="toggleReelPreview('reel2')">▶️ Predvajaj</button>
+          <button class="reel-export-btn" id="exp-reel2" onclick="exportReelVideo('reel2', 'herbagallus-reel-02-prerolls')">🎬 Izvozi Video</button>
+        </div>
+        <div class="reel-status" id="stat-reel2">Makro cvet → Žetev → Pre-Rolls 11 €</div>
+        <div class="caption-box">
+          <div class="caption-header"><span>Reel opis #2</span><button class="copy-btn" onclick="copyCaption('rcap2', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="rcap2">NOVO: HerbaGallus CBD Pre-Rolls — White Heaven! 🌿🖤
+
+100 % celi slovenski outdoor cvetovi (6–9 % CBD, THC &lt; 0,3 %), brez tobaka in brez nikotina. 3 kosi v mat črni vrečki s prosojnim oknom za samo 11,00 €.
+
+📦 GLS dostava v 1–2 dneh (tudi po povzetju) · koda DOMA15 za -15 %.
+*Izdelek iz industrijske konoplje (18+). Za aromatiziranje prostorov / zbirateljske namene.
+
+#herbagallus #cbdprerolls #whiteheaven #sungrown #breztobaka #slovenskizdelki</div>
+        </div>
+      </div>
+
+      <!-- REEL 3 -->
+      <div class="reel-card">
+        <div class="reel-head">
+          <span class="reel-title">Reel 3 · CBD za živali 5 %</span>
+          <span class="reel-dur">12s · 1080×1920</span>
+        </div>
+        <div class="reel-stage" onclick="toggleReelPreview('reel3')">
+          <canvas id="cv-reel3" width="1080" height="1920"></canvas>
+        </div>
+        <div class="reel-progress-track"><div class="reel-progress-fill" id="prog-reel3"></div></div>
+        <div class="reel-controls">
+          <button class="reel-play-btn" id="play-reel3" onclick="toggleReelPreview('reel3')">▶️ Predvajaj</button>
+          <button class="reel-export-btn" id="exp-reel3" onclick="exportReelVideo('reel3', 'herbagallus-reel-03-za-zivali')">🎬 Izvozi Video</button>
+        </div>
+        <div class="reel-status" id="stat-reel3">Kavelj 🐾 → Steklenička → Odmerjanje</div>
+        <div class="caption-box">
+          <div class="caption-header"><span>Reel opis #3</span><button class="copy-btn" onclick="copyCaption('rcap3', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="rcap3">Se tvoj pes ali mačka boji pokov, neviht ali vožnje? 🐾🌿
+
+HerbaGallus CBD kapljice za živali 5 % (500 mg CBD v 93,4 % BIO olivnem olju) — brez eteričnih olj, varno tudi za mačke.
+
+📌 Shrani ta video za tabelo odmerjanja po teži!
+🛒 herbagallus.com (koda DOMA15 za -15 %)
+
+#herbagallus #cbdzazivali #cbdpes #cbdmacka #psi #macke #slovenija</div>
+        </div>
+      </div>
+
+      <!-- REEL 4 -->
+      <div class="reel-card">
+        <div class="reel-head">
+          <span class="reel-title">Reel 4 · White Heaven Vršički</span>
+          <span class="reel-dur">11s · 1080×1920</span>
+        </div>
+        <div class="reel-stage" onclick="toggleReelPreview('reel4')">
+          <canvas id="cv-reel4" width="1080" height="1920"></canvas>
+        </div>
+        <div class="reel-progress-track"><div class="reel-progress-fill" id="prog-reel4"></div></div>
+        <div class="reel-controls">
+          <button class="reel-play-btn" id="play-reel4" onclick="toggleReelPreview('reel4')">▶️ Predvajaj</button>
+          <button class="reel-export-btn" id="exp-reel4" onclick="exportReelVideo('reel4', 'herbagallus-reel-04-white-heaven')">🎬 Izvozi Video</button>
+        </div>
+        <div class="reel-status" id="stat-reel4">Cvet → 3g/5g/10g/25g → Vodnikov trg</div>
+        <div class="caption-box">
+          <div class="caption-header"><span>Reel opis #4</span><button class="copy-btn" onclick="copyCaption('rcap4', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="rcap4">Sorta White Heaven — pridelano na slovenskem soncu. ☀️🌿
+
+Ročno obrani, počasi zoreni vršički s 6–9 % naravnega CBD. Izberi pakiranje 3 g, 5 g, 10 g ali 25 g!
+
+📍 Obišči nas na Vodnikovem trgu v Ljubljani ali naroči na herbagallus.com (-15 %: DOMA15).
+
+#herbagallus #whiteheaven #slovenskakonoplja #vodnikovtrg #ljubljana #sungrown</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- SECTION 0: IG BIO & PROFILE SETUP -->
   <section class="section-wrap" id="bio">
@@ -1259,7 +1493,7 @@ Ste iz drugega konca Slovenije?
       const [
         ai1, ai2, ai3, ai5,
         prodFlower, prodOil, prodBalm, prodPreRolls, prodPetOil,
-        markImg,
+        markImg, stackedLogoImg,
         fRows, fHarvest, fFrost, fLoupe, fMacro,
         fPersp, fAutumn, fSpire, fTeam, fSunset
       ] = await Promise.all([
@@ -1273,6 +1507,7 @@ Ste iz drugega konca Slovenije?
         loadImage('/products/herbagallus-cbd-prerolls-front-back.jpg'),
         loadImage('/products/herbagallus-cbd-pet-oil-premium.jpg'),
         loadImage('/brand/herbagallus-mark.png'),
+        loadImage('/brand/herbagallus-logo-stacked.png'),
         loadImage('/farm/farm-rows-golden.jpg'),
         loadImage('/farm/farm-harvest-sunbeams.jpg'),
         loadImage('/farm/farm-white-heaven-frost.jpg'),
@@ -1290,6 +1525,17 @@ Ste iz drugega konca Slovenije?
         macro: fMacro, persp: fPersp, autumn: fAutumn, spire: fSpire,
         team: fTeam, sunset: fSunset
       };
+
+      // Initialize Animated Reels Studio (4 Reels)
+      initReelsStudio({
+        farm,
+        prodFlower,
+        prodOil,
+        prodPreRolls,
+        prodPetOil,
+        markImg,
+        stackedLogoImg
+      });
 
       // Render 5 Story Highlights
       renderHighlights();
@@ -3274,6 +3520,765 @@ Ste iz drugega konca Slovenije?
       items.forEach(([id, name], i) => {
         setTimeout(() => downloadCanvas(id, name), i * 380);
       });
+    }
+
+    /* =======================================================
+       ANIMATED REELS STUDIO ENGINE (1080 x 1920 · 60FPS + EXPORT)
+       ======================================================= */
+    let REEL_ASSETS = null;
+    const REEL_STATE = {
+      reel1: { duration: 12.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
+      reel2: { duration: 11.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
+      reel3: { duration: 12.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
+      reel4: { duration: 11.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 }
+    };
+
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+    function easeOutCubic(t) { t = clamp01(t); return 1 - Math.pow(1 - t, 3); }
+    function easeInOutQuad(t) { t = clamp01(t); return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+    function drawKenBurns(ctx, img, progress, zoomFrom = 1.0, zoomTo = 1.12, panX = 0, panY = 0, alignY = 0.5) {
+      const W = 1080, H = 1920;
+      const z = zoomFrom + (zoomTo - zoomFrom) * easeInOutQuad(progress);
+      const imgRatio = img.width / img.height;
+      const boxRatio = W / H;
+      let baseW, baseH;
+      if (imgRatio > boxRatio) {
+        baseH = H;
+        baseW = H * imgRatio;
+      } else {
+        baseW = W;
+        baseH = W / imgRatio;
+      }
+      const dw = baseW * z;
+      const dh = baseH * z;
+      const dx = (W - dw) / 2 + panX * (progress - 0.5);
+      const dy = (H - dh) * alignY + panY * (progress - 0.5);
+      ctx.drawImage(img, dx, dy, dw, dh);
+    }
+
+    function drawFloatingGoldDust(ctx, t) {
+      ctx.save();
+      for (let i = 0; i < 18; i++) {
+        const seed = i * 97.3;
+        const x = ((Math.sin(seed + t * 0.25) * 0.5 + 0.5) * 960) + 60;
+        const y = (1920 - ((t * (28 + (i % 5) * 10) + i * 140) % 1920));
+        const r = 2.5 + (i % 4) * 1.4;
+        const alpha = 0.14 + 0.22 * (Math.sin(t * 2 + seed) * 0.5 + 0.5);
+        ctx.fillStyle = `rgba(240, 221, 168, ${alpha.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawReelFrameChrome(ctx, t, duration, stepLabel) {
+      const W = 1080, H = 1920;
+      // Subtle top vignette + gold hairline frame
+      const topV = ctx.createLinearGradient(0, 0, 0, 340);
+      topV.addColorStop(0, 'rgba(10, 24, 18, 0.72)');
+      topV.addColorStop(1, 'rgba(10, 24, 18, 0)');
+      ctx.fillStyle = topV;
+      ctx.fillRect(0, 0, W, 340);
+
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.34)';
+      ctx.lineWidth = 2;
+      roundRect(ctx, 34, 34, W - 68, H - 68, 28);
+      ctx.stroke();
+
+      // Top animated timeline bar
+      const barW = W - 140;
+      roundRect(ctx, 70, 160, barW, 6, 3);
+      ctx.fillStyle = 'rgba(255, 250, 241, 0.18)';
+      ctx.fill();
+      roundRect(ctx, 70, 160, barW * clamp01(t / duration), 6, 3);
+      ctx.fillStyle = '#d4af37';
+      ctx.fill();
+
+      // Step pill
+      if (stepLabel) {
+        ctx.font = '800 21px "Plus Jakarta Sans", sans-serif';
+        const pw = ctx.measureText(stepLabel).width + 58;
+        roundRect(ctx, 70, 198, pw, 54, 27);
+        ctx.fillStyle = 'rgba(14, 35, 26, 0.78)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(240, 221, 168, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.fillStyle = '#f0dda8';
+        ctx.fillText(stepLabel, 99, 233);
+      }
+
+      // Subtle bottom brand watermark
+      ctx.fillStyle = 'rgba(240, 221, 168, 0.72)';
+      ctx.font = '700 20px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('HERBAGALLUS  ·  100 % SLOVENSKO', W / 2, H - 86);
+      ctx.textAlign = 'left';
+    }
+
+    function drawReelOutro(ctx, localT, stackedLogoImg, headline, subline, codeText = 'KODA ZA -15 %: DOMA15') {
+      const W = 1080, H = 1920;
+      const p = easeOutCubic(localT / 0.75);
+
+      const bg = ctx.createRadialGradient(W / 2, H * 0.42, 80, W / 2, H / 2, 1180);
+      bg.addColorStop(0, '#214d3d');
+      bg.addColorStop(1, '#0c1d16');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      drawFloatingGoldDust(ctx, localT + 5);
+
+      // Official stacked logo (white inverted on dark emerald)
+      ctx.save();
+      ctx.globalAlpha = p;
+      const logoW = 480;
+      const logoH = logoW * (stackedLogoImg.height / stackedLogoImg.width);
+      const lift = (1 - p) * 40;
+      ctx.filter = 'brightness(0) invert(1) opacity(0.95)';
+      ctx.drawImage(stackedLogoImg, W / 2 - logoW / 2, 540 + lift, logoW, logoH);
+      ctx.restore();
+
+      // Gold divider line expanding
+      const lineW = 140 * easeOutCubic((localT - 0.25) / 0.5);
+      ctx.fillStyle = '#d4af37';
+      ctx.fillRect(W / 2 - lineW / 2, 865, lineW, 4);
+
+      // Headline & subline
+      const tp = easeOutCubic((localT - 0.3) / 0.65);
+      ctx.save();
+      ctx.globalAlpha = tp;
+      ctx.fillStyle = '#fffaf1';
+      ctx.font = '700 62px "Playfair Display", Georgia, serif';
+      drawWrappedText(ctx, headline, W / 2, 955 + (1 - tp) * 28, W - 160, 76, 'center');
+
+      ctx.fillStyle = '#cfe0d6';
+      ctx.font = '500 30px "Plus Jakarta Sans", sans-serif';
+      drawWrappedText(ctx, subline, W / 2, 1130 + (1 - tp) * 24, W - 180, 44, 'center');
+      ctx.restore();
+
+      // Pulsing Gold CTA button
+      const cp = easeOutCubic((localT - 0.55) / 0.55);
+      const pulse = 1 + Math.sin(localT * 4.5) * 0.018;
+      ctx.save();
+      ctx.globalAlpha = cp;
+      ctx.translate(W / 2, 1345);
+      ctx.scale(pulse, pulse);
+      const bw = 720, bh = 112;
+      const cg = ctx.createLinearGradient(-bw / 2, 0, bw / 2, 0);
+      cg.addColorStop(0, '#f3e1ac');
+      cg.addColorStop(0.5, '#d7b043');
+      cg.addColorStop(1, '#b68c32');
+      roundRect(ctx, -bw / 2, -bh / 2, bw, bh, 22);
+      ctx.fillStyle = cg;
+      ctx.fill();
+      ctx.fillStyle = '#0f231a';
+      ctx.font = '800 34px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('herbagallus.com  →', 0, 12);
+      ctx.restore();
+
+      // Promo pill underneath
+      ctx.save();
+      ctx.globalAlpha = cp;
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = '800 25px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(codeText, W / 2, 1465);
+      ctx.textAlign = 'left';
+      ctx.restore();
+    }
+
+    function renderReelFrame(reelId, t) {
+      if (!REEL_ASSETS) return;
+      const { farm, prodFlower, prodOil, prodPreRolls, prodPetOil, stackedLogoImg } = REEL_ASSETS;
+      const c = document.getElementById('cv-' + reelId);
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = 1080, H = 1920;
+      const dur = REEL_STATE[reelId].duration;
+
+      ctx.clearRect(0, 0, W, H);
+
+      /* ---------- REEL 1: OD SONCA DO KAPLJICE (12s) ---------- */
+      if (reelId === 'reel1') {
+        let label = '';
+        if (t < 3.0) {
+          label = '01 · SLOVENSKI OUTDOOR NASAD';
+          const p = t / 3.0;
+          drawKenBurns(ctx, farm.rows, p, 1.0, 1.12, -24, 0, 0.45);
+          const g = ctx.createLinearGradient(0, 920, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0)');
+          g.addColorStop(0.5, 'rgba(12,30,22,0.86)');
+          g.addColorStop(1, 'rgba(10,24,18,0.98)');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 920, W, H - 920);
+          drawFloatingGoldDust(ctx, t);
+
+          const tp = easeOutCubic(t / 0.85);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 80px "Playfair Display", Georgia, serif';
+          drawWrappedText(ctx, 'Naravno pridelano. Kakovost na prvem mestu.', 78, 1270 + (1 - tp) * 45, W - 156, 94);
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '600 32px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('100 % sončna pridelava na prostem v Sloveniji.', 78, 1615 + (1 - tp) * 28);
+          ctx.restore();
+        } else if (t < 6.0) {
+          label = '02 · ROČNA KONTROLA ZRELOSTI';
+          const lt = t - 3.0, p = lt / 3.0;
+          drawKenBurns(ctx, farm.loupe, p, 1.02, 1.14, 18, -12, 0.25);
+          const g = ctx.createLinearGradient(0, 960, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0)');
+          g.addColorStop(0.5, 'rgba(12,30,22,0.88)');
+          g.addColorStop(1, 'rgba(10,24,18,0.98)');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 960, W, H - 960);
+
+          const tp = easeOutCubic(lt / 0.7);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 72px "Playfair Display", Georgia, serif';
+          drawWrappedText(ctx, 'Vsako serijo preverimo ročno.', 78, 1265 + (1 - tp) * 35, W - 156, 84);
+          ctx.restore();
+
+          const checks = ['✓ Pregled trihomov s povečevalom', '✓ Laboratorijsko preverjeno', '✓ Brez bližnjic in umetnih dodatkov'];
+          checks.forEach((txt, i) => {
+            const cp = easeOutCubic((lt - 0.45 - i * 0.32) / 0.45);
+            if (cp <= 0) return;
+            ctx.save();
+            ctx.globalAlpha = cp;
+            const y = 1455 + i * 86 + (1 - cp) * 25;
+            roundRect(ctx, 78, y, W - 156, 68, 16);
+            ctx.fillStyle = 'rgba(255, 250, 241, 0.11)';
+            ctx.fill();
+            ctx.fillStyle = '#f0dda8';
+            ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(txt, 108, y + 44);
+            ctx.restore();
+          });
+        } else if (t < 9.5) {
+          label = '03 · CBD KAPLJICE 5 % PREMIUM';
+          const lt = t - 6.0;
+          const bg = ctx.createLinearGradient(0, 0, 0, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#efe4d0');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+
+          const ip = easeOutCubic(lt / 0.65);
+          ctx.save();
+          ctx.globalAlpha = ip;
+          drawRoundedImage(ctx, prodOil, 90, 300 + (1 - ip) * 30, W - 180, 740, 28, 0.5);
+          ctx.restore();
+
+          ctx.fillStyle = '#17382c';
+          ctx.font = '700 62px "Playfair Display", Georgia, serif';
+          ctx.fillText('CBD kapljice 5 %', 84, 1145);
+          ctx.fillStyle = '#9b5940';
+          ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('500 mg CBD · Polni spekter · 31,00 €', 84, 1198);
+
+          const bars = [
+            ['BIO ekstra deviško olivno olje', '93,4 %', 0.93],
+            ['Naravni CBD (polni spekter CO₂)', '500 mg', 0.65],
+            ['THC (zakonsko skladno EU)', '< 0,2 %', 0.14]
+          ];
+          bars.forEach(([name, val, pct], i) => {
+            const bp = easeOutCubic((lt - 0.4 - i * 0.35) / 0.7);
+            const y = 1275 + i * 135;
+            ctx.fillStyle = '#17382c';
+            ctx.font = '700 27px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(name, 84, y);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#9b5940';
+            ctx.fillText(val, W - 84, y);
+            ctx.textAlign = 'left';
+
+            roundRect(ctx, 84, y + 20, W - 168, 22, 11);
+            ctx.fillStyle = 'rgba(23, 56, 44, 0.12)';
+            ctx.fill();
+            roundRect(ctx, 84, y + 20, Math.max(22, (W - 168) * pct * bp), 22, 11);
+            ctx.fillStyle = '#17382c';
+            ctx.fill();
+          });
+        } else {
+          drawReelOutro(ctx, t - 9.5, stackedLogoImg, 'Tvoj večerni trenutek miru.', 'GLS dostava v 1–2 dneh · Vodnikov trg, LJ');
+        }
+        drawReelFrameChrome(ctx, t, dur, label);
+      }
+
+      /* ---------- REEL 2: NOVO CBD PRE-ROLLS (11s) ---------- */
+      else if (reelId === 'reel2') {
+        let label = '';
+        if (t < 2.8) {
+          label = '01 · 100 % CEL CVET WHITE HEAVEN';
+          drawKenBurns(ctx, farm.macro, t / 2.8, 1.0, 1.15, 0, -20, 0.4);
+          const g = ctx.createLinearGradient(0, 960, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0)');
+          g.addColorStop(0.55, 'rgba(12,30,22,0.9)');
+          g.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 960, W, H - 960);
+          drawFloatingGoldDust(ctx, t);
+
+          const tp = easeOutCubic(t / 0.75);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '800 26px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('NOVO V PONUDBI HERBAGALLUS', 78, 1265);
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 78px "Playfair Display", Georgia, serif';
+          drawWrappedText(ctx, '100 % celi outdoor cvetovi.', 78, 1360 + (1 - tp) * 35, W - 156, 90);
+          ctx.restore();
+        } else if (t < 5.6) {
+          label = '02 · ČISTA SLOVENSKA PRIDELAVA';
+          const lt = t - 2.8;
+          drawKenBurns(ctx, farm.harvest, lt / 2.8, 1.04, 1.15, -20, 0, 0.5);
+          const g = ctx.createLinearGradient(0, 820, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0.15)');
+          g.addColorStop(0.5, 'rgba(12,30,22,0.88)');
+          g.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 820, W, H - 820);
+
+          const pills = [
+            '🌿  100 % White Heaven (6–9 % CBD)',
+            '🚫  Brez tobaka in brez nikotina',
+            '☀️  Ročno požeto pod slovenskim soncem',
+            '🖤  Mat črna vrečka s prosojnim oknom'
+          ];
+          pills.forEach((txt, i) => {
+            const pp = easeOutCubic((lt - i * 0.35) / 0.5);
+            if (pp <= 0) return;
+            ctx.save();
+            ctx.globalAlpha = pp;
+            const y = 1130 + i * 116 + (1 - pp) * 36;
+            roundRect(ctx, 74, y, W - 148, 88, 18);
+            ctx.fillStyle = 'rgba(20, 44, 34, 0.9)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(240, 221, 168, 0.42)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#fffaf1';
+            ctx.font = '700 30px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(txt, 110, y + 55);
+            ctx.restore();
+          });
+        } else if (t < 8.8) {
+          label = '03 · 3 KOSI ZA 11,00 €';
+          const lt = t - 5.6;
+          const bg = ctx.createLinearGradient(0, 0, 0, H);
+          bg.addColorStop(0, '#142b22');
+          bg.addColorStop(1, '#0b1813');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+          drawFloatingGoldDust(ctx, t);
+
+          const ip = easeOutCubic(lt / 0.7);
+          const zoom = 1 + (lt / 3.2) * 0.05;
+          ctx.save();
+          ctx.globalAlpha = ip;
+          ctx.translate(W / 2, 760);
+          ctx.scale(zoom, zoom);
+          drawRoundedImage(ctx, prodPreRolls, -470, -352, 940, 705, 28, 0.5);
+          ctx.strokeStyle = 'rgba(212, 175, 55, 0.45)';
+          ctx.lineWidth = 2.5;
+          roundRect(ctx, -470, -352, 940, 705, 28);
+          ctx.stroke();
+          ctx.restore();
+
+          const tp = easeOutCubic((lt - 0.35) / 0.6);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 66px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('CBD Pre-Rolls · 3 kosi', W / 2, 1265 + (1 - tp) * 28);
+
+          ctx.fillStyle = '#cfe0d6';
+          ctx.font = '500 30px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('Spredaj logotip · Zadaj prosojno okno z zvitki', W / 2, 1335);
+
+          // Price badge
+          roundRect(ctx, W / 2 - 260, 1410, 520, 112, 22);
+          ctx.fillStyle = '#d4af37';
+          ctx.fill();
+          ctx.fillStyle = '#0e2017';
+          ctx.font = '800 48px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('11,00 €  ·  3 kosi', W / 2, 1482);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else {
+          drawReelOutro(ctx, t - 8.8, stackedLogoImg, 'Preizkusi White Heaven Pre-Rolls.', 'GLS dostava 1–2 dni · Tudi po povzetju');
+        }
+        drawReelFrameChrome(ctx, t, dur, label);
+      }
+
+      /* ---------- REEL 3: CBD ZA ŽIVALI 5 % (12s) ---------- */
+      else if (reelId === 'reel3') {
+        let label = '';
+        if (t < 3.0) {
+          label = '01 · ZA PSE, MAČKE & MALE ŽIVALI';
+          const bg = ctx.createLinearGradient(0, 0, W, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#ede1cc');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+
+          const tp = easeOutCubic(t / 0.75);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#9b5940';
+          ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🐾  ZA LASTNIKE PSOV IN MAČK', W / 2, 650);
+
+          ctx.fillStyle = '#17382c';
+          ctx.font = '700 76px "Playfair Display", Georgia, serif';
+          drawWrappedText(ctx, 'Se tvoj ljubljenček boji pokov, neviht ali vožnje?', W / 2, 760 + (1 - tp) * 40, W - 160, 92, 'center');
+
+          const subP = easeOutCubic((t - 0.9) / 0.65);
+          ctx.globalAlpha = subP;
+          ctx.fillStyle = 'rgba(23, 56, 44, 0.75)';
+          ctx.font = '600 34px "Plus Jakarta Sans", sans-serif';
+          drawWrappedText(ctx, 'Naravna podpora za miren vsakdan je zdaj tukaj.', W / 2, 1210, W - 180, 48, 'center');
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (t < 6.2) {
+          label = '02 · ČISTA SESTAVA BREZ ETERIČNIH OLJ';
+          const lt = t - 3.0;
+          drawKenBurns(ctx, prodPetOil, lt / 3.2, 1.0, 1.1, 0, 0, 0.45);
+          const g = ctx.createLinearGradient(0, 940, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0)');
+          g.addColorStop(0.48, 'rgba(12,30,22,0.9)');
+          g.addColorStop(1, '#0b1a13');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 940, W, H - 940);
+
+          const tp = easeOutCubic(lt / 0.65);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '800 25px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('HERBAGALLUS · FOR PETS 🐾', 78, 1275);
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 68px "Playfair Display", Georgia, serif';
+          ctx.fillText('CBD kapljice za živali 5 %', 78, 1360);
+          ctx.fillStyle = '#d8e6de';
+          ctx.font = '500 31px "Plus Jakarta Sans", sans-serif';
+          drawWrappedText(ctx, '500 mg CBD v 93,4 % BIO ekstra deviškem olivnem olju. Brez eteričnih olj — varno tudi za mačke.', 78, 1435, W - 156, 46);
+          ctx.restore();
+        } else if (t < 9.5) {
+          label = '03 · ENOSTAVNO ODMERJANJE PO TEŽI';
+          const lt = t - 6.2;
+          const bg = ctx.createLinearGradient(0, 0, 0, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#eee3cf');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+
+          ctx.fillStyle = '#17382c';
+          ctx.font = '700 66px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Dnevno odmerjanje 🐾', W / 2, 415);
+          ctx.fillStyle = 'rgba(23, 56, 44, 0.7)';
+          ctx.font = '600 29px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('Vmešajte v obrok ali na priboljšek (1–2× dnevno)', W / 2, 480);
+          ctx.textAlign = 'left';
+
+          const doses = [
+            ['POD 10 KG', '1 – 2 kapljici', 'Mačke & manjši psi'],
+            ['10 – 25 KG', '2 – 4 kapljice', 'Srednje veliki psi'],
+            ['NAD 25 KG', '4 – 6 kapljic', 'Večji psi']
+          ];
+          doses.forEach(([wt, amt, desc], i) => {
+            const dp = easeOutCubic((lt - i * 0.45) / 0.55);
+            if (dp <= 0) return;
+            ctx.save();
+            ctx.globalAlpha = dp;
+            const y = 580 + i * 255 + (1 - dp) * 50;
+            roundRect(ctx, 84, y, W - 168, 210, 26);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(23, 56, 44, 0.14)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            roundRect(ctx, 122, y + 36, 220, 56, 14);
+            ctx.fillStyle = '#17382c';
+            ctx.fill();
+            ctx.fillStyle = '#f0dda8';
+            ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(wt, 122 + 110, y + 73);
+            ctx.textAlign = 'left';
+
+            ctx.fillStyle = '#17382c';
+            ctx.font = '800 48px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(amt, 378, y + 84);
+
+            ctx.fillStyle = 'rgba(23, 56, 44, 0.65)';
+            ctx.font = '600 28px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText('🐾  ' + desc, 124, y + 158);
+            ctx.restore();
+          });
+
+          const tipP = easeOutCubic((lt - 1.5) / 0.5);
+          ctx.save();
+          ctx.globalAlpha = tipP;
+          roundRect(ctx, 84, 1410, W - 168, 128, 20);
+          ctx.fillStyle = '#17382c';
+          ctx.fill();
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('📌 Shrani video  ·  10 ml (5 %) · 31,00 €', W / 2, 1485);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else {
+          drawReelOutro(ctx, t - 9.5, stackedLogoImg, 'Za mirnejši vsakdan kosmatincev.', 'Varno za pse in mačke · BIO olivno olje');
+        }
+        drawReelFrameChrome(ctx, t, dur, label);
+      }
+
+      /* ---------- REEL 4: WHITE HEAVEN VRŠIČKI (11s) ---------- */
+      else if (reelId === 'reel4') {
+        let label = '';
+        if (t < 2.8) {
+          label = '01 · SORTA WHITE HEAVEN';
+          drawKenBurns(ctx, farm.frost, t / 2.8, 1.0, 1.14, 15, -10, 0.42);
+          const g = ctx.createLinearGradient(0, 960, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0)');
+          g.addColorStop(0.55, 'rgba(12,30,22,0.9)');
+          g.addColorStop(1, '#0b1a13');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 960, W, H - 960);
+          drawFloatingGoldDust(ctx, t);
+
+          const tp = easeOutCubic(t / 0.7);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '800 26px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('6–9 % NARAVNEGA CBD  ·  SUNGROWN', 78, 1285);
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 78px "Playfair Display", Georgia, serif';
+          drawWrappedText(ctx, 'White Heaven CBD vršički.', 78, 1380 + (1 - tp) * 35, W - 156, 90);
+          ctx.restore();
+        } else if (t < 6.0) {
+          label = '02 · IZBERI SVOJE PAKIRANJE';
+          const lt = t - 2.8;
+          const bg = ctx.createLinearGradient(0, 0, 0, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#ede1cc');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+
+          drawRoundedImage(ctx, prodFlower, 150, 290, W - 300, 760, 28, 0.5);
+
+          ctx.fillStyle = '#17382c';
+          ctx.font = '700 58px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('4 velikosti na voljo', W / 2, 1145);
+          ctx.textAlign = 'left';
+
+          const sizes = [
+            ['3 g', '11,90 €'],
+            ['5 g ★', '18,90 €'],
+            ['10 g', '30,90 €'],
+            ['25 g', '55,90 €']
+          ];
+          const activeIdx = Math.min(3, Math.floor(lt / 0.72));
+          sizes.forEach(([sz, pr], i) => {
+            const col = i % 2, row = Math.floor(i / 2);
+            const x = 84 + col * 472;
+            const y = 1200 + row * 172;
+            const isAct = i === activeIdx;
+            roundRect(ctx, x, y, 440, 144, 22);
+            ctx.fillStyle = isAct ? '#17382c' : '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = isAct ? '#d4af37' : 'rgba(23, 56, 44, 0.14)';
+            ctx.lineWidth = isAct ? 3.5 : 1.8;
+            ctx.stroke();
+
+            ctx.fillStyle = isAct ? '#f0dda8' : '#17382c';
+            ctx.font = '800 38px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(sz, x + 34, y + 66);
+
+            ctx.fillStyle = isAct ? '#fffaf1' : 'rgba(23, 56, 44, 0.72)';
+            ctx.font = '700 32px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(pr, x + 34, y + 114);
+          });
+        } else if (t < 8.8) {
+          label = '03 · LJUBLJANA & GLS DOSTAVA';
+          const lt = t - 6.0;
+          drawKenBurns(ctx, farm.team, lt / 2.8, 1.02, 1.12, 0, 0, 0.45);
+          const g = ctx.createLinearGradient(0, 780, 0, H);
+          g.addColorStop(0, 'rgba(12,30,22,0.12)');
+          g.addColorStop(0.45, 'rgba(12,30,22,0.88)');
+          g.addColorStop(1, '#0b1a13');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 780, W, H - 780);
+
+          const cards = [
+            ['📍 Vodnikov trg, Ljubljana', 'Obiščite nas v živo v trgovini Plečnikov čaj.'],
+            ['📦 GLS dostava v 1–2 dneh', 'Na dom ali paketomat · Tudi plačilo po povzetju!']
+          ];
+          cards.forEach(([h, s], i) => {
+            const cp = easeOutCubic((lt - i * 0.45) / 0.55);
+            if (cp <= 0) return;
+            ctx.save();
+            ctx.globalAlpha = cp;
+            const y = 1170 + i * 225 + (1 - cp) * 35;
+            roundRect(ctx, 76, y, W - 152, 186, 22);
+            ctx.fillStyle = 'rgba(17, 40, 31, 0.92)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(240, 221, 168, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#f0dda8';
+            ctx.font = '800 36px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(h, 114, y + 72);
+            ctx.fillStyle = '#e4eee8';
+            ctx.font = '500 28px "Plus Jakarta Sans", sans-serif';
+            drawWrappedText(ctx, s, 114, y + 124, W - 228, 38);
+            ctx.restore();
+          });
+        } else {
+          drawReelOutro(ctx, t - 8.8, stackedLogoImg, 'Pristna aroma slovenske narave.', 'White Heaven 6–9 % CBD · herbagallus.com');
+        }
+        drawReelFrameChrome(ctx, t, dur, label);
+      }
+
+      // Update UI progress bar
+      const fill = document.getElementById('prog-' + reelId);
+      if (fill) fill.style.width = `${(clamp01(t / dur) * 100).toFixed(1)}%`;
+    }
+
+    function initReelsStudio(assets) {
+      REEL_ASSETS = assets;
+      // Render appealing cover frames (around t = 0.85s so headlines are visible!)
+      renderReelFrame('reel1', 1.1);
+      renderReelFrame('reel2', 6.8);
+      renderReelFrame('reel3', 4.4);
+      renderReelFrame('reel4', 1.1);
+    }
+
+    function stopReel(reelId) {
+      const st = REEL_STATE[reelId];
+      st.playing = false;
+      if (st.rafId) cancelAnimationFrame(st.rafId);
+      st.rafId = null;
+      const btn = document.getElementById('play-' + reelId);
+      if (btn) btn.innerText = '▶️ Predvajaj';
+    }
+
+    function toggleReelPreview(reelId) {
+      const st = REEL_STATE[reelId];
+      if (st.exporting) return;
+      if (st.playing) {
+        stopReel(reelId);
+        return;
+      }
+      // Pause other reels so CPU stays buttery 60fps
+      Object.keys(REEL_STATE).forEach((id) => {
+        if (id !== reelId && REEL_STATE[id].playing) stopReel(id);
+      });
+
+      st.playing = true;
+      st.startTime = performance.now();
+      const btn = document.getElementById('play-' + reelId);
+      if (btn) btn.innerText = '⏸️ Pavza';
+
+      function tick(now) {
+        if (!st.playing) return;
+        const elapsed = ((now - st.startTime) / 1000) % st.duration;
+        renderReelFrame(reelId, elapsed);
+        st.rafId = requestAnimationFrame(tick);
+      }
+      st.rafId = requestAnimationFrame(tick);
+    }
+
+    function pickBestVideoMime() {
+      const candidates = [
+        { mime: 'video/mp4;codecs=avc1.42E01E', ext: 'mp4' },
+        { mime: 'video/mp4', ext: 'mp4' },
+        { mime: 'video/webm;codecs=vp9', ext: 'webm' },
+        { mime: 'video/webm;codecs=vp8', ext: 'webm' },
+        { mime: 'video/webm', ext: 'webm' }
+      ];
+      for (const c of candidates) {
+        if (window.MediaRecorder && MediaRecorder.isTypeSupported(c.mime)) return c;
+      }
+      return { mime: '', ext: 'webm' };
+    }
+
+    function exportReelVideo(reelId, baseFilename) {
+      const st = REEL_STATE[reelId];
+      if (st.exporting) return;
+      if (!window.MediaRecorder) {
+        alert('Vaš brskalnik ne podpira izvoza videa (MediaRecorder). Prosimo uporabite Chrome ali Edge.');
+        return;
+      }
+
+      stopReel(reelId);
+      st.exporting = true;
+
+      const expBtn = document.getElementById('exp-' + reelId);
+      const statEl = document.getElementById('stat-' + reelId);
+      const origText = expBtn.innerText;
+      expBtn.disabled = true;
+      expBtn.innerText = '⏺️ Snemam ...';
+
+      const canvas = document.getElementById('cv-' + reelId);
+      const { mime, ext } = pickBestVideoMime();
+      const stream = canvas.captureStream(60);
+      const options = { videoBitsPerSecond: 12000000 };
+      if (mime) options.mimeType = mime;
+
+      const recorder = new MediaRecorder(stream, options);
+      const chunks = [];
+      recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: mime || 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${baseFilename}-1080x1920.${ext}`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+
+        st.exporting = false;
+        expBtn.disabled = false;
+        expBtn.innerText = origText;
+        statEl.innerText = `✓ Izvoženo (${ext.toUpperCase()} · 1080×1920)!`;
+      };
+
+      // Draw t=0 before starting recorder
+      renderReelFrame(reelId, 0);
+      recorder.start();
+      const recordStart = performance.now();
+
+      function recordTick(now) {
+        const t = (now - recordStart) / 1000;
+        if (t >= st.duration) {
+          renderReelFrame(reelId, st.duration);
+          setTimeout(() => recorder.stop(), 120);
+          return;
+        }
+        renderReelFrame(reelId, t);
+        const pct = Math.round((t / st.duration) * 100);
+        statEl.innerText = `⏺️ Snemam 1080×1920 (${pct} %) ...`;
+        requestAnimationFrame(recordTick);
+      }
+      requestAnimationFrame(recordTick);
     }
 
     function copyCaption(id, btn) {
