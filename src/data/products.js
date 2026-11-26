@@ -464,11 +464,6 @@ export const products = [
     },
     gallery: [
       {
-        src: "/products/herbagallus-cbd-prerolls-premium.jpg",
-        alt: "HerbaGallus CBD Pre-Rolls White Heaven (3 kosi) z nebeljenimi zvitki in cvetovi",
-        caption: "3 ročno napolnjeni zvitki · White Heaven",
-      },
-      {
         src: "/farm/farm-cola-macro-purple.jpg",
         alt: "Svež cvet industrijske konoplje sorte White Heaven na nasadu HerbaGallus",
         caption: "Prava fotografija naše pridelave",

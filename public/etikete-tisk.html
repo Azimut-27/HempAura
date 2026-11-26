@@ -527,20 +527,16 @@
       // Gold hemp sprig on right side of front panel
       drawGoldHempSprig(ctx, trimX + leftW + centerW - mm(3.2), trimY + trimH - mm(0.8), trimH / 335);
 
-      // Logo mark
+      // Official stacked logo (exact leaf + left-facing rooster + slab-serif HerbaGallus wordmark)
       if (markImg) {
-        const logoH = trimH * 0.21;
+        const logoH = trimH * 0.34;
         const logoW = logoH * (markImg.width / markImg.height);
-        ctx.drawImage(markImg, cx - logoW / 2, trimY + mm(1.4), logoW, logoH);
+        ctx.drawImage(markImg, cx - logoW / 2, trimY + mm(1.2), logoW, logoH);
       }
 
-      // Wordmark
-      ctx.fillStyle = '#17382c';
-      ctx.font = `700 ${Math.round(trimH * 0.125)}px "Cormorant Garamond", Georgia, serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText('HerbaGallus', cx, trimY + trimH * 0.365);
-
       // Product Title
+      ctx.fillStyle = '#17382c';
+      ctx.textAlign = 'center';
       ctx.font = `800 ${Math.round(trimH * 0.088)}px "Plus Jakarta Sans", sans-serif`;
       ctx.fillText('CBD OIL', cx - mm(1.4), trimY + trimH * 0.475);
 
@@ -671,24 +667,19 @@
 
       const cx = trimX + trimW / 2;
 
-      // Logo mark
+      // Official stacked logo (exact leaf + left-facing rooster + slab-serif HerbaGallus wordmark)
       if (markImg) {
-        const logoH = trimH * 0.165;
-        const logoW = logoH * (markImg.width / markImg.height);
-        ctx.drawImage(markImg, cx - logoW / 2, trimY + mm(8), logoW, logoH);
+        const logoW = trimW * 0.66;
+        const logoH = logoW * (markImg.height / markImg.width);
+        ctx.drawImage(markImg, cx - logoW / 2, trimY + mm(7), logoW, logoH);
       }
-
-      // Wordmark
-      ctx.fillStyle = '#17382c';
-      ctx.font = `700 ${Math.round(trimW * 0.145)}px "Cormorant Garamond", Georgia, serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText('HerbaGallus', cx, trimY + trimH * 0.315);
 
       // Subtle gold accent line
       ctx.fillStyle = '#b99552';
       ctx.fillRect(cx - mm(8), trimY + trimH * 0.345, mm(16), 2.5);
 
       // Product Title
+      ctx.textAlign = 'center';
       ctx.fillStyle = '#17382c';
       ctx.font = `800 ${Math.round(trimW * 0.098)}px "Plus Jakarta Sans", sans-serif`;
       ctx.fillText('CBD PRE-ROLLS', cx, trimY + trimH * 0.445);
@@ -847,7 +838,7 @@
       await document.fonts.ready;
       const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=4&color=17382c&bgcolor=ffffff&data=' + encodeURIComponent('https://herbagallus.com/lab-reports');
       [markImg, qrImg] = await Promise.all([
-        loadImage('/brand/herbagallus-mark.png'),
+        loadImage('/brand/herbagallus-logo-stacked.png'),
         loadImage(qrUrl).catch(() => null)
       ]);
       renderAll();
