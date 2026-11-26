@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HerbaGallus — Print Label Studio (300 DPI · Pets Drops & Pre-Rolls)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: #0d1813;
+      color: #fffaf1;
+      padding: 36px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      max-width: 820px;
+      margin-bottom: 36px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #f0dda8;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 40px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      color: #fffaf1;
+    }
+    p.lead {
+      font-size: 14.5px;
+      color: #a9bbb0;
+      line-height: 1.65;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: #13241c;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 16px;
+      padding: 14px 20px;
+      margin-bottom: 34px;
+      max-width: 1080px;
+      width: 100%;
+    }
+    .toolbar label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e6efe9;
+      cursor: pointer;
+    }
+    .toolbar input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #d4af37;
+    }
+    .gold-btn {
+      background: linear-gradient(135deg, #f0dda8, #d4af37, #b99552);
+      color: #0e2017;
+      font-weight: 800;
+      font-size: 13px;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.25);
+      transition: transform 0.15s ease;
+    }
+    .gold-btn:hover { transform: translateY(-1px); }
+    .ghost-btn {
+      background: rgba(240, 221, 168, 0.12);
+      color: #f0dda8;
+      border: 1px solid rgba(240, 221, 168, 0.32);
+      font-weight: 700;
+      font-size: 12.5px;
+      padding: 9px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .ghost-btn:hover { background: rgba(240, 221, 168, 0.24); }
+
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 100%;
+      max-width: 1080px;
+    }
+
+    .card {
+      background: #13241c;
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.45);
+    }
+    .card-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .card-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      color: #fffaf1;
+      line-height: 1.2;
+    }
+    .card-sub {
+      font-size: 13px;
+      color: #a9bbb0;
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .size-select {
+      background: #0c1913;
+      color: #f0dda8;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: inherit;
+    }
+
+    .preview-stage {
+      background: radial-gradient(circle at 50% 40%, #1d352a 0%, #0b1410 100%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+    }
+    .preview-stage canvas {
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+      border-radius: 2px;
+      background: #ffffff;
+    }
+    .spec-line {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12px;
+      color: #9cb2a6;
+    }
+    .spec-line strong { color: #f0dda8; }
+
+    /* Print sheet (hidden on screen, shown on Ctrl+P) */
+    #print-sheet { display: none; }
+
+    @media print {
+      @page { size: A4 portrait; margin: 10mm; }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+      .header, .toolbar, .grid { display: none !important; }
+      #print-sheet {
+        display: block !important;
+      }
+      .ps-section {
+        margin-bottom: 10mm;
+        page-break-inside: avoid;
+      }
+      .ps-title {
+        font-size: 9pt;
+        font-weight: 700;
+        color: #444;
+        margin-bottom: 3mm;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .ps-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4mm;
+      }
+      .ps-row img {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span class="badge">HerbaGallus · 300 DPI Print Label Studio</span>
+    <h1>Print-Ready Bottle &amp; Pouch Labels</h1>
+    <p class="lead">Exact millimeter dimensions at <strong>300 DPI</strong> with optional <strong>2 mm bleed &amp; crop marks</strong>. Export individual high-res PNG files to send straight to your print shop (<em>tiskarna</em>), or print an exact-scale <strong>A4 sticker proof sheet</strong> directly from your browser.</p>
+  </div>
+
+  <div class="toolbar">
+    <label>
+      <input type="checkbox" id="toggleBleed" checked onchange="renderAll()" />
+      Include 2 mm Bleed + Crop Marks (recommended for print shop)
+    </label>
+    <button class="gold-btn" onclick="downloadAllLabels()">⬇️ Download All 3 Labels (300 DPI PNG)</button>
+    <button class="ghost-btn" onclick="prepareAndPrint()">🖨️ Print Exact-Scale A4 Proof Sheet (PDF)</button>
+  </div>
+
+  <div class="grid">
+
+    <!-- LABEL 1: PET CBD DROPS 10ML WRAP -->
+    <section class="card">
+      <div class="card-top">
+        <div>
+          <h2 class="card-title">1. CBD Oil for Pets 5% — 10 ml Wrap-Around Bottle Label</h2>
+          <p class="card-sub">Matches your existing 10 ml amber dropper bottle. Cream/emerald HerbaGallus split + subtle gold paw + full side ingredients, dosage-by-weight table &amp; LOT/EXP box.</p>
+        </div>
+        <div class="controls">
+          <select id="petSize" class="size-select" onchange="renderAll()">
+            <option value="75x28" selected>75 × 28 mm (Standard 10 ml wrap)</option>
+            <option value="70x28">70 × 28 mm (Compact 10 ml wrap)</option>
+            <option value="65x26">65 × 26 mm (Small 10 ml bottle)</option>
+          </select>
+          <button class="gold-btn" onclick="downloadLabel('cv-pet', 'herbagallus-label-pet-cbd-5pct-300dpi.png')">⬇️ 300 DPI PNG</button>
+        </div>
+      </div>
+      <div class="preview-stage">
+        <canvas id="cv-pet"></canvas>
+      </div>
+      <div class="spec-line" id="spec-pet"></div>
+    </section>
+
+    <!-- LABEL 2: PRE-ROLLS FRONT POUCH STICKER -->
+    <section class="card">
+      <div class="card-top">
+        <div>
+          <h2 class="card-title">2. CBD Pre-Rolls (White Heaven · 3 pcs) — Front Pouch Label</h2>
+          <p class="card-sub">Designed to sit centered on your <strong>matte black zip pouch</strong> with a crisp black border all around. Two-tone cream &amp; deep forest green + gold hemp stalk illustration.</p>
+        </div>
+        <div class="controls">
+          <select id="prerollFrontSize" class="size-select" onchange="renderAll()">
+            <option value="70x105" selected>70 × 105 mm (for 90×140 / 100×150 pouch)</option>
+            <option value="65x95">65 × 95 mm (for 85×130 pouch)</option>
+            <option value="80x115">80 × 115 mm (for 100×160 pouch)</option>
+          </select>
+          <button class="gold-btn" onclick="downloadLabel('cv-pr-front', 'herbagallus-label-prerolls-front-300dpi.png')">⬇️ 300 DPI PNG</button>
+        </div>
+      </div>
+      <div class="preview-stage">
+        <canvas id="cv-pr-front" style="max-height:560px;"></canvas>
+      </div>
+      <div class="spec-line" id="spec-pr-front"></div>
+    </section>
+
+    <!-- LABEL 3: PRE-ROLLS BACK COMPLIANCE STRIP -->
+    <section class="card">
+      <div class="card-top">
+        <div>
+          <h2 class="card-title">3. CBD Pre-Rolls — Back Window Compliance Strip</h2>
+          <p class="card-sub">Compact strip designed to stick cleanly <strong>below the clear back window</strong> so customers still see the 3 unbleached cones clearly. Includes ingredients, THC &lt; 0.3%, 18+, QR code &amp; LOT/EXP.</p>
+        </div>
+        <div class="controls">
+          <select id="prerollBackSize" class="size-select" onchange="renderAll()">
+            <option value="70x28" selected>70 × 28 mm (Matches 70 mm front width)</option>
+            <option value="65x26">65 × 26 mm (Matches 65 mm front width)</option>
+            <option value="80x30">80 × 30 mm (Matches 80 mm front width)</option>
+          </select>
+          <button class="gold-btn" onclick="downloadLabel('cv-pr-back', 'herbagallus-label-prerolls-back-300dpi.png')">⬇️ 300 DPI PNG</button>
+        </div>
+      </div>
+      <div class="preview-stage">
+        <canvas id="cv-pr-back"></canvas>
+      </div>
+      <div class="spec-line" id="spec-pr-back"></div>
+    </section>
+
+  </div>
+
+  <!-- Exact-scale A4 Print Sheet -->
+  <div id="print-sheet"></div>
+
+  <script>
+    const PX_PER_MM = 300 / 25.4; // 11.8110236 px per mm (true 300 DPI)
+    const BLEED_MM = 2;
+    const MARGIN_MM = 4; // extra margin for crop marks
+
+    function mm(val) { return val * PX_PER_MM; }
+
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    function drawWrapped(ctx, text, x, y, maxW, lineH, align = 'left') {
+      const words = text.split(' ');
+      let line = '';
+      let cy = y;
+      ctx.textAlign = align;
+      for (const word of words) {
+        const test = line ? line + ' ' + word : word;
+        if (ctx.measureText(test).width > maxW && line) {
+          ctx.fillText(line, x, cy);
+          line = word;
+          cy += lineH;
+        } else {
+          line = test;
+        }
+      }
+      if (line) ctx.fillText(line, x, cy);
+      ctx.textAlign = 'left';
+      return cy;
+    }
+
+    // Minimalist vector paw print icon
+    function drawGoldPaw(ctx, cx, cy, size, color = '#b99552') {
+      ctx.save();
+      ctx.fillStyle = color;
+      // Main pad
+      ctx.beginPath();
+      ctx.ellipse(cx, cy + size * 0.18, size * 0.28, size * 0.22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // 4 toes
+      const toes = [
+        [-0.32, -0.14, -0.25],
+        [-0.12, -0.32, -0.1],
+        [0.12, -0.32, 0.1],
+        [0.32, -0.14, 0.25]
+      ];
+      toes.forEach(([ox, oy, rot]) => {
+        ctx.save();
+        ctx.translate(cx + size * ox, cy + size * oy);
+        ctx.rotate(rot);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, size * 0.105, size * 0.145, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+      ctx.restore();
+    }
+
+    // Delicate gold botanical hemp sprig illustration
+    function drawGoldHempSprig(ctx, baseX, baseY, scale) {
+      ctx.save();
+      ctx.translate(baseX, baseY);
+      ctx.scale(scale, scale);
+      ctx.strokeStyle = '#c5a055';
+      ctx.fillStyle = 'rgba(197, 160, 85, 0.18)';
+      ctx.lineWidth = 2.2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // Main stem
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(-8, -110, 4, -230);
+      ctx.stroke();
+
+      function leafFan(x, y, s, rot) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.scale(s, s);
+        const angles = [-1.15, -0.62, -0.18, 0.18, 0.62, 1.15];
+        const lengths = [32, 54, 72, 72, 54, 32];
+        angles.forEach((a, i) => {
+          ctx.save();
+          ctx.rotate(a);
+          const L = lengths[i];
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(-L * 0.14, -L * 0.5, 0, -L);
+          ctx.quadraticCurveTo(L * 0.14, -L * 0.5, 0, 0);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        });
+        ctx.restore();
+      }
+
+      leafFan(-2, -45, 1.0, -0.35);
+      leafFan(0, -105, 0.85, 0.35);
+      leafFan(-1, -158, 0.72, -0.25);
+      leafFan(3, -205, 0.52, 0.08);
+      ctx.restore();
+    }
+
+    // Draw crisp crop marks around trim box
+    function drawCropMarks(ctx, ox, oy, trimW, trimH) {
+      const gap = mm(1.6);
+      const len = mm(3.2);
+      ctx.save();
+      ctx.strokeStyle = '#111111';
+      ctx.lineWidth = 1.6;
+      const corners = [
+        [ox, oy, -1, -1],
+        [ox + trimW, oy, 1, -1],
+        [ox, oy + trimH, -1, 1],
+        [ox + trimW, oy + trimH, 1, 1]
+      ];
+      corners.forEach(([x, y, dx, dy]) => {
+        ctx.beginPath();
+        ctx.moveTo(x + dx * gap, y);
+        ctx.lineTo(x + dx * (gap + len), y);
+        ctx.moveTo(x, y + dy * gap);
+        ctx.lineTo(x, y + dy * (gap + len));
+        ctx.stroke();
+      });
+      ctx.restore();
+    }
+
+    function setupCanvas(canvasId, wMm, hMm, showBleed) {
+      const c = document.getElementById(canvasId);
+      const padMm = showBleed ? (BLEED_MM + MARGIN_MM) : 0;
+      const totalW = Math.round(mm(wMm + padMm * 2));
+      const totalH = Math.round(mm(hMm + padMm * 2));
+      c.width = totalW;
+      c.height = totalH;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, totalW, totalH);
+
+      const trimX = mm(padMm);
+      const trimY = mm(padMm);
+      const trimW = mm(wMm);
+      const trimH = mm(hMm);
+      const bleedPx = showBleed ? mm(BLEED_MM) : 0;
+      return { c, ctx, trimX, trimY, trimW, trimH, bleedPx, totalW, totalH, wMm, hMm };
+    }
+
+    let markImg = null;
+    let qrImg = null;
+
+    function parseSize(selectId) {
+      const [w, h] = document.getElementById(selectId).value.split('x').map(Number);
+      return { w, h };
+    }
+
+    function renderPetLabel(showBleed) {
+      const { w, h } = parseSize('petSize');
+      const { ctx, trimX, trimY, trimW, trimH, bleedPx } = setupCanvas('cv-pet', w, h, showBleed);
+
+      const bx = trimX - bleedPx, by = trimY - bleedPx;
+      const bw = trimW + bleedPx * 2, bh = trimH + bleedPx * 2;
+      const splitY = trimY + trimH * 0.62;
+
+      // Two-tone background extending full bleed
+      ctx.fillStyle = '#f6efe3';
+      ctx.fillRect(bx, by, bw, splitY - by);
+      ctx.fillStyle = '#17382c';
+      ctx.fillRect(bx, splitY, bw, by + bh - splitY);
+
+      // Subtle gold divider across split
+      ctx.fillStyle = 'rgba(185, 149, 82, 0.55)';
+      ctx.fillRect(bx, splitY - 1.5, bw, 3);
+
+      // Panel divisions (Left 30% | Center Front 40% | Right 30%)
+      const leftW = trimW * 0.295;
+      const centerW = trimW * 0.41;
+      const rightX = trimX + leftW + centerW;
+      const rightW = trimW * 0.295;
+      const pad = mm(1.8);
+
+      // Subtle hairline dividers on cream portion
+      ctx.strokeStyle = 'rgba(23, 56, 44, 0.14)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(trimX + leftW, trimY + mm(2));
+      ctx.lineTo(trimX + leftW, splitY - mm(1.5));
+      ctx.moveTo(rightX, trimY + mm(2));
+      ctx.lineTo(rightX, splitY - mm(1.5));
+      ctx.stroke();
+
+      // === CENTER FRONT PANEL ===
+      const cx = trimX + leftW + centerW / 2;
+      // Gold hemp sprig on right side of front panel
+      drawGoldHempSprig(ctx, trimX + leftW + centerW - mm(3.2), trimY + trimH - mm(0.8), trimH / 335);
+
+      // Logo mark
+      if (markImg) {
+        const logoH = trimH * 0.21;
+        const logoW = logoH * (markImg.width / markImg.height);
+        ctx.drawImage(markImg, cx - logoW / 2, trimY + mm(1.4), logoW, logoH);
+      }
+
+      // Wordmark
+      ctx.fillStyle = '#17382c';
+      ctx.font = `700 ${Math.round(trimH * 0.125)}px "Cormorant Garamond", Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('HerbaGallus', cx, trimY + trimH * 0.365);
+
+      // Product Title
+      ctx.font = `800 ${Math.round(trimH * 0.088)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('CBD OIL', cx - mm(1.4), trimY + trimH * 0.475);
+
+      // FOR PETS + Gold Paw
+      const subY = trimY + trimH * 0.56;
+      ctx.fillStyle = '#b99552';
+      ctx.font = `800 ${Math.round(trimH * 0.068)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('FOR PETS', cx - mm(2.6), subY);
+      drawGoldPaw(ctx, cx + mm(5.8), subY - trimH * 0.02, trimH * 0.085, '#b99552');
+
+      // 5% badge inside deep green bottom band
+      const badgeW = mm(6.8), badgeH = mm(3.6);
+      roundRect(ctx, trimX + leftW + mm(2.2), splitY + mm(1.6), badgeW, badgeH, 4);
+      ctx.fillStyle = '#d4af37';
+      ctx.fill();
+      ctx.fillStyle = '#10241b';
+      ctx.font = `800 ${Math.round(trimH * 0.072)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('5%', trimX + leftW + mm(2.2) + badgeW / 2, splitY + mm(4.2));
+
+      // Front green-band specs
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#fffaf1';
+      ctx.font = `700 ${Math.round(trimH * 0.055)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('FULL SPECTRUM · 500MG CBD', trimX + leftW + mm(10.2), splitY + mm(3.8));
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = `600 ${Math.round(trimH * 0.05)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('10 ML  ·  DOGS & CATS', trimX + leftW + mm(10.2), splitY + mm(6.7));
+      ctx.fillStyle = 'rgba(255,250,241,0.75)';
+      ctx.font = `500 ${Math.round(trimH * 0.043)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('ORGANIC OLIVE OIL · THC < 0.2%', trimX + leftW + mm(2.2), trimY + trimH - mm(1.6));
+
+      // === LEFT PANEL (INGREDIENTS & STORAGE) ===
+      const lx = trimX + pad;
+      const lw = leftW - pad * 1.8;
+      ctx.fillStyle = '#17382c';
+      ctx.font = `800 ${Math.round(trimH * 0.052)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('INGREDIENTS', lx, trimY + mm(3.5));
+
+      ctx.fillStyle = '#253c32';
+      ctx.font = `500 ${Math.round(trimH * 0.044)}px "Plus Jakarta Sans", sans-serif`;
+      let ly = drawWrapped(
+        ctx,
+        'Organic extra virgin olive oil (93.4%), Cannabis sativa L. extract (500 mg CBD). Full spectrum, natural, GMO free. THC < 0.2%.',
+        lx, trimY + mm(5.8), lw, trimH * 0.058
+      );
+
+      ctx.fillStyle = '#17382c';
+      ctx.font = `800 ${Math.round(trimH * 0.048)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('STORAGE', lx, ly + mm(2.4));
+      ctx.fillStyle = '#253c32';
+      ctx.font = `500 ${Math.round(trimH * 0.042)}px "Plus Jakarta Sans", sans-serif`;
+      drawWrapped(ctx, 'Shake well. Store cool & dark.', lx, ly + mm(4.4), lw, trimH * 0.054);
+
+      // Left green band: Manufacturer
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = `700 ${Math.round(trimH * 0.045)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('MADE IN SLOVENIA · EU', lx, splitY + mm(3.2));
+      ctx.fillStyle = 'rgba(255,250,241,0.85)';
+      ctx.font = `500 ${Math.round(trimH * 0.039)}px "Plus Jakarta Sans", sans-serif`;
+      drawWrapped(
+        ctx,
+        'Herba Gallus, Stanislav Bregar s.p., Prvomajska c. 11, 8310 Šentjernej, SI · herbagallus.com',
+        lx, splitY + mm(5.3), lw, trimH * 0.049
+      );
+
+      // === RIGHT PANEL (DOSING BY WEIGHT & LOT/EXP) ===
+      const rx = rightX + pad * 0.9;
+      const rw = rightW - pad * 1.8;
+      ctx.fillStyle = '#17382c';
+      ctx.font = `800 ${Math.round(trimH * 0.052)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('DAILY USE (WITH FOOD)', rx, trimY + mm(3.5));
+
+      ctx.fillStyle = '#253c32';
+      ctx.font = `600 ${Math.round(trimH * 0.044)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('• Under 10 kg:  1–2 drops', rx, trimY + mm(6.0));
+      ctx.fillText('• 10 – 25 kg:   2–4 drops', rx, trimY + mm(8.3));
+      ctx.fillText('• Over 25 kg:   4–6 drops', rx, trimY + mm(10.6));
+
+      ctx.font = `500 ${Math.round(trimH * 0.04)}px "Plus Jakarta Sans", sans-serif`;
+      drawWrapped(
+        ctx,
+        'Supplementary feed for pets. Consult a vet if on medication.',
+        rx, trimY + mm(13.0), rw, trimH * 0.052
+      );
+
+      // LOT / EXP box on right emerald band
+      const boxY = splitY + mm(1.8);
+      const boxH = trimH * 0.25;
+      roundRect(ctx, rx, boxY, rw, boxH, 4);
+      ctx.fillStyle = '#fffaf1';
+      ctx.fill();
+      ctx.fillStyle = '#17382c';
+      ctx.font = `700 ${Math.round(trimH * 0.042)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('LOT:', rx + mm(1.2), boxY + mm(2.6));
+      ctx.fillText('EXP:', rx + mm(1.2), boxY + mm(5.4));
+
+      if (showBleed) drawCropMarks(ctx, trimX, trimY, trimW, trimH);
+
+      document.getElementById('spec-pet').innerHTML =
+        `<span>Trim Size: <strong>${w} × ${h} mm</strong></span>` +
+        `<span>Resolution: <strong>300 DPI (${Math.round(trimW)} × ${Math.round(trimH)} px trim)</strong></span>` +
+        `<span>Bleed: <strong>${showBleed ? '2 mm + crop marks' : 'None'}</strong></span>`;
+    }
+
+    function renderPreRollsFront(showBleed) {
+      const { w, h } = parseSize('prerollFrontSize');
+      const { ctx, trimX, trimY, trimW, trimH, bleedPx } = setupCanvas('cv-pr-front', w, h, showBleed);
+
+      const bx = trimX - bleedPx, by = trimY - bleedPx;
+      const bw = trimW + bleedPx * 2, bh = trimH + bleedPx * 2;
+      const splitY = trimY + trimH * 0.59;
+
+      // Two-tone HerbaGallus background
+      ctx.fillStyle = '#f6efe3';
+      ctx.fillRect(bx, by, bw, splitY - by);
+      ctx.fillStyle = '#17382c';
+      ctx.fillRect(bx, splitY, bw, by + bh - splitY);
+
+      // Fine champagne gold border inset
+      ctx.strokeStyle = 'rgba(185, 149, 82, 0.45)';
+      ctx.lineWidth = 2.2;
+      roundRect(ctx, trimX + mm(2.5), trimY + mm(2.5), trimW - mm(5), trimH - mm(5), 10);
+      ctx.stroke();
+
+      // Gold hemp botanical stalk rising on the right side
+      drawGoldHempSprig(ctx, trimX + trimW - mm(11), trimY + trimH - mm(3), trimH / 410);
+
+      const cx = trimX + trimW / 2;
+
+      // Logo mark
+      if (markImg) {
+        const logoH = trimH * 0.165;
+        const logoW = logoH * (markImg.width / markImg.height);
+        ctx.drawImage(markImg, cx - logoW / 2, trimY + mm(8), logoW, logoH);
+      }
+
+      // Wordmark
+      ctx.fillStyle = '#17382c';
+      ctx.font = `700 ${Math.round(trimW * 0.145)}px "Cormorant Garamond", Georgia, serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('HerbaGallus', cx, trimY + trimH * 0.315);
+
+      // Subtle gold accent line
+      ctx.fillStyle = '#b99552';
+      ctx.fillRect(cx - mm(8), trimY + trimH * 0.345, mm(16), 2.5);
+
+      // Product Title
+      ctx.fillStyle = '#17382c';
+      ctx.font = `800 ${Math.round(trimW * 0.098)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('CBD PRE-ROLLS', cx, trimY + trimH * 0.445);
+
+      // Subtitle
+      ctx.fillStyle = '#b99552';
+      ctx.font = `700 ${Math.round(trimW * 0.058)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('WHITE HEAVEN  ·  SUNGROWN', cx, trimY + trimH * 0.50);
+
+      // 3 PCS pill badge
+      const pillW = mm(24), pillH = mm(6.8);
+      roundRect(ctx, cx - pillW / 2, trimY + trimH * 0.535, pillW, pillH, 14);
+      ctx.fillStyle = '#17382c';
+      ctx.fill();
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = `800 ${Math.round(trimW * 0.052)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('3 PCS  ·  2.1 g', cx, trimY + trimH * 0.535 + pillH * 0.68);
+
+      // Lower Emerald Band Feature List (left-aligned)
+      ctx.textAlign = 'left';
+      const fx = trimX + mm(7.5);
+      let fy = splitY + mm(8.5);
+      const features = [
+        ['100% WHOLE FLOWER', 'No trim, no tobacco, no nicotine'],
+        ['6–9% NATURAL CBD', 'Outdoor grown in Slovenia'],
+        ['LAB TESTED · EU LEGAL', 'THC < 0.3% · Slow cured aroma']
+      ];
+      features.forEach(([head, sub]) => {
+        ctx.fillStyle = '#f0dda8';
+        ctx.font = `800 ${Math.round(trimW * 0.044)}px "Plus Jakarta Sans", sans-serif`;
+        ctx.fillText('✦  ' + head, fx, fy);
+        ctx.fillStyle = 'rgba(255, 250, 241, 0.82)';
+        ctx.font = `500 ${Math.round(trimW * 0.036)}px "Plus Jakarta Sans", sans-serif`;
+        ctx.fillText('     ' + sub, fx, fy + mm(3.6));
+        fy += mm(9.8);
+      });
+
+      // Bottom footer line
+      ctx.fillStyle = 'rgba(240, 221, 168, 0.85)';
+      ctx.font = `700 ${Math.round(trimW * 0.036)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('HERBAGALLUS.COM  ·  MADE IN SLOVENIA', cx, trimY + trimH - mm(4.5));
+      ctx.textAlign = 'left';
+
+      if (showBleed) drawCropMarks(ctx, trimX, trimY, trimW, trimH);
+
+      document.getElementById('spec-pr-front').innerHTML =
+        `<span>Trim Size: <strong>${w} × ${h} mm</strong></span>` +
+        `<span>Resolution: <strong>300 DPI (${Math.round(trimW)} × ${Math.round(trimH)} px trim)</strong></span>` +
+        `<span>Best Pouch: <strong>Matte Black Zip Pouch with Clear Back Window</strong></span>`;
+    }
+
+    function renderPreRollsBack(showBleed) {
+      const { w, h } = parseSize('prerollBackSize');
+      const { ctx, trimX, trimY, trimW, trimH, bleedPx } = setupCanvas('cv-pr-back', w, h, showBleed);
+
+      const bx = trimX - bleedPx, by = trimY - bleedPx;
+      const bw = trimW + bleedPx * 2, bh = trimH + bleedPx * 2;
+
+      // Clean warm cream compliance strip with emerald bottom footer
+      const footY = trimY + trimH - mm(5.8);
+      ctx.fillStyle = '#f6efe3';
+      ctx.fillRect(bx, by, bw, footY - by);
+      ctx.fillStyle = '#17382c';
+      ctx.fillRect(bx, footY, bw, by + bh - footY);
+
+      const pad = mm(2.5);
+      const qrSize = mm(16.5);
+      const qrX = trimX + trimW - qrSize - pad;
+      const qrY = trimY + mm(2.2);
+
+      // Left compliance text block
+      const tx = trimX + pad;
+      const maxTW = trimW - qrSize - pad * 3.2;
+
+      ctx.fillStyle = '#17382c';
+      ctx.font = `800 ${Math.round(trimH * 0.075)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('HERBAGALLUS CBD PRE-ROLLS · 3 PCS (2.1 g)', tx, trimY + mm(4.2));
+
+      ctx.fillStyle = '#253c32';
+      ctx.font = `500 ${Math.round(trimH * 0.056)}px "Plus Jakarta Sans", sans-serif`;
+      let cy = drawWrapped(
+        ctx,
+        'Ingredients: 100% EU-certified industrial hemp flower (Cannabis sativa L., White Heaven). Natural CBD 6–9%, THC < 0.3%. Tobacco & nicotine free.',
+        tx, trimY + mm(7.2), maxTW, trimH * 0.074
+      );
+
+      ctx.fillStyle = '#4a5c53';
+      ctx.font = `500 ${Math.round(trimH * 0.05)}px "Plus Jakarta Sans", sans-serif`;
+      drawWrapped(
+        ctx,
+        'Aromatic & collector product. Not intended for smoking, inhalation, or ingestion. Store cool & dry. Keep away from children. 18+ ONLY.',
+        tx, cy + mm(2.6), maxTW, trimH * 0.068
+      );
+
+      // 18+ badge + LOT/EXP row
+      const badgeX = tx;
+      const badgeY = footY - mm(5.6);
+      ctx.beginPath();
+      ctx.arc(badgeX + mm(2.4), badgeY + mm(2.2), mm(2.3), 0, Math.PI * 2);
+      ctx.fillStyle = '#17382c';
+      ctx.fill();
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = `800 ${Math.round(trimH * 0.055)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('18+', badgeX + mm(2.4), badgeY + mm(3.0));
+      ctx.textAlign = 'left';
+
+      // LOT / EXP white mini box
+      roundRect(ctx, badgeX + mm(6.2), badgeY, maxTW - mm(6.2), mm(4.5), 4);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(23, 56, 44, 0.25)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.fillStyle = '#17382c';
+      ctx.font = `700 ${Math.round(trimH * 0.052)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.fillText('LOT:                 EXP:', badgeX + mm(7.8), badgeY + mm(3.1));
+
+      // Right side: QR code
+      roundRect(ctx, qrX - mm(0.8), qrY - mm(0.8), qrSize + mm(1.6), qrSize + mm(1.6), 6);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(23, 56, 44, 0.18)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      if (qrImg) {
+        ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+      }
+      ctx.fillStyle = '#17382c';
+      ctx.font = `700 ${Math.round(trimH * 0.044)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('SCAN FOR LAB', qrX + qrSize / 2, qrY + qrSize + mm(2.6));
+      ctx.textAlign = 'left';
+
+      // Emerald footer bar
+      ctx.fillStyle = '#f0dda8';
+      ctx.font = `600 ${Math.round(trimH * 0.052)}px "Plus Jakarta Sans", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        'Herba Gallus, Stanislav Bregar s.p., Prvomajska c. 11, 8310 Šentjernej, Slovenia  ·  herbagallus.com',
+        trimX + trimW / 2,
+        footY + mm(3.8)
+      );
+      ctx.textAlign = 'left';
+
+      if (showBleed) drawCropMarks(ctx, trimX, trimY, trimW, trimH);
+
+      document.getElementById('spec-pr-back').innerHTML =
+        `<span>Trim Size: <strong>${w} × ${h} mm</strong></span>` +
+        `<span>Resolution: <strong>300 DPI (${Math.round(trimW)} × ${Math.round(trimH)} px trim)</strong></span>` +
+        `<span>Placement: <strong>Below clear back window on matte black pouch</strong></span>`;
+    }
+
+    async function init() {
+      await document.fonts.ready;
+      const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=4&color=17382c&bgcolor=ffffff&data=' + encodeURIComponent('https://herbagallus.com/lab-reports');
+      [markImg, qrImg] = await Promise.all([
+        loadImage('/brand/herbagallus-mark.png'),
+        loadImage(qrUrl).catch(() => null)
+      ]);
+      renderAll();
+    }
+
+    function renderAll() {
+      const showBleed = document.getElementById('toggleBleed').checked;
+      renderPetLabel(showBleed);
+      renderPreRollsFront(showBleed);
+      renderPreRollsBack(showBleed);
+    }
+
+    function downloadLabel(canvasId, filename) {
+      const c = document.getElementById(canvasId);
+      const a = document.createElement('a');
+      a.download = filename;
+      a.href = c.toDataURL('image/png');
+      a.click();
+    }
+
+    function downloadAllLabels() {
+      const list = [
+        ['cv-pet', 'herbagallus-label-pet-cbd-5pct-300dpi.png'],
+        ['cv-pr-front', 'herbagallus-label-prerolls-front-300dpi.png'],
+        ['cv-pr-back', 'herbagallus-label-prerolls-back-300dpi.png']
+      ];
+      list.forEach(([id, name], i) => setTimeout(() => downloadLabel(id, name), i * 400));
+    }
+
+    function prepareAndPrint() {
+      const showBleed = document.getElementById('toggleBleed').checked;
+      const padMm = showBleed ? (BLEED_MM + MARGIN_MM) * 2 : 0;
+      const pet = parseSize('petSize');
+      const prF = parseSize('prerollFrontSize');
+      const prB = parseSize('prerollBackSize');
+
+      const petUrl = document.getElementById('cv-pet').toDataURL('image/png');
+      const prFUrl = document.getElementById('cv-pr-front').toDataURL('image/png');
+      const prBUrl = document.getElementById('cv-pr-back').toDataURL('image/png');
+
+      const sheet = document.getElementById('print-sheet');
+      sheet.innerHTML = `
+        <div class="ps-section">
+          <div class="ps-title">1. HerbaGallus CBD Oil for Pets 5% — ${pet.w} × ${pet.h} mm (300 DPI)</div>
+          <div class="ps-row">
+            <img src="${petUrl}" style="width:${pet.w + padMm}mm;height:${pet.h + padMm}mm;" />
+            <img src="${petUrl}" style="width:${pet.w + padMm}mm;height:${pet.h + padMm}mm;" />
+          </div>
+        </div>
+        <div class="ps-section">
+          <div class="ps-title">2. HerbaGallus CBD Pre-Rolls (3 pcs) Front — ${prF.w} × ${prF.h} mm (300 DPI)</div>
+          <div class="ps-row">
+            <img src="${prFUrl}" style="width:${prF.w + padMm}mm;height:${prF.h + padMm}mm;" />
+            <img src="${prFUrl}" style="width:${prF.w + padMm}mm;height:${prF.h + padMm}mm;" />
+          </div>
+        </div>
+        <div class="ps-section">
+          <div class="ps-title">3. HerbaGallus CBD Pre-Rolls Back Strip — ${prB.w} × ${prB.h} mm (300 DPI)</div>
+          <div class="ps-row">
+            <img src="${prBUrl}" style="width:${prB.w + padMm}mm;height:${prB.h + padMm}mm;" />
+            <img src="${prBUrl}" style="width:${prB.w + padMm}mm;height:${prB.h + padMm}mm;" />
+          </div>
+        </div>
+      `;
+      setTimeout(() => window.print(), 180);
+    }
+
+    init();
+  </script>
+</body>
+</html>

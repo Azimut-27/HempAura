@@ -140,7 +140,7 @@ export default function HomePage() {
                 Izbrana kolekcija
               </h2>
               <p className="mt-4 leading-7 text-forest/68">
-                Tri premišljeno izbrane CBD formulacije z jasnimi sestavinami,
+                Premišljeno izbrane slovenske CBD formulacije z jasnimi sestavinami,
                 outdoor filozofijo in odgovorno predstavitvijo.
               </p>
             </div>
@@ -151,7 +151,7 @@ export default function HomePage() {
               Vsi izdelki <ArrowRight size={15} aria-hidden="true" />
             </Link>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
             {products.filter((product) => product.featured).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
