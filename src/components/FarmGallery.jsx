@@ -48,12 +48,12 @@ export default function FarmGallery({ items = [], dark = false }) {
               loading="lazy"
               className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0d211a]/95 via-[#0d211a]/55 to-transparent px-3.5 pb-3.5 pt-16 sm:px-4 sm:pb-4">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#091813]/96 via-[#0d211a]/75 to-transparent px-3.5 pb-3.5 pt-20 sm:px-4 sm:pb-4">
               <p className="font-display text-sm font-semibold leading-snug text-porcelain sm:text-base">
                 {t(item.title)}
               </p>
               {item.subtitle && (
-                <p className="mt-0.5 text-[11px] leading-snug text-porcelain/78 sm:text-xs">
+                <p className="mt-0.5 text-[11px] leading-snug text-porcelain/92 sm:text-xs">
                   {t(item.subtitle)}
                 </p>
               )}

@@ -546,10 +546,10 @@
     /* Animated Reels Studio */
     .reels-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
     }
-    @media (max-width: 1100px) {
+    @media (max-width: 1020px) {
       .reels-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 620px) {
@@ -664,7 +664,8 @@
   </div>
 
   <nav class="quick-nav" aria-label="Hitri skoki">
-    <a href="#reels-studio" style="background:rgba(212,175,55,0.22);border-color:rgba(240,221,168,0.65);color:#f0dda8;">🎬 Reels Studio (4 animirani videi)</a>
+    <a href="#reels-studio" style="background:rgba(212,175,55,0.22);border-color:rgba(240,221,168,0.65);color:#f0dda8;">🎬 Reels Studio (6 animiranih videov)</a>
+    <a href="#app-mockups" style="background:rgba(212,175,55,0.16);border-color:rgba(240,221,168,0.5);color:#f0dda8;">📱 App Mockupi (4 Feed + 4 Storyji)</a>
     <a href="#bio">✍️ Bio & Profil</a>
     <a href="#new-products">🆕 Novosti: Pre-Rolls & Živali (6 vizualov)</a>
     <a href="#highlights">✨ 5 Highlight ikon</a>
@@ -673,10 +674,10 @@
     <a href="#feed-posts">📸 9 Feed objav (3×3)</a>
   </nav>
 
-  <!-- SECTION REELS STUDIO: 4 ANIMATED 1080x1920 VIDEO REELS -->
+  <!-- SECTION REELS STUDIO: 6 ANIMATED 1080x1920 VIDEO REELS -->
   <section class="section-wrap" id="reels-studio">
     <div class="ig-grid-banner">
-      <span class="ig-grid-label">🎬 HerbaGallus Reels Studio — 4 animirani videi (1080 × 1920 · 60fps · 1-klik Video Export)</span>
+      <span class="ig-grid-label">🎬 HerbaGallus Reels Studio — 6 animiranih videov (1080 × 1920 · 60fps · 1-klik Video Export)</span>
     </div>
 
     <div class="reels-grid">
@@ -792,6 +793,195 @@ Ročno obrani, počasi zoreni vršički s 6–9 % naravnega CBD. Izberi pakiranj
         </div>
       </div>
 
+      <!-- REEL 5: APP UI — ORDER IN 30 SECONDS -->
+      <div class="reel-card">
+        <div class="reel-head">
+          <span class="reel-title">Reel 5 · 📱 Naroči v 30 s (App UI)</span>
+          <span class="reel-dur">11s · 1080×1920</span>
+        </div>
+        <div class="reel-stage" onclick="toggleReelPreview('reel5')">
+          <canvas id="cv-reel5" width="1080" height="1920"></canvas>
+        </div>
+        <div class="reel-progress-track"><div class="reel-progress-fill" id="prog-reel5"></div></div>
+        <div class="reel-controls">
+          <button class="reel-play-btn" id="play-reel5" onclick="toggleReelPreview('reel5')">▶️ Predvajaj</button>
+          <button class="reel-export-btn" id="exp-reel5" onclick="exportReelVideo('reel5', 'herbagallus-reel-05-spletna-trgovina-app')">🎬 Izvozi Video</button>
+        </div>
+        <div class="reel-status" id="stat-reel5">Pravi zasloni: Domov → Izdelki → Košarica</div>
+        <div class="caption-box">
+          <div class="caption-header"><span>Reel opis #5 (App UI)</span><button class="copy-btn" onclick="copyCaption('rcap5', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="rcap5">Takole preprosto naročiš na prenovljeni herbagallus.com! 📱🌿
+
+1️⃣ Izberi svoj izdelek (kapljice, vršički, Pre-Rolls ali CBD za živali)
+2️⃣ Dodaj v košarico &amp; vnesi kodo DOMA15 za -15 %
+3️⃣ Izberi GLS dostavo v 1–2 dneh (možno tudi plačilo po povzetju!)
+
+Preveri spletno trgovino prek povezave v bio. 👇
+
+#herbagallus #spletnatrgovina #slovenskizdelki #cbd #glsdostava #naravnanega</div>
+        </div>
+      </div>
+
+      <!-- REEL 6: APP UI — AMBASSADOR / PARTNERS -->
+      <div class="reel-card">
+        <div class="reel-head">
+          <span class="reel-title">Reel 6 · 👑 Ambasadorji (App UI)</span>
+          <span class="reel-dur">10s · 1080×1920</span>
+        </div>
+        <div class="reel-stage" onclick="toggleReelPreview('reel6')">
+          <canvas id="cv-reel6" width="1080" height="1920"></canvas>
+        </div>
+        <div class="reel-progress-track"><div class="reel-progress-fill" id="prog-reel6"></div></div>
+        <div class="reel-controls">
+          <button class="reel-play-btn" id="play-reel6" onclick="toggleReelPreview('reel6')">▶️ Predvajaj</button>
+          <button class="reel-export-btn" id="exp-reel6" onclick="exportReelVideo('reel6', 'herbagallus-reel-06-ambasadorji')">🎬 Izvozi Video</button>
+        </div>
+        <div class="reel-status" id="stat-reel6">Kavelj → /partners zaslon → Prijava</div>
+        <div class="caption-box">
+          <div class="caption-header"><span>Reel opis #6 (Ambasadorji)</span><button class="copy-btn" onclick="copyCaption('rcap6', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="rcap6">Ustvarjaš vsebine na Instagramu ali TikToku in ceniš slovensko naravo? 👑🌿
+
+Pridruži se partnerskemu programu HerbaGallus:
+✔️ Svoja unikatna koda za popust za sledilce
+✔️ Pregledna provizija od vsakega nakupa
+✔️ Pristna 100 % slovenska znamka
+
+Prijaviš se v 1 minuti na herbagallus.com/partners (povezava v bio)! 👇
+
+#herbagallus #ambasador #ustvarjalcivsebin #sodelovanje #slovenija #ugcslovenija</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION APP MOCKUPS: 4 FEED POSTS + 4 STORIES USING REAL MOBILE APP SCREENS -->
+  <section class="section-wrap" id="app-mockups">
+    <div class="ig-grid-banner">
+      <span class="ig-grid-label">📱 Uradni App Mockupi — Pravi zasloni herbagallus.com (4 Feed objave + 4 Storyji)</span>
+      <button class="dl-all-btn" onclick="downloadAppMockupsPack()">⬇️ Prenesi vseh 8 App Mockupov (PNG)</button>
+    </div>
+
+    <!-- 4 App Feed Posts (1080 x 1350) -->
+    <div class="posts-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:26px;">
+
+      <!-- APP FEED 1 -->
+      <div class="post-card">
+        <div class="post-meta-top">
+          <span class="post-num">App Feed #1 · Prenovljena trgovina</span>
+          <span class="post-dim">1080 × 1350</span>
+        </div>
+        <div class="canvas-wrap"><canvas id="canvas-app1" width="1080" height="1350"></canvas></div>
+        <button class="dl-btn" onclick="downloadCanvas('canvas-app1', 'herbagallus-app-feed-01-trgovina.png')">⬇️ Prenesi App Feed #1</button>
+        <div class="caption-box">
+          <div class="caption-header"><span>IG opis · Nova trgovina</span><button class="copy-btn" onclick="copyCaption('acap1', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="acap1">Prenovljena spletna trgovina herbagallus.com je tu! 📱🌿
+
+Čist, umirjen dizajn, pristne fotografije našega slovenskega nasada in popolna preglednost pri vsakem izdelku.
+
+🎁 -15 % na prvi nakup s kodo DOMA15 (povezava v bio).
+📦 GLS dostava 1–2 dni po vsej Sloveniji.
+
+#herbagallus #herbagalluscom #slovenskakonoplja #spletnatrgovina #naravnakakovost</div>
+        </div>
+      </div>
+
+      <!-- APP FEED 2 -->
+      <div class="post-card">
+        <div class="post-meta-top">
+          <span class="post-num">App Feed #2 · Naroči v 30 sekundah</span>
+          <span class="post-dim">1080 × 1350</span>
+        </div>
+        <div class="canvas-wrap"><canvas id="canvas-app2" width="1080" height="1350"></canvas></div>
+        <button class="dl-btn" onclick="downloadCanvas('canvas-app2', 'herbagallus-app-feed-02-narocilo.png')">⬇️ Prenesi App Feed #2</button>
+        <div class="caption-box">
+          <div class="caption-header"><span>IG opis · Hiter nakup</span><button class="copy-btn" onclick="copyCaption('acap2', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="acap2">Od izbire izdelka do paketa pred vrati v le nekaj klikih. 📦✨
+
+1️⃣ Izberi velikost (npr. White Heaven 3 g, 5 g, 10 g ali 25 g)
+2️⃣ V košarici vnesi kodo DOMA15 za -15 %
+3️⃣ Plačaj s kartico, po UPN ali kar GLS kurirju ob prevzemu!
+
+Brezplačna dostava pri naročilih nad 50 €! 🚚
+👉 herbagallus.com
+
+#herbagallus #glsdostava #placilopopovzetju #cbdslovenija #whiteheaven</div>
+        </div>
+      </div>
+
+      <!-- APP FEED 3 -->
+      <div class="post-card">
+        <div class="post-meta-top">
+          <span class="post-num">App Feed #3 · Novosti na spletu</span>
+          <span class="post-dim">1080 × 1350</span>
+        </div>
+        <div class="canvas-wrap"><canvas id="canvas-app3" width="1080" height="1350"></canvas></div>
+        <button class="dl-btn" onclick="downloadCanvas('canvas-app3', 'herbagallus-app-feed-03-novosti-app.png')">⬇️ Prenesi App Feed #3</button>
+        <div class="caption-box">
+          <div class="caption-header"><span>IG opis · Novosti v trgovini</span><button class="copy-btn" onclick="copyCaption('acap3', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="acap3">Dve veliki novosti sta že na voljo na herbagallus.com! 🆕🌿🐾
+
+🖤 HerbaGallus CBD Pre-Rolls (White Heaven · 3 kosi) — 11,00 €
+🐾 HerbaGallus CBD kapljice za živali 5 % (psi &amp; mačke) — 31,00 €
+
+Oba izdelka sta že na zalogi in pripravljena za takojšnjo GLS odpremo. Klikni povezavo v bio! 👇
+
+#herbagallus #cbdprerolls #cbdzazivali #novost #slovenskizdelki</div>
+        </div>
+      </div>
+
+      <!-- APP FEED 4 -->
+      <div class="post-card">
+        <div class="post-meta-top">
+          <span class="post-num">App Feed #4 · Postani Ambasador 👑</span>
+          <span class="post-dim">1080 × 1350</span>
+        </div>
+        <div class="canvas-wrap"><canvas id="canvas-app4" width="1080" height="1350"></canvas></div>
+        <button class="dl-btn" onclick="downloadCanvas('canvas-app4', 'herbagallus-app-feed-04-ambasadorji.png')">⬇️ Prenesi App Feed #4</button>
+        <div class="caption-box">
+          <div class="caption-header"><span>IG opis · Partnerski program</span><button class="copy-btn" onclick="copyCaption('acap4', this)">📋 Kopiraj</button></div>
+          <div class="caption-text" id="acap4">Ustvarjaj z nami. Zasluži z zaupanjem. 👑🌿
+
+Iščemo iskrene slovenske ustvarjalce vsebin, ki živijo blizu narave in cenijo kakovostne domače izdelke.
+
+✔️ Pridobi svojo unikatno kodo za popust za sledilce
+✔️ Pregledna provizija od vsakega nakupa
+✔️ Hitra prijava na herbagallus.com/partners
+
+Označi nekoga, ki bi bil odličen HerbaGallus ambasador! 👇
+
+#herbagallus #partnerskiprogram #ambasador #ustvarjalcivsebin #slovenija</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 4 App Tap-to-Shop Stories (1080 x 1920) -->
+    <div class="stories-grid-4">
+      <div class="story-card">
+        <span class="story-label">App Story #1 · Nova trgovina</span>
+        <div class="story-canvas-wrap"><canvas id="aps-01" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <strong>herbagallus.com</strong> na spodnji okvir.</p>
+        <button class="dl-btn" onclick="downloadCanvas('aps-01', 'herbagallus-app-story-01-trgovina.png')">⬇️ PNG (9:16)</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">App Story #2 · Nasad v živo</span>
+        <div class="story-canvas-wrap"><canvas id="aps-02" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Prikaže pravi zaslon <em>Z naše sončne pridelave</em>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('aps-02', 'herbagallus-app-story-02-nasad.png')">⬇️ PNG (9:16)</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">App Story #3 · Novosti v Appu</span>
+        <div class="story-canvas-wrap"><canvas id="aps-03" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <strong>herbagallus.com/products</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('aps-03', 'herbagallus-app-story-03-novosti.png')">⬇️ PNG (9:16)</button>
+      </div>
+      <div class="story-card">
+        <span class="story-label">App Story #4 · Ambasadorji 👑</span>
+        <div class="story-canvas-wrap"><canvas id="aps-04" width="1080" height="1920"></canvas></div>
+        <p class="story-tip">Dodaj Link nalepko <strong>herbagallus.com/partners</strong>.</p>
+        <button class="dl-btn" onclick="downloadCanvas('aps-04', 'herbagallus-app-story-04-ambasadorji.png')">⬇️ PNG (9:16)</button>
+      </div>
     </div>
   </section>
 
@@ -1495,7 +1685,9 @@ Ste iz drugega konca Slovenije?
         prodFlower, prodOil, prodBalm, prodPreRolls, prodPetOil,
         markImg, stackedLogoImg,
         fRows, fHarvest, fFrost, fLoupe, fMacro,
-        fPersp, fAutumn, fSpire, fTeam, fSunset
+        fPersp, fAutumn, fSpire, fTeam, fSunset,
+        appHome, appPreRolls, appPetOil, appCart,
+        appFarm, appPartners, appOil, appFlower
       ] = await Promise.all([
         loadImage('/ig-studio/ai-post1-lifestyle.jpg'),
         loadImage('/ig-studio/ai-post2-dropper.jpg'),
@@ -1517,7 +1709,15 @@ Ste iz drugega konca Slovenije?
         loadImage('/farm/farm-autumn-bud.jpg'),
         loadImage('/farm/farm-sunlit-spire.jpg'),
         loadImage('/farm/farm-team-sunset.jpg'),
-        loadImage('/farm/farm-cola-sunset.jpg')
+        loadImage('/farm/farm-cola-sunset.jpg'),
+        loadImage('/ig-studio/app-screens/app-home.jpg'),
+        loadImage('/ig-studio/app-screens/app-prerolls.jpg'),
+        loadImage('/ig-studio/app-screens/app-pet-oil.jpg'),
+        loadImage('/ig-studio/app-screens/app-cart.jpg'),
+        loadImage('/ig-studio/app-screens/app-farm.jpg'),
+        loadImage('/ig-studio/app-screens/app-partners.jpg'),
+        loadImage('/ig-studio/app-screens/app-oil.jpg'),
+        loadImage('/ig-studio/app-screens/app-flower.jpg')
       ]);
 
       const farm = {
@@ -1526,9 +1726,15 @@ Ste iz drugega konca Slovenije?
         team: fTeam, sunset: fSunset
       };
 
-      // Initialize Animated Reels Studio (4 Reels)
+      const appScreens = {
+        home: appHome, prerolls: appPreRolls, petOil: appPetOil, cart: appCart,
+        farm: appFarm, partners: appPartners, oil: appOil, flower: appFlower
+      };
+
+      // Initialize Animated Reels Studio (6 Reels incl. 2 App UI Reels)
       initReelsStudio({
         farm,
+        appScreens,
         prodFlower,
         prodOil,
         prodPreRolls,
@@ -1536,6 +1742,9 @@ Ste iz drugega konca Slovenije?
         markImg,
         stackedLogoImg
       });
+
+      // Render Official App Mockups Pack (4 Feed + 4 Stories)
+      renderAppMockupsPack(appScreens, stackedLogoImg);
 
       // Render 5 Story Highlights
       renderHighlights();
@@ -3530,8 +3739,447 @@ Ste iz drugega konca Slovenije?
       reel1: { duration: 12.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
       reel2: { duration: 11.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
       reel3: { duration: 12.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
-      reel4: { duration: 11.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 }
+      reel4: { duration: 11.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
+      reel5: { duration: 11.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 },
+      reel6: { duration: 10.0, playing: false, exporting: false, rafId: null, startTime: 0, pauseOffset: 0 }
     };
+
+    /* Realistic Minimalist Titanium Smartphone Frame Helper */
+    function drawPhoneMockup(ctx, screenImg, x, y, w, h, opts = {}) {
+      const { tiltDeg = 0, shadowBlur = 44, bezel = 14, radius = 44 } = opts;
+      ctx.save();
+      ctx.translate(x + w / 2, y + h / 2);
+      if (tiltDeg) ctx.rotate((tiltDeg * Math.PI) / 180);
+
+      const lx = -w / 2, ly = -h / 2;
+
+      // Soft studio drop shadow
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.48)';
+      ctx.shadowBlur = shadowBlur;
+      ctx.shadowOffsetY = 22;
+      roundRect(ctx, lx, ly, w, h, radius);
+      ctx.fillStyle = '#121715';
+      ctx.fill();
+      ctx.restore();
+
+      // Metallic titanium outer shell
+      const rimGrad = ctx.createLinearGradient(lx, ly, lx + w, ly + h);
+      rimGrad.addColorStop(0, '#444e49');
+      rimGrad.addColorStop(0.5, '#1d2420');
+      rimGrad.addColorStop(1, '#343d38');
+      roundRect(ctx, lx, ly, w, h, radius);
+      ctx.fillStyle = rimGrad;
+      ctx.fill();
+
+      // Inner obsidian bezel
+      roundRect(ctx, lx + 3.5, ly + 3.5, w - 7, h - 7, radius - 3);
+      ctx.fillStyle = '#090d0b';
+      ctx.fill();
+
+      // Screen clip area
+      const sx = lx + bezel, sy = ly + bezel;
+      const sw = w - bezel * 2, sh = h - bezel * 2;
+      ctx.save();
+      roundRect(ctx, sx, sy, sw, sh, radius - bezel + 2);
+      ctx.clip();
+      ctx.fillStyle = '#fffaf1';
+      ctx.fillRect(sx, sy, sw, sh);
+      if (screenImg) {
+        // Align top (0) so HerbaGallus header is always crisp at top of phone
+        drawCover(ctx, screenImg, sx, sy, sw, sh, 0.0);
+      }
+
+      // Subtle diagonal glass highlight sheen
+      const sheen = ctx.createLinearGradient(sx, sy, sx + sw * 0.65, sy + sh * 0.45);
+      sheen.addColorStop(0, 'rgba(255, 255, 255, 0.12)');
+      sheen.addColorStop(0.5, 'rgba(255, 255, 255, 0.02)');
+      sheen.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = sheen;
+      ctx.fillRect(sx, sy, sw, sh);
+      ctx.restore();
+
+      // Subtle Dynamic Island pill at top center
+      const diW = w * 0.24, diH = Math.max(12, w * 0.04);
+      roundRect(ctx, -diW / 2, sy + 8, diW, diH, diH / 2);
+      ctx.fillStyle = '#090d0b';
+      ctx.fill();
+
+      // Fine outer gold/metallic rim highlight
+      ctx.strokeStyle = 'rgba(240, 221, 168, 0.25)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, lx + 1, ly + 1, w - 2, h - 2, radius - 1);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    /* =======================================================
+       APP MOCKUPS PACK (4 FEED POSTS + 4 STORIES)
+       ======================================================= */
+    function renderAppMockupsPack(app, stackedLogoImg) {
+      // APP FEED #1 (1080x1350): Dual Angled Phones (Home + Farm Gallery)
+      {
+        const c = document.getElementById('canvas-app1');
+        const ctx = c.getContext('2d');
+        const W = 1080, H = 1350;
+
+        const bg = ctx.createRadialGradient(W / 2, 420, 80, W / 2, H / 2, 920);
+        bg.addColorStop(0, '#204a3a');
+        bg.addColorStop(1, '#0c1c15');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Header text
+        ctx.fillStyle = '#d4af37';
+        ctx.font = '800 22px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('PRENOVLJENA SPLETNA TRGOVINA  ·  HERBAGALLUS.COM', W / 2, 95);
+
+        ctx.fillStyle = '#fffaf1';
+        ctx.font = '700 62px "Playfair Display", Georgia, serif';
+        drawWrappedText(ctx, 'Preprosto, pregledno in 100 % slovensko.', W / 2, 172, W - 130, 72, 'center');
+        ctx.textAlign = 'left';
+
+        // Two sleek overlapping angled phones
+        drawPhoneMockup(ctx, app.farm, 540, 345, 435, 810, { tiltDeg: 6, bezel: 13, radius: 42 });
+        drawPhoneMockup(ctx, app.home, 105, 315, 455, 845, { tiltDeg: -5, bezel: 14, radius: 44 });
+
+        // Bottom Gold CTA bar
+        const cg = ctx.createLinearGradient(68, 1205, W - 68, 1295);
+        cg.addColorStop(0, '#f3e1ac');
+        cg.addColorStop(0.5, '#d7b043');
+        cg.addColorStop(1, '#b68c32');
+        roundRect(ctx, 68, 1200, W - 136, 94, 18);
+        ctx.fillStyle = cg;
+        ctx.fill();
+        ctx.fillStyle = '#10241b';
+        ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('herbagallus.com', 108, 1258);
+        ctx.textAlign = 'right';
+        ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('KODA ZA -15 %: DOMA15  →', W - 108, 1256);
+        ctx.textAlign = 'left';
+
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+        ctx.lineWidth = 2;
+        roundRect(ctx, 24, 24, W - 48, H - 48, 24);
+        ctx.stroke();
+      }
+
+      // APP FEED #2 (1080x1350): Order in 30 Seconds (3 Cascading Phones)
+      {
+        const c = document.getElementById('canvas-app2');
+        const ctx = c.getContext('2d');
+        const W = 1080, H = 1350;
+
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, '#fcf7ee');
+        bg.addColorStop(1, '#ede1cc');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.fillStyle = '#9b5940';
+        ctx.font = '800 22px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('HITER & VAREN SPLETNI NAKUP', W / 2, 92);
+
+        ctx.fillStyle = '#17382c';
+        ctx.font = '700 60px "Playfair Display", Georgia, serif';
+        ctx.fillText('Naroči v 30 sekundah.', W / 2, 166);
+
+        ctx.fillStyle = 'rgba(23, 56, 44, 0.72)';
+        ctx.font = '500 26px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('Izberi izdelek · Dodaj v košarico · GLS dostava v 1–2 dneh', W / 2, 218);
+        ctx.textAlign = 'left';
+
+        // 3 phones side-by-side (left, right, center elevated)
+        drawPhoneMockup(ctx, app.oil, 46, 330, 320, 620, { tiltDeg: -4, bezel: 10, radius: 34, shadowBlur: 30 });
+        drawPhoneMockup(ctx, app.flower, 714, 330, 320, 620, { tiltDeg: 4, bezel: 10, radius: 34, shadowBlur: 30 });
+        drawPhoneMockup(ctx, app.cart, 355, 280, 370, 720, { tiltDeg: 0, bezel: 12, radius: 38, shadowBlur: 48 });
+
+        // 3 step badges underneath
+        const steps = [
+          ['1. IZBERI', 'Kapljice, vršički, Pre-Rolls'],
+          ['2. KOŠARICA', 'Koda DOMA15 (-15 %)'],
+          ['3. GLS DOSTAVA', 'Tudi po povzetju · 1–2 dni']
+        ];
+        steps.forEach(([h, s], i) => {
+          const sx = 64 + i * 324;
+          roundRect(ctx, sx, 1055, 304, 125, 18);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(23, 56, 44, 0.14)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          ctx.fillStyle = '#17382c';
+          ctx.font = '800 22px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText(h, sx + 22, 1102);
+          ctx.fillStyle = 'rgba(23, 56, 44, 0.7)';
+          ctx.font = '600 19px "Plus Jakarta Sans", sans-serif';
+          drawWrappedText(ctx, s, sx + 22, 1138, 260, 26);
+        });
+
+        // Bottom forest footer bar
+        roundRect(ctx, 64, 1212, W - 128, 82, 16);
+        ctx.fillStyle = '#17382c';
+        ctx.fill();
+        ctx.fillStyle = '#f0dda8';
+        ctx.font = '800 26px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('HERBAGALLUS.COM  ·  BREZPLAČNA DOSTAVA NAD 50 €', W / 2, 1262);
+        ctx.textAlign = 'left';
+
+        ctx.strokeStyle = 'rgba(23, 56, 44, 0.16)';
+        ctx.lineWidth = 2;
+        roundRect(ctx, 24, 24, W - 48, H - 48, 24);
+        ctx.stroke();
+      }
+
+      // APP FEED #3 (1080x1350): New Products Live on Webshop (Pre-Rolls + Pet Drops)
+      {
+        const c = document.getElementById('canvas-app3');
+        const ctx = c.getContext('2d');
+        const W = 1080, H = 1350;
+
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, '#fcf7ee');
+        bg.addColorStop(1, '#eee2cd');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.fillStyle = '#9b5940';
+        ctx.font = '800 22px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('🆕  NOVOSTI ŽE NA VOLJO V SPLETNI TRGOVINI', W / 2, 92);
+
+        ctx.fillStyle = '#17382c';
+        ctx.font = '700 58px "Playfair Display", Georgia, serif';
+        ctx.fillText('CBD Pre-Rolls & CBD za živali', W / 2, 166);
+        ctx.textAlign = 'left';
+
+        drawPhoneMockup(ctx, app.prerolls, 88, 235, 430, 825, { tiltDeg: -2.5, bezel: 13, radius: 40 });
+        drawPhoneMockup(ctx, app.petOil, 562, 235, 430, 825, { tiltDeg: 2.5, bezel: 13, radius: 40 });
+
+        // Bottom caption strip
+        roundRect(ctx, 68, 1110, W - 136, 178, 22);
+        ctx.fillStyle = '#17382c';
+        ctx.fill();
+
+        ctx.fillStyle = '#f0dda8';
+        ctx.font = '800 27px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('🖤 Pre-Rolls (3 kosi): 11,00 €', 112, 1172);
+        ctx.fillText('🐾 Kapljice za živali 5 %: 31,00 €', 112, 1222);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'right';
+        ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('herbagallus.com', W - 112, 1185);
+        ctx.fillStyle = '#d4af37';
+        ctx.font = '700 22px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('Koda -15 %: DOMA15', W - 112, 1226);
+        ctx.textAlign = 'left';
+
+        ctx.strokeStyle = 'rgba(23, 56, 44, 0.16)';
+        ctx.lineWidth = 2;
+        roundRect(ctx, 24, 24, W - 48, H - 48, 24);
+        ctx.stroke();
+      }
+
+      // APP FEED #4 (1080x1350): Ambassador / Partners Screen
+      {
+        const c = document.getElementById('canvas-app4');
+        const ctx = c.getContext('2d');
+        const W = 1080, H = 1350;
+
+        const bg = ctx.createRadialGradient(W * 0.72, 520, 60, W / 2, H / 2, 950);
+        bg.addColorStop(0, '#214c3b');
+        bg.addColorStop(1, '#0b1b14');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Right side: Live /partners mobile screen
+        drawPhoneMockup(ctx, app.partners, 575, 195, 435, 845, { tiltDeg: 3, bezel: 13, radius: 42 });
+
+        // Left side: Editorial pitch
+        ctx.fillStyle = '#d4af37';
+        ctx.font = '800 22px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('👑  PARTNERSKI PROGRAM', 68, 225);
+
+        ctx.fillStyle = '#fffaf1';
+        ctx.font = '700 64px "Playfair Display", Georgia, serif';
+        drawWrappedText(ctx, 'Postani HerbaGallus ambasador.', 68, 305, 475, 76);
+
+        ctx.fillStyle = '#cfe0d6';
+        ctx.font = '500 26px "Plus Jakarta Sans", sans-serif';
+        drawWrappedText(
+          ctx,
+          'Ustvarjaš pristne vsebine na Instagramu ali TikToku? Pridobi svojo promo kodo in zasluži z zaupanjem.',
+          68, 565, 465, 38
+        );
+
+        const perks = [
+          '✓ Unikatna koda za sledilce',
+          '✓ Pregledna provizija',
+          '✓ 100 % slovenska znamka'
+        ];
+        perks.forEach((p, i) => {
+          const py = 745 + i * 86;
+          roundRect(ctx, 68, py, 460, 68, 16);
+          ctx.fillStyle = 'rgba(255, 250, 241, 0.08)';
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(240, 221, 168, 0.28)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '700 24px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText(p, 96, py + 43);
+        });
+
+        // Bottom Gold CTA
+        const cg = ctx.createLinearGradient(68, 1145, W - 68, 1250);
+        cg.addColorStop(0, '#f3e1ac');
+        cg.addColorStop(0.5, '#d7b043');
+        cg.addColorStop(1, '#b68c32');
+        roundRect(ctx, 68, 1140, W - 136, 108, 20);
+        ctx.fillStyle = cg;
+        ctx.fill();
+        ctx.fillStyle = '#10241b';
+        ctx.font = '800 32px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Prijavi se: herbagallus.com/partners  →', W / 2, 1206);
+        ctx.textAlign = 'left';
+
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+        ctx.lineWidth = 2;
+        roundRect(ctx, 24, 24, W - 48, H - 48, 24);
+        ctx.stroke();
+      }
+
+      // 4 APP STORIES (1080 x 1920)
+      function drawAppStory(id, { theme = 'emerald', eyebrow, title, subtitle, phone1, phone2 = null, cta = '👇 DODAJ LINK: HERBAGALLUS.COM' }) {
+        const c = document.getElementById(id);
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        const W = 1080, H = 1920;
+        const isCream = theme === 'cream';
+
+        if (isCream) {
+          const bg = ctx.createLinearGradient(0, 0, W, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#ede1cc');
+          ctx.fillStyle = bg;
+        } else {
+          const bg = ctx.createRadialGradient(W / 2, 920, 100, W / 2, H / 2, 1180);
+          bg.addColorStop(0, '#204b3b');
+          bg.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = bg;
+        }
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.strokeStyle = isCream ? 'rgba(23,56,44,0.16)' : 'rgba(212,175,55,0.34)';
+        ctx.lineWidth = 2;
+        roundRect(ctx, 36, 36, W - 72, H - 72, 28);
+        ctx.stroke();
+
+        ctx.fillStyle = isCream ? '#9b5940' : '#d4af37';
+        ctx.font = '800 24px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(eyebrow.toUpperCase(), W / 2, 235);
+
+        ctx.fillStyle = isCream ? '#17382c' : '#fffaf1';
+        ctx.font = '700 66px "Playfair Display", Georgia, serif';
+        drawWrappedText(ctx, title, W / 2, 318, W - 150, 78, 'center');
+
+        if (subtitle) {
+          ctx.fillStyle = isCream ? 'rgba(23,56,44,0.72)' : '#cfe0d6';
+          ctx.font = '500 29px "Plus Jakarta Sans", sans-serif';
+          drawWrappedText(ctx, subtitle, W / 2, 495, W - 180, 42, 'center');
+        }
+        ctx.textAlign = 'left';
+
+        if (phone2) {
+          drawPhoneMockup(ctx, phone2, 530, 625, 455, 860, { tiltDeg: 4, bezel: 13, radius: 42 });
+          drawPhoneMockup(ctx, phone1, 95, 590, 455, 860, { tiltDeg: -4, bezel: 13, radius: 42 });
+        } else {
+          drawPhoneMockup(ctx, phone1, W / 2 - 270, 565, 540, 1005, { tiltDeg: 0, bezel: 15, radius: 48 });
+        }
+
+        // Bottom IG Link Sticker zone
+        roundRect(ctx, 130, H - 275, W - 260, 108, 22);
+        ctx.fillStyle = isCream ? '#17382c' : 'rgba(255, 250, 241, 0.1)';
+        ctx.fill();
+        ctx.setLineDash([10, 8]);
+        ctx.strokeStyle = isCream ? 'rgba(240, 221, 168, 0.5)' : 'rgba(240, 221, 168, 0.65)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#f0dda8';
+        ctx.font = '800 26px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(cta, W / 2, H - 210);
+
+        ctx.fillStyle = isCream ? 'rgba(23,56,44,0.55)' : 'rgba(240,221,168,0.72)';
+        ctx.font = '700 21px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText('HERBAGALLUS  ·  -15 % KODA: DOMA15', W / 2, H - 98);
+        ctx.textAlign = 'left';
+      }
+
+      drawAppStory('aps-01', {
+        theme: 'emerald',
+        eyebrow: 'Spletna trgovina v živo',
+        title: 'Prenovljena trgovina je tu.',
+        subtitle: 'Preprosta izbira, GLS dostava v 1–2 dneh.',
+        phone1: app.home,
+        cta: '🔗 SEM PRILEPI LINK: HERBAGALLUS.COM'
+      });
+
+      drawAppStory('aps-02', {
+        theme: 'cream',
+        eyebrow: '100 % slovenska pridelava',
+        title: 'Od našega nasada do tebe.',
+        subtitle: 'Pristne fotografije naše zunanje pridelave na spletu.',
+        phone1: app.farm,
+        cta: '🔗 SEM PRILEPI LINK: HERBAGALLUS.COM'
+      });
+
+      drawAppStory('aps-03', {
+        theme: 'emerald',
+        eyebrow: 'Novosti v ponudbi',
+        title: 'Pre-Rolls & CBD za živali.',
+        subtitle: 'Oba nova izdelka že na zalogi na spletu.',
+        phone1: app.prerolls,
+        phone2: app.petOil,
+        cta: '🔗 SEM PRILEPI LINK: /PRODUCTS'
+      });
+
+      drawAppStory('aps-04', {
+        theme: 'cream',
+        eyebrow: '👑 Partnerski program',
+        title: 'Postani HerbaGallus ambasador.',
+        subtitle: 'Svoja promo koda & pregledna provizija.',
+        phone1: app.partners,
+        cta: '🔗 SEM PRILEPI LINK: /PARTNERS'
+      });
+    }
+
+    function downloadAppMockupsPack() {
+      const items = [
+        ['canvas-app1', 'herbagallus-app-feed-01-trgovina.png'],
+        ['canvas-app2', 'herbagallus-app-feed-02-narocilo.png'],
+        ['canvas-app3', 'herbagallus-app-feed-03-novosti-app.png'],
+        ['canvas-app4', 'herbagallus-app-feed-04-ambasadorji.png'],
+        ['aps-01', 'herbagallus-app-story-01-trgovina.png'],
+        ['aps-02', 'herbagallus-app-story-02-nasad.png'],
+        ['aps-03', 'herbagallus-app-story-03-novosti.png'],
+        ['aps-04', 'herbagallus-app-story-04-ambasadorji.png']
+      ];
+      items.forEach(([id, name], i) => {
+        setTimeout(() => downloadCanvas(id, name), i * 380);
+      });
+    }
 
     function clamp01(v) { return Math.max(0, Math.min(1, v)); }
     function easeOutCubic(t) { t = clamp01(t); return 1 - Math.pow(1 - t, 3); }
@@ -4156,6 +4804,207 @@ Ste iz drugega konca Slovenije?
         drawReelFrameChrome(ctx, t, dur, label);
       }
 
+      /* ---------- REEL 5: APP UI — ORDER IN 30 SECONDS (11s) ---------- */
+      else if (reelId === 'reel5') {
+        const { appScreens } = REEL_ASSETS;
+        let label = '';
+        if (t < 2.6) {
+          label = '01 · PRENOVLJENA HERBAGALLUS.COM';
+          const bg = ctx.createRadialGradient(W / 2, 760, 80, W / 2, H / 2, 1160);
+          bg.addColorStop(0, '#204b3b');
+          bg.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+          drawFloatingGoldDust(ctx, t);
+
+          const p = easeOutCubic(t / 0.75);
+          ctx.save();
+          ctx.globalAlpha = p;
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 66px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          drawWrappedText(ctx, 'Naroči v 30 sekundah.', W / 2, 345 + (1 - p) * 28, W - 160, 78, 'center');
+          ctx.fillStyle = '#cfe0d6';
+          ctx.font = '500 30px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('100 % slovenska spletna trgovina', W / 2, 455);
+          ctx.textAlign = 'left';
+          ctx.restore();
+
+          const phoneLift = (1 - p) * 140;
+          drawPhoneMockup(ctx, appScreens.home, W / 2 - 285, 540 + phoneLift, 570, 1085, { bezel: 15, radius: 50 });
+        } else if (t < 6.2) {
+          label = '02 · IZBERI SVOJ IZDELEK';
+          const lt = t - 2.6;
+          const bg = ctx.createLinearGradient(0, 0, W, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#ede1cc');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+
+          const screens = [
+            { img: appScreens.oil, tag: 'CBD kapljice 5 % · 31,00 €' },
+            { img: appScreens.flower, tag: 'White Heaven vršički · od 11,90 €' },
+            { img: appScreens.prerolls, tag: 'NOVO: CBD Pre-Rolls (3 kosi) · 11,00 €' },
+            { img: appScreens.petOil, tag: 'NOVO: CBD za živali 5 % · 31,00 €' }
+          ];
+          const idx = Math.min(3, Math.floor(lt / 0.9));
+          const subT = lt - idx * 0.9;
+          const sp = easeOutCubic(subT / 0.28);
+          const cur = screens[idx];
+
+          ctx.fillStyle = '#17382c';
+          ctx.font = '700 58px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Vsi izdelki na enem mestu', W / 2, 345);
+
+          // Highlighted product pill
+          roundRect(ctx, 130, 395, W - 260, 74, 37);
+          ctx.fillStyle = '#17382c';
+          ctx.fill();
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '800 28px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText(cur.tag, W / 2, 443);
+          ctx.textAlign = 'left';
+
+          const slideX = (1 - sp) * 70;
+          drawPhoneMockup(ctx, cur.img, W / 2 - 285 + slideX, 535, 570, 1090, { bezel: 15, radius: 50 });
+        } else if (t < 8.8) {
+          label = '03 · HITRA KOŠARICA & GLS DOSTAVA';
+          const lt = t - 6.2;
+          const bg = ctx.createRadialGradient(W / 2, 860, 80, W / 2, H / 2, 1160);
+          bg.addColorStop(0, '#1e4637');
+          bg.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+          drawFloatingGoldDust(ctx, t);
+
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 62px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Dodaj v košarico & zaključi.', W / 2, 345);
+          ctx.fillStyle = '#f0dda8';
+          ctx.font = '700 29px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('📦 GLS 1–2 dni  ·  💳 Kartica, UPN ali povzetje', W / 2, 420);
+          ctx.textAlign = 'left';
+
+          const p = easeOutCubic(lt / 0.55);
+          drawPhoneMockup(ctx, appScreens.cart, W / 2 - 285, 515 + (1 - p) * 60, 570, 1090, { bezel: 15, radius: 50 });
+
+          // Animated golden tap ripple over "Odpri košarico" button near bottom of phone
+          if (lt > 0.7) {
+            const rp = ((lt - 0.7) % 1.0);
+            ctx.save();
+            ctx.strokeStyle = `rgba(240, 221, 168, ${(1 - rp) * 0.9})`;
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.arc(W / 2, 1515, 24 + rp * 76, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+          }
+        } else {
+          drawReelOutro(ctx, t - 8.8, stackedLogoImg, 'Obišči herbagallus.com', 'Brezplačna GLS dostava nad 50 €');
+        }
+        drawReelFrameChrome(ctx, t, dur, label);
+      }
+
+      /* ---------- REEL 6: APP UI — AMBASSADOR PROGRAM (10s) ---------- */
+      else if (reelId === 'reel6') {
+        const { appScreens } = REEL_ASSETS;
+        let label = '';
+        if (t < 2.6) {
+          label = '01 · PARTNERSKI PROGRAM';
+          const bg = ctx.createRadialGradient(W / 2, 760, 100, W / 2, H / 2, 1180);
+          bg.addColorStop(0, '#204a3a');
+          bg.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+          drawFloatingGoldDust(ctx, t);
+
+          const tp = easeOutCubic(t / 0.75);
+          ctx.save();
+          ctx.globalAlpha = tp;
+          ctx.fillStyle = '#d4af37';
+          ctx.font = '800 30px "Plus Jakarta Sans", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('👑  IŠČEMO SLOVENSKE USTVARJALCE', W / 2, 680);
+
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 76px "Playfair Display", Georgia, serif';
+          drawWrappedText(ctx, 'Ustvarjaš vsebine na Instagramu ali TikToku?', W / 2, 795 + (1 - tp) * 40, W - 150, 92, 'center');
+
+          ctx.fillStyle = '#cfe0d6';
+          ctx.font = '500 34px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('Sodeluj z naravno slovensko znamko.', W / 2, 1235);
+          ctx.textAlign = 'left';
+          ctx.restore();
+        } else if (t < 5.6) {
+          label = '02 · HERBAGALLUS.COM/PARTNERS';
+          const lt = t - 2.6;
+          const bg = ctx.createLinearGradient(0, 0, W, H);
+          bg.addColorStop(0, '#fcf7ee');
+          bg.addColorStop(1, '#ede1cc');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+
+          const p = easeOutCubic(lt / 0.65);
+          ctx.fillStyle = '#17382c';
+          ctx.font = '700 62px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Prijava v 1 minuti.', W / 2, 355);
+          ctx.fillStyle = '#9b5940';
+          ctx.font = '700 28px "Plus Jakarta Sans", sans-serif';
+          ctx.fillText('herbagallus.com/partners', W / 2, 422);
+          ctx.textAlign = 'left';
+
+          drawPhoneMockup(ctx, appScreens.partners, W / 2 - 285, 515 + (1 - p) * 110, 570, 1085, { bezel: 15, radius: 50 });
+        } else if (t < 7.8) {
+          label = '03 · KAJ PRIDOBIŠ';
+          const lt = t - 5.6;
+          const bg = ctx.createRadialGradient(W / 2, 700, 100, W / 2, H / 2, 1180);
+          bg.addColorStop(0, '#214d3d');
+          bg.addColorStop(1, '#0b1b14');
+          ctx.fillStyle = bg;
+          ctx.fillRect(0, 0, W, H);
+          drawFloatingGoldDust(ctx, t);
+
+          ctx.fillStyle = '#fffaf1';
+          ctx.font = '700 68px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Zakaj z nami?', W / 2, 470);
+          ctx.textAlign = 'left';
+
+          const benefits = [
+            ['🎁 Tvoja unikatna koda', 'Popust za tvoje sledilce ob vsakem nakupu.'],
+            ['💶 Pregledna provizija', 'Zaslužiš od vsakega nakupa s tvojo kodo.'],
+            ['🌿 100 % slovenska zgodba', 'Prava outdoor pridelava in vrhunski izdelki.']
+          ];
+          benefits.forEach(([h, s], i) => {
+            const bp = easeOutCubic((lt - i * 0.35) / 0.45);
+            if (bp <= 0) return;
+            ctx.save();
+            ctx.globalAlpha = bp;
+            const y = 600 + i * 255 + (1 - bp) * 45;
+            roundRect(ctx, 84, y, W - 168, 210, 24);
+            ctx.fillStyle = 'rgba(255, 250, 241, 0.08)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(240, 221, 168, 0.36)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#f0dda8';
+            ctx.font = '800 38px "Plus Jakarta Sans", sans-serif';
+            ctx.fillText(h, 126, y + 78);
+            ctx.fillStyle = '#dce8e1';
+            ctx.font = '500 29px "Plus Jakarta Sans", sans-serif';
+            drawWrappedText(ctx, s, 126, y + 132, W - 252, 40);
+            ctx.restore();
+          });
+        } else {
+          drawReelOutro(ctx, t - 7.8, stackedLogoImg, 'Postani HerbaGallus ambasador.', 'Prijavi se zdaj na /partners 👑', 'HERBAGALLUS.COM/PARTNERS');
+        }
+        drawReelFrameChrome(ctx, t, dur, label);
+      }
+
       // Update UI progress bar
       const fill = document.getElementById('prog-' + reelId);
       if (fill) fill.style.width = `${(clamp01(t / dur) * 100).toFixed(1)}%`;
@@ -4163,11 +5012,13 @@ Ste iz drugega konca Slovenije?
 
     function initReelsStudio(assets) {
       REEL_ASSETS = assets;
-      // Render appealing cover frames (around t = 0.85s so headlines are visible!)
+      // Render appealing cover frames
       renderReelFrame('reel1', 1.1);
       renderReelFrame('reel2', 6.8);
       renderReelFrame('reel3', 4.4);
       renderReelFrame('reel4', 1.1);
+      renderReelFrame('reel5', 7.2);
+      renderReelFrame('reel6', 3.8);
     }
 
     function stopReel(reelId) {

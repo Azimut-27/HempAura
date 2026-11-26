@@ -83,7 +83,7 @@ export default function HomePage() {
             <div className="mt-10 flex flex-col gap-3.5 sm:flex-row">
               <Link
                 to="/products"
-                className="group inline-flex min-h-13 items-center justify-center gap-3 rounded-lg bg-forest px-7 text-sm font-semibold tracking-[0.03em] text-porcelain shadow-[0_10px_28px_rgba(23,56,44,0.14)] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:bg-ink hover:shadow-[0_16px_36px_rgba(23,56,44,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-lg bg-forest px-7 py-3.5 text-sm font-semibold tracking-[0.03em] text-porcelain shadow-[0_10px_28px_rgba(23,56,44,0.14)] transition-[background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:bg-ink hover:shadow-[0_16px_36px_rgba(23,56,44,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
               >
                 {t("Poglej ponudbo")}
                 <ArrowRight
@@ -94,7 +94,7 @@ export default function HomePage() {
               </Link>
               <Link
                 to="/quality"
-                className="inline-flex min-h-13 items-center justify-center rounded-lg border border-forest/22 bg-porcelain/60 px-7 text-sm font-semibold tracking-[0.02em] text-forest transition-[background-color,border-color] duration-300 hover:border-forest/45 hover:bg-porcelain focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
+                className="inline-flex min-h-14 items-center justify-center rounded-lg border border-forest/22 bg-porcelain/60 px-7 py-3.5 text-sm font-semibold tracking-[0.02em] text-forest transition-[background-color,border-color] duration-300 hover:border-forest/45 hover:bg-porcelain focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
               >
                 Standard HerbaGallus
               </Link>
