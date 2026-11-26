@@ -6,8 +6,10 @@ import {
   CheckCircle2,
   ChevronDown,
   Clock,
+  Copy,
   Crown,
   Download,
+  ExternalLink,
   LoaderCircle,
   LockKeyhole,
   LogOut,
@@ -227,6 +229,24 @@ export default function AdminOrdersPage() {
   const [contactFilter, setContactFilter] = useState("all");
   const [expandedOrder, setExpandedOrder] = useState("");
   const [activeAction, setActiveAction] = useState("");
+  const [copiedTracking, setCopiedTracking] = useState("");
+
+  function glsTrackingUrl(parcelNumber) {
+    return `https://gls-group.com/SI/sl/sledenje-posiljki/?match=${encodeURIComponent(
+      String(parcelNumber || "").trim()
+    )}`;
+  }
+
+  function copyTrackingNumber(parcelNumber) {
+    const num = String(parcelNumber || "").trim();
+    if (!num || !navigator?.clipboard) return;
+    navigator.clipboard.writeText(num).then(() => {
+      setCopiedTracking(num);
+      setTimeout(() => {
+        setCopiedTracking((curr) => (curr === num ? "" : curr));
+      }, 1800);
+    });
+  }
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -271,7 +291,12 @@ export default function AdminOrdersPage() {
     return orders.filter((order) => {
       const matchesQuery =
         !normalized ||
-        [order.public_order_number, order.customer_name, order.customer_email]
+        [
+          order.public_order_number,
+          order.customer_name,
+          order.customer_email,
+          relation(order.gls_shipments)[0]?.parcel_number,
+        ]
           .filter(Boolean)
           .some((value) => String(value).toLowerCase().includes(normalized));
       const matchesFilter =
@@ -783,6 +808,15 @@ export default function AdminOrdersPage() {
                       <div className="flex flex-wrap items-center gap-2">
                         <StatusBadge value={order.payment_status} />
                         <StatusBadge value={order.fulfillment_status} />
+                        {shipment?.parcel_number && (
+                          <span
+                            className="inline-flex items-center gap-1 rounded-full border border-forest/15 bg-cream/80 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-forest/80"
+                            title="GLS sledilna številka paketa"
+                          >
+                            <Truck size={11} className="text-forest/60" />
+                            {shipment.parcel_number}
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center justify-between gap-4 sm:justify-end">
                         <p className="text-base font-bold text-forest">
@@ -928,12 +962,42 @@ export default function AdminOrdersPage() {
                                   Nalepka še ni ustvarjena
                                 </span>
                               )}
-                              {shipment?.parcel_number && (
-                                <span className="text-xs font-semibold text-forest/65">
-                                  #{shipment.parcel_number}
-                                </span>
-                              )}
                             </div>
+                            {shipment?.parcel_number && (
+                              <div className="mt-3 rounded-lg border border-forest/12 bg-white p-3">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-forest/50">
+                                  Sledilna številka (GLS)
+                                </p>
+                                <p className="mt-1 font-mono text-sm font-bold tracking-wide text-forest select-all">
+                                  {shipment.parcel_number}
+                                </p>
+                                <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                                  <a
+                                    href={glsTrackingUrl(shipment.parcel_number)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 rounded-md border border-forest/20 bg-porcelain px-2.5 py-1.5 text-[11px] font-bold text-forest transition-colors hover:bg-forest hover:text-white"
+                                  >
+                                    <ExternalLink size={12} /> Sledi paketu (GLS)
+                                  </a>
+                                  <button
+                                    type="button"
+                                    onClick={() => copyTrackingNumber(shipment.parcel_number)}
+                                    className="inline-flex items-center gap-1.5 rounded-md border border-forest/15 bg-stone-50 px-2.5 py-1.5 text-[11px] font-semibold text-forest/80 transition-colors hover:bg-stone-100"
+                                  >
+                                    {copiedTracking === String(shipment.parcel_number) ? (
+                                      <>
+                                        <Check size={12} className="text-emerald-700" /> Kopirano!
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Copy size={12} /> Kopiraj št.
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
                             {shipment?.error_message && (
                               <p className="mt-2 text-xs leading-5 text-clay">
                                 {shipment.error_message}
