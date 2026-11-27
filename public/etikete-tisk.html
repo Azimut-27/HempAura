@@ -547,6 +547,7 @@
 
     let markImg = null;
     let markDataUrl = '';
+    let hempImg = null;
     let qrImg = null;
     let qrDataUrl = '';
 
@@ -676,7 +677,23 @@
       ctx.restore();
     }
 
-    // Signature botanical gold hemp stalk illustration (matching 111.png & EMBALAŽA KAPLJICE ENGLISH.png)
+    // Signature botanical gold hemp stalk illustration (uses exact isolated official HerbaGallus gold hemp PNG)
+    function drawOfficialHempStalk(ctx, leftX, bottomY, heightPx) {
+      if (hempImg && hempImg.naturalWidth > 0) {
+        const aspect = hempImg.naturalWidth / hempImg.naturalHeight;
+        const w = heightPx * aspect;
+        const y = bottomY - heightPx;
+        ctx.save();
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(hempImg, leftX, y, w, heightPx);
+        ctx.restore();
+        return;
+      }
+      // Fallback vector stalk if image unavailable
+      drawBotanicalHempStalk(ctx, leftX + heightPx * 0.21, bottomY, heightPx);
+    }
+
     function drawBotanicalHempStalk(ctx, baseX, baseY, heightPx) {
       const s = heightPx / 340;
       ctx.save();
@@ -966,12 +983,12 @@
       const cx = centerX + centerW / 2;
       const fx = centerX + centerW * 0.075;
 
-      // Botanical gold hemp stalk rising up the right side of the front face
+      // Official botanical gold hemp stalk rising up the right side of the front face
       ctx.save();
       ctx.beginPath();
       ctx.rect(centerX, by, centerW, bh);
       ctx.clip();
-      drawBotanicalHempStalk(ctx, centerX + centerW * 0.855, trimY + trimH + mm(0.8), trimH * 0.62);
+      drawOfficialHempStalk(ctx, centerX + centerW * 0.695, trimY + trimH + mm(0.7), trimH * 0.67);
       ctx.restore();
 
       // Official stacked logo centered at top
@@ -1260,12 +1277,12 @@
       ctx.fillStyle = COLORS.gold;
       ctx.fillRect(bx, splitY - bandH / 2, bw, bandH);
 
-      // Rich botanical gold hemp stalk rising up the right side across green & cream (1:1 with 111.png)
+      // Official botanical gold hemp stalk rising up the right side across green & cream (exact match to original CBD Oil box)
       ctx.save();
       ctx.beginPath();
       ctx.rect(bx, by, bw, bh);
       ctx.clip();
-      drawBotanicalHempStalk(ctx, trimX + trimW * 0.845, trimY + trimH * 0.975, trimH * 0.60);
+      drawOfficialHempStalk(ctx, trimX + trimW * 0.605, trimY + trimH * 0.992, trimH * 0.655);
       ctx.restore();
 
       const cx = trimX + trimW / 2;
@@ -1788,8 +1805,9 @@
     async function init() {
       await document.fonts.ready;
       const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=4&color=143428&bgcolor=ffffff&data=' + encodeURIComponent('https://herbagallus.com/lab-reports');
-      [markImg, qrImg] = await Promise.all([
+      [markImg, hempImg, qrImg] = await Promise.all([
         loadImage('/brand/herbagallus-logo-stacked.png'),
+        loadImage('/brand/herbagallus-hemp-gold.png').catch(() => null),
         loadImage(qrUrl).catch(() => null)
       ]);
       markDataUrl = imgToDataUrl(markImg);
